@@ -1,0 +1,42 @@
+body {
+    background-color: #fdf3e3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.card {
+    border: 5px;
+    border-radius: 10px;
+}
+
+.btn-primary {
+    background-color: #7b1212;
+    border-color: #7b1212;
+}
+
+.btn-primary:hover {
+    background-color: #5a0e0e;
+}
+
+.illustration {
+    background-color: #274c3b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 10px;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+span {
+    font-weight: normal;
+    font-size: 14px; 
+    display: block;
+}
+
+
