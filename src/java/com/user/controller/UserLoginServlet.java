@@ -69,7 +69,8 @@ public class UserLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
     }
 
     /**
