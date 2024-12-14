@@ -41,19 +41,30 @@
                 </ul>
             </div>
         </div>
-        <button class="btn-log">Login</button>
+        <form action="user_login.jsp" method="get"> <!-- or method="post" -->
+            <button class="btn-log" type="submit" id="loginButton">Login</button>
+        </form>
     </nav>
 
-    <div class="hero mt-4">
-        <h1>Welcome to Zakat Management System</h1>
-        <p>Your one-stop solution for managing zakat contributions.</p>
-    </div>
-
-    <div class="container mt-4">
-        <h1>Container</h1>
+    <div class="hero">
+        <img src="images/hero.png">
+        <div class="hero-text">
+            <h1 class="display-2 fw-bold">MEMPERKASA PENDIDIKAN MELALUI ZAKAT</h1>
+        </div>
     </div>
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('loginButton').onclick = function() {
+            // Fade out the body
+            document.body.style.opacity = 0; // Start fade out
+
+            // Set a timer to redirect after 500 milliseconds (0.5 seconds)
+            setTimeout(function() {
+                window.location.href = 'user_login.jsp'; // Redirect to user_login.jsp
+            }, 500); // Delay in milliseconds
+        };
+    </script>
 </body>
 </html>
