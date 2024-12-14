@@ -1,0 +1,21 @@
+.offcanvas-start {
+  width: 250px;
+  background-color: #343a40; /* Dark color */
+  color: white;
+}
+    
+.offcanvas-header {
+     border-bottom: 1px solid #495057;
+}
+
+.offcanvas-body a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  display: block;
+  transition: background 0.3s ease-in-out;
+}
+
+.offcanvas-body a:hover {
+  background-color: #495057;
+}

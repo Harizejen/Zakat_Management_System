@@ -1,0 +1,40 @@
+.dashboard-container {
+   padding: 20px;
+   background-color: #f9f6f1;
+}
+
+.section-card {
+   border: 1px solid #ddd;
+   border-radius: 8px;
+   background-color: white;
+   padding: 15px;
+   margin-bottom: 20px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section-card h5 {
+   font-size: 18px;
+   font-weight: bold;
+   margin-bottom: 10px;
+}
+
+.btn-red {
+   background-color: #a11d21;
+   color: white;
+   border: none;
+   padding: 10px 20px;
+   margin: 5px 0;
+   display: block;
+   text-align: center;
+   border-radius: 4px;
+}
+
+btn-red:hover {
+  background-color: #87171a;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
