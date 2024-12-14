@@ -8,6 +8,10 @@
         <servlet-name>UserSignUpServlet</servlet-name>
         <servlet-class>com.user.controller.UserSignUpServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddApplicationServlet</servlet-name>
+        <servlet-class>com.application.controller.AddApplicationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login.do</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>UserSignUpServlet</servlet-name>
         <url-pattern>/user_signup.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddApplicationServlet</servlet-name>
+        <url-pattern>/add_application.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
