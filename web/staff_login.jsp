@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         
-                        <form action="user_login.do" method="post">
+                        <form action="staff_login.do" method="post">
                             <div class="row justify-content-center mb-3">
                                 <div class="col-auto">
                                     <input type="radio" class="form-check-input" id="HEA" name="role" value="HEA" checked>
@@ -47,8 +47,8 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="studentId" class="form-label">ID Staf :</label>
-                                <input type="text" id="studentId" name="studentId" class="form-control" required>
+                                <label for="staffId" class="form-label">ID Staf :</label>
+                                <input type="text" id="staffId" name="staffId" class="form-control" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Kata Laluan :</label>
@@ -56,7 +56,7 @@
                             </div>
                             <button type="submit" class="btn btn-primary w-100">DAFTAR MASUK</button>
                         </form>
-                        <p class="mt-3">Lupa Kata Laluan? <a href="user_signUp.jsp">Tekan Sini</a></p>
+                        <p class="mt-3">Lupa Kata Laluan? <a href>Tekan Sini</a></p>
                     </div>
                     <div class="col-md-6 rounded-end illustration">
                         <img src="images/login_illustrate.png" alt="Illustration" class="img-fluid">
