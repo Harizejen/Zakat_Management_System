@@ -4,19 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hal Ehwal Akademik</title>
+    <title>Unit Zakat, Sedekah dan Wakaf</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/stf.css">
+   <link rel="stylesheet" href="css/stf.css">
+    <style>
+        
+    </style>
 </head>
 <body>
 
 <!-- Navbar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <span class="navbar-brand text-white">Hal Ehwal Akademik</span>
+        <span class="navbar-brand text-white">Unit Zakat, Sedekah dan Wakaf</span> <!-- Updated title in the navbar -->
         <div class="d-flex align-items-center">
             <!-- Notification Bell -->
             <div class="notification me-3">
@@ -29,76 +31,70 @@
     </div>
 </nav>
 
-<!-- Main Container -->
+<!-- Main Content -->
 <div class="container">
-    <!-- Jumlah Permohonan Section -->
-    <div class="jumlah-section mb-4">
-        <span>Jumlah Permohonan: <span class="jumlah-count">1200</span></span>
-    </div>
-
     <!-- Table Section -->
-    <table class="table table-hover align-middle">
-        <thead class="table-light">
+    <div class="d-flex justify-content-between mb-3">
+        <h5>Jumlah Telah Disahkan <span class="text-muted">(700 forms)</span></h5>
+    </div>
+    <table class="table table-hover">
+        <thead>
             <tr>
                 <th>Bil</th>
                 <th>Disemak</th>
                 <th>Nama</th>
                 <th>No. Pelajar</th>
-                <th>CGPA</th> <!-- Changed from Gaji -->
-                <th>Tarikh Mohon</th>
                 <th>Borang</th>
-                <th>Status</th>
-                <th>Tindakan</th>
+                <th>Tarikh Temuduga</th>
+                <th>Verifikasi</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Sample Rows -->
+            <!-- Sample Row -->
             <tr>
-                <td>1</td>
+                <td>31</td>
                 <td><input type="checkbox"></td>
                 <td>Aris Aidil Bin Baharuddin</td>
                 <td>2023******</td>
-                <td>3.85</td> <!-- Changed to CGPA -->
-                <td>01/01/2025</td>
                 <td>
                     <a href="#" class="text-decoration-none">
                         2023******_MAC25OGOS25.pdf
                         <i class="bi bi-download download-icon"></i>
                     </a>
                 </td>
+                <td>11/03/2025</td>
                 <td>
-                    <span class="circle-status status-green"></span>
-                    <span class="status-text">Diluluskan</span>
-                </td>
-                <td>
-                    <!-- Dropdown Tindakan -->
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Tindakan
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Semak</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Sahkan</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Tolak</a></li>
-                            </ul>
-                        </div>
-                        <!-- Serah Button -->
-                        <button class="btn btn-danger btn-sm">Serah</button>
-                    </div>
+                
+                    <button class="btn btn-sahkan btn-sm">SAHKAN</button>
                 </td>
             </tr>
-            <!-- Repeat rows as necessary -->
+            <tr>
+                <td>35</td>
+                <td><input type="checkbox"></td>
+                <td>Muhammad Haziq Human Bin Hamiril</td>
+                <td>2023******</td>
+                <td>
+                    <a href="#" class="text-decoration-none">
+                        2023******_MAC25OGOS25.pdf
+                        <i class="bi bi-download download-icon"></i>
+                    </a>
+                </td>
+                <td>--TIADA--</td>
+                <td>
+                    <button class="btn btn-sahkan btn-sm btn-disabled">SAHKAN</button>
+                </td>
+            </tr>
+            <!-- Repeat rows -->
         </tbody>
     </table>
 
     <!-- Pagination -->
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Sebelumnya</a>
+                <a class="page-link" href="#" tabindex="-1">Sebelumnya</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
             <li class="page-item"><a class="page-link" href="#">2</a></li>
             <li class="page-item"><a class="page-link" href="#">3</a></li>
             <li class="page-item">
@@ -112,13 +108,5 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-<!-- JavaScript to Update Dropdown -->
-<script>
-    // Function to update the dropdown button text
-    function updateDropdown(element) {
-        const dropdownButton = element.closest('.dropdown').querySelector('.dropdown-toggle');
-        dropdownButton.textContent = element.textContent;
-    }
-</script>
 </body>
 </html>

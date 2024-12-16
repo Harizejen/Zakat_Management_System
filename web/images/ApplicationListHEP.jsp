@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hal Ehwal Akademik</title>
+    <title>Hal Ehwal Pelajar</title> <!-- Updated title -->
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/stf.css">
 </head>
 <body>
@@ -16,7 +15,7 @@
 <!-- Navbar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <span class="navbar-brand text-white">Hal Ehwal Akademik</span>
+        <span class="navbar-brand text-white">Hal Ehwal Pelajar</span> <!-- Updated navbar title -->
         <div class="d-flex align-items-center">
             <!-- Notification Bell -->
             <div class="notification me-3">
@@ -44,7 +43,7 @@
                 <th>Disemak</th>
                 <th>Nama</th>
                 <th>No. Pelajar</th>
-                <th>CGPA</th> <!-- Changed from Gaji -->
+                <th>Gaji (RM)</th> <!-- Gaji added from HEP content -->
                 <th>Tarikh Mohon</th>
                 <th>Borang</th>
                 <th>Status</th>
@@ -58,7 +57,7 @@
                 <td><input type="checkbox"></td>
                 <td>Aris Aidil Bin Baharuddin</td>
                 <td>2023******</td>
-                <td>3.85</td> <!-- Changed to CGPA -->
+                <td>3,500</td> <!-- Gaji -->
                 <td>01/01/2025</td>
                 <td>
                     <a href="#" class="text-decoration-none">
