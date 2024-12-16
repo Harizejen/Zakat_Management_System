@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package com.interview.model;
+import java.util.Date;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -11,13 +14,13 @@ package com.interview.model;
  */
 public class interview {
     private String iv_id;
-    private String iv_date;
+    private Date iv_date;
     private String iv_phoneNum;
     private String iv_place;
     private String note;
-    private String iv_time;
+    private LocalTime iv_time;
 
-    public interview(String iv_id, String iv_date, String iv_phoneNum, String iv_place, String note, String iv_time) {
+    public interview(String iv_id, Date iv_date, String iv_phoneNum, String iv_place, String note, LocalTime iv_time) {
         this.iv_id = iv_id;
         this.iv_date = iv_date;
         this.iv_phoneNum = iv_phoneNum;
@@ -34,11 +37,11 @@ public class interview {
         this.iv_id = iv_id;
     }
 
-    public String getIv_date() {
+    public Date getIv_date() {
         return iv_date;
     }
 
-    public void setIv_date(String iv_date) {
+    public void setIv_date(Date iv_date) {
         this.iv_date = iv_date;
     }
 
@@ -66,11 +69,11 @@ public class interview {
         this.note = note;
     }
 
-    public String getIv_time() {
+    public LocalTime getIv_time() {
         return iv_time;
     }
 
-    public void setIv_time(String iv_time) {
+    public void setIv_time(LocalTime iv_time) {
         this.iv_time = iv_time;
     }
     

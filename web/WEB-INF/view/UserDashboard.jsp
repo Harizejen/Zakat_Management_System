@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="css/navbar.css">
         <link rel="stylesheet" href="css/dashboard.css">
     </head>
-    <body>
+    <body> 
          <!-- Navbar -->
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">

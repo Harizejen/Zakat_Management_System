@@ -1,0 +1,143 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 15, 2024, 9:58:06 PM
+    Author     : User
+*/
+
+        body {
+            background-color: #f8f9fa;
+            font-size: 14px;
+        }
+
+        .main-container {
+            background-color: #F6EEE1;
+            padding: 40px !important;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto !important;
+            max-width: 1200px !important;
+        }
+
+        .notification {
+            position: relative;
+            display: inline-block;
+        }
+
+        .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform: translate(50%, -50%);
+            font-size: 0.75rem;
+        }
+
+        .welcome-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-body-lg {
+            min-height: 260px; /* Increase height of the blue card */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        canvas {
+            max-height: 300px;
+            max-width: 100%;
+        }
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #7DA1C0;
+            color: white;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            padding-top: 6%;
+        }
+
+        #sidebar.active {
+            left: 0;
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #sidebar ul li {
+            padding: 15px;
+            border-bottom: 1px solid #ffffff30;
+        }
+
+        #sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+        #sidebar ul li a:hover {
+            background-color: #CEB5D4;
+            height: 90%;
+            width: 90%;
+        }
+
+        /* Content */
+        #content {
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        #content.active {
+            margin-left: 250px;
+        }
+
+        /* Toggle button */
+        .toggle-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1100;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Notification Box */
+        #notificationBox {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 300px;
+            background-color: #F2F2F2;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            display: none; /* Initially hidden */
+            z-index: 1000;
+        }
+
+        .notification-header {
+            background-color: #eaeaea;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .notification-body {
+            padding: 15px;
+        }

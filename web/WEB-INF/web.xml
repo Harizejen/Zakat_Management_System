@@ -12,6 +12,14 @@
         <servlet-name>AddApplicationServlet</servlet-name>
         <servlet-class>com.application.controller.AddApplicationServlet</servlet-class>
     </servlet>
+    <servlet>
+    <servlet-name>StaffLoginServlet</servlet-name>
+    <servlet-class>com.staff.controller.StaffLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StaffLoginServlet</servlet-name>
+        <url-pattern>/staff_login.do</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login.do</url-pattern>
