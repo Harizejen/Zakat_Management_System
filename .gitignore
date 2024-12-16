@@ -1,2 +1,11 @@
+# Ignore specific files in nbproject
+nbproject/private/private.properties
+nbproject/private/private.xml
+nbproject/project.properties
+
+# Ignore directories
 /dist/
 /build/
+/private//dist/
+/build/
+/private/
