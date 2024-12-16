@@ -3,10 +3,32 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/documents/model/document.java</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/deadline/model/deadline.java</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/status_approval/model/status_approval.java</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/interview/model/interview.java</file>
+=======
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UZSWdashboard.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/css/dashboard.css</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/admin/view/adminLogin.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/css/staffDashboard.css</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/staff.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UserProfile.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEAdashboard.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/css/home.css</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/user_login.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UserDashboard.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/user_signUp.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/user/controller/UserLoginServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/css/navbar.css</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/staff_login.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/application/controller/AddApplicationServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/user/controller/UserSignUpServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEPdashboard.jsp</file>
+>>>>>>> 18267cd03b4c5f9222310151df26b56cc7b9fb06
         </group>
     </open-files>
 </project-private>

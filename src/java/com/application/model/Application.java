@@ -26,6 +26,20 @@ public class Application implements Serializable {
 
     // Constructor
     public Application() {}
+    
+    // Normal Constructor
+    public Application(int apply_id,int stud_id,String apply_session,int apply_part, double apply_cgpa, boolean apply_foodIncentive, boolean apply_otherSupport, double apply_otherSupportAmount, String apply_purpose, String apply_status, Date apply_date){
+        this.apply_id = apply_id;
+        this.stud_id = stud_id;
+        this.apply_session = apply_session;
+        this.apply_part = apply_part;
+        this.apply_cgpa = apply_cgpa;
+        this.apply_foodIncentive = apply_foodIncentive;
+        this.apply_otherSupport = apply_otherSupport;
+        this.apply_purpose = apply_purpose;
+        this.apply_status = apply_status;
+        this.apply_date = apply_date;
+    }
 
     // Getters
     public int getApplyID() {

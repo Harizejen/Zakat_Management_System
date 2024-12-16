@@ -28,6 +28,23 @@ public class Student implements Serializable {
 
     // Constructor
     public Student() {}
+    
+    public Student(int stud_id, String stud_name, String stud_email, String stud_password, char stud_state, char stud_course, char stud_faculty, char stud_campus, char stud_marriage, char stud_gender,String stud_phoneNum,String stud_bankNum, String stud_bankName, String stud_address){
+        this.stud_id = stud_id;
+        this.stud_name = stud_name;
+        this.stud_email = stud_email;
+        this.stud_password = stud_password;
+        this.stud_state = stud_state;
+        this.stud_course = stud_course;
+        this.stud_faculty = stud_faculty;
+        this.stud_campus = stud_campus;
+        this.stud_marriage = stud_marriage;
+        this.stud_gender = stud_gender;
+        this.stud_phoneNum = stud_phoneNum;
+        this.stud_bankNum = stud_bankNum;
+        this.stud_bankName = stud_bankName;
+        this.stud_address = stud_address;
+    }
 
     // Getters
     public int getStudID() {
