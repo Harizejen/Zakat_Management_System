@@ -38,7 +38,7 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#durasiModal">
                 <i class="bi bi-clock"></i>
                 <span>Tetapkan Durasi</span>
             </a>
@@ -90,11 +90,11 @@
     <div id="notificationBox">
         <div class="notification-header">
             <span><i class="bi bi-bell me-2"></i> Notifikasi Sistem</span>
-            <small class="text-muted">Jumaat 2:20pm</small>
+            <small class="text-muted" id="currentDayTime"></small>
         </div>
         <div class="notification-body">
             <div class="alert alert-primary m-0 py-2">
-                <small>Terdapat 2 permohonan baru.</small>
+                <small>Terdapat 1 permohonan baru.</small>
             </div>
         </div>
     </div>
@@ -193,6 +193,43 @@
     </div>
 </div>
 
+    <!-- Tetapkan Durasi Modal -->
+<div class="modal fade" id="durasiModal" tabindex="-1" aria-labelledby="durasiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #6E97B2; color: white;">
+            <!-- Modal Header -->
+            <div class="modal-header text-white justify-content-center border-0" style="background-color: #6E97B2;">
+                <h5 class="modal-title fw-bold text-center w-100" id="durasiModalLabel">Tetapkan Durasi</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form>
+                    <!-- Tarikh Mula -->
+                    <div class="mb-3">
+                        <label for="tarikhMula" class="form-label">Tarikh Mula</label>
+                        <input type="date" class="form-control" id="tarikhMula" required>
+                    </div>
+                    <!-- Tarikh Akhir -->
+                    <div class="mb-3">
+                        <label for="tarikhAkhir" class="form-label">Tarikh Akhir</label>
+                        <input type="date" class="form-control" id="tarikhAkhir" required>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-light text-danger" data-bs-dismiss="modal">BATAL</button>
+                <button type="button" class="btn btn-danger">TETAPKAN</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
     <!-- Logout Confirmation Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
