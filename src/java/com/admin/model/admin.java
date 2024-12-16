@@ -14,10 +14,12 @@ public class admin {
     private String admin_email = "";
     private String admin_password = "";
 
-    public admin() {
-        
+    public admin(int admin_id, String admin_email, String admin_password) {
+        this.admin_id = admin_id;
+        this.admin_email = admin_email;
+        this.admin_password = admin_password;
     }
-
+       
     public int getAdminID() {
         return admin_id;
     }

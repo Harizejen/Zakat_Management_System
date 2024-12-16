@@ -1,22 +1,26 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-package com.user.controller;
+package com.staff.controller;
 
-import com.user.model.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author User
  */
-public class UserLoginServlet extends HttpServlet {
+@WebServlet(name = "StaffLoginServlet", urlPatterns = {"/staff_login.do"})
+public class StaffLoginServlet extends HttpServlet {
+     private static final long serialVersionUID = 1L;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +39,10 @@ public class UserLoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserLoginServlet</title>");            
+            out.println("<title>Servlet StaffLoginServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UserLoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet StaffLoginServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,20 +74,34 @@ public class UserLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
-        String stud_password = request.getParameter("stud_password");
-        
-        Student st = new Student();
-        st.setStudID(stud_id);
-        st.setStudPass(stud_password);
-        
-        if(st.isValid()){
-            request.setAttribute("stud_id",stud_id);
-            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
-        }else{
-            request.setAttribute("error", "Invalid student ID or password");
-            request.getRequestDispatcher("/user_login.jsp").forward(request, response);
+        String staffId = request.getParameter("staffId");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
+
+        boolean isValidUser  = validateUser (staffId, password, role);
+
+        if (isValidUser ) {
+            HttpSession session = request.getSession();
+            session.setAttribute("staffId", staffId);
+            session.setAttribute("role", role);
+
+            switch (role) {
+                case "HEA":
+                    request.getRequestDispatcher("/WEB-INF/view/HEAdashboard.jsp").forward(request, response);
+                    break;
+                case "HEP":
+                    request.getRequestDispatcher("/WEB-INF/view/HEPdashboard.jsp").forward(request, response);
+                    break;
+                case "UZSW":
+                    request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
+                    break;
+                default:
+                    response.sendRedirect("error.jsp");
+                    break;
+            }
+        } else {
+            request.setAttribute("errorMessage", "Invalid ID or password.");
+            request.getRequestDispatcher("staff_login.jsp").forward(request, response);
         }
     }
 
@@ -96,5 +114,14 @@ public class UserLoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+private boolean validateUser (String staffId, String password, String role) {
+        if ("HEA".equals(role)) {
+            return "staff123".equals(staffId) && "passwordHEA".equals(password);
+        } else if ("HEP".equals(role)) {
+            return "staff456".equals(staffId) && "passwordHEP".equals(password);
+        } else if ("UZSW".equals(role)) {
+            return "staff789".equals(staffId) && "passwordUZSW".equals(password);
+        }
+        return false;
+    }
 }

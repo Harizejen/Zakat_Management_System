@@ -4,19 +4,22 @@
  * and open the template in the editor.
  */
 package com.donation.model;
+import java.util.Date;
 
 /**
  *
  * @author nasru
  */
 public class donation {
-    private String donation_cred_date;
+    private Date donation_cred_date;
     private double donation_amount;
     
-    public donation() {
+    public donation(Date donation_cred_date, double donation_amount) {
+        this.donation_cred_date = donation_cred_date;
+        this.donation_amount = donation_amount; 
     }
 
-    public String getDonation_cred_date() {
+    public Date getDonation_cred_date() {
         return donation_cred_date;
     }
 
@@ -24,7 +27,7 @@ public class donation {
         return donation_amount;
     }
 
-    public void setDonation_cred_date(String donation_cred_date) {
+    public void setDonation_cred_date(Date donation_cred_date) {
         this.donation_cred_date = donation_cred_date;
     }
 
