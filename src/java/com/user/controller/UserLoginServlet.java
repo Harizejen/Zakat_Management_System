@@ -4,6 +4,7 @@
  */
 package com.user.controller;
 
+import com.user.model.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -70,7 +71,20 @@ public class UserLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+        String stud_password = request.getParameter("stud_password");
+        
+        Student st = new Student();
+        st.setStudID(stud_id);
+        st.setStudPass(stud_password);
+        
+        if(st.isValid()){
+            request.setAttribute("stud_id",stud_id);
+            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+        }else{
+            request.setAttribute("error", "Invalid student ID or password");
+            request.getRequestDispatcher("/user_login.jsp").forward(request, response);
+        }
     }
 
     /**
