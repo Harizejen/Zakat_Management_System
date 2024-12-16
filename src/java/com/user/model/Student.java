@@ -10,6 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -175,7 +179,7 @@ public class Student implements Serializable {
         // Submit application logic here
     }
     
-    public boolean isValid(){
+   public boolean isValid() {
         boolean isValid = false;
         String query = "SELECT * FROM Student WHERE stud_id = ? AND stud_password =  ? " ;
 
