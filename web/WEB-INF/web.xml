@@ -13,8 +13,12 @@
         <servlet-class>com.application.controller.AddApplicationServlet</servlet-class>
     </servlet>
     <servlet>
-    <servlet-name>StaffLoginServlet</servlet-name>
-    <servlet-class>com.staff.controller.StaffLoginServlet</servlet-class>
+        <servlet-name>StaffLoginServlet</servlet-name>
+        <servlet-class>com.staff.controller.StaffLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminServlet</servlet-name>
+        <servlet-class>com.admin.controller.adminServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>AddApplicationServlet</servlet-name>
         <url-pattern>/add_application.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminServlet</servlet-name>
+        <url-pattern>/adminServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

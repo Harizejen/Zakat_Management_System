@@ -22,9 +22,7 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="navbar-toggler-icon"></span>
+                     <i class="bi bi-list" style="color: white;"></i> <!-- Use Bootstrap Icon -->
                 </button>
             </div>
         </nav>
