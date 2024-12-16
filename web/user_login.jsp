@@ -33,12 +33,12 @@
                         
                         <form action="user_login.do" method="post">
                             <div class="mb-3">
-                                <label for="studentId" class="form-label">No Pelajar :</label>
-                                <input type="text" id="studentId" name="studentId" class="form-control" required>
+                                <label for="stud_id" class="form-label">No Pelajar :</label>
+                                <input type="text" id="stud_id" name="stud_id" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Kata Laluan :</label>
-                                <input type="password" id="password" name="password" class="form-control" required>
+                                <label for="stud_password" class="form-label">Kata Laluan :</label>
+                                <input type="password" id="stud_password" name="stud_password" class="form-control" required>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">DAFTAR MASUK</button>
                         </form>

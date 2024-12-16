@@ -169,5 +169,25 @@ public class Student implements Serializable {
     public void submitApplication() {
         // Submit application logic here
     }
+    
+    public boolean isValid(){
+        boolean isValid = false;
+        
+//        try (Connection connection = DriverManager.getConnection(
+//                "jdbc:mysql://localhost:3306/yourdb", "youruser", "yourpassword");
+//             PreparedStatement stmt = connection.prepareStatement(
+//                     "SELECT * FROM users WHERE username = ? AND password = ?")) {
+//
+//            stmt.setString(1, stud_id);
+//            stmt.setString(2, stud_password);
+//            ResultSet rs = stmt.executeQuery();
+//
+//            isValid = rs.next();
+//        }catch(SQLException e){
+//            e.printStackTrace();
+//        }
+        
+        return isValid;
+    }
 }
 
