@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.status_approval.model;
+import java.util.Date;
 
 /**
  *
@@ -11,9 +12,9 @@ package com.status_approval.model;
  */
 public class status_approval {
     private String approv_status;
-    private String approve_date;
+    private Date approve_date;
 
-    public status_approval(String approv_status, String approve_date) {
+    public status_approval(String approv_status, Date approve_date) {
         this.approv_status = approv_status;
         this.approve_date = approve_date;
     }
@@ -26,11 +27,11 @@ public class status_approval {
         this.approv_status = approv_status;
     }
 
-    public String getApprove_date() {
+    public Date getApprove_date() {
         return approve_date;
     }
 
-    public void setApprove_date(String approve_date) {
+    public void setApprove_date(Date approve_date) {
         this.approve_date = approve_date;
     }
     
