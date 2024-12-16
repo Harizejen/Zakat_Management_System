@@ -4,7 +4,12 @@
  */
 package com.user.model;
 
+import com.database.dbconn;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -172,21 +177,22 @@ public class Student implements Serializable {
     
     public boolean isValid(){
         boolean isValid = false;
-        
-//        try (Connection connection = DriverManager.getConnection(
-//                "jdbc:mysql://localhost:3306/yourdb", "youruser", "yourpassword");
-//             PreparedStatement stmt = connection.prepareStatement(
-//                     "SELECT * FROM users WHERE username = ? AND password = ?")) {
-//
-//            stmt.setString(1, stud_id);
-//            stmt.setString(2, stud_password);
-//            ResultSet rs = stmt.executeQuery();
-//
-//            isValid = rs.next();
-//        }catch(SQLException e){
-//            e.printStackTrace();
-//        }
-        
+        String query = "SELECT * FROM Student WHERE stud_id = ? AND stud_password =  ? " ;
+
+        try (Connection connection = dbconn.getConnection(); // Use your dbconn class to get the connection
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             
+            preparedStatement.setInt(1, stud_id);
+            preparedStatement.setString(2, stud_password);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            isValid = resultSet.next(); // If a record is found, the student is valid
+            preparedStatement.close();
+            resultSet.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return isValid;
     }
 }
