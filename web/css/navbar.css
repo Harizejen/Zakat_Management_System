@@ -1,7 +1,7 @@
 /* Navbar Styles */
 .navbar {
   background-color: #013220; /* Dark green */
-  height: 150px;
+  height: fit-content;
 }
 
 .navbar-toggler {
@@ -10,7 +10,7 @@
 }
 
 .navbar-toggler i {
-   font-size: 5vw; /* Adjust the size based on viewport width */
+   font-size: 32px; /* Adjust the size based on viewport width */
    min-width: 1.5rem
 }
 
