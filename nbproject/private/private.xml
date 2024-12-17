@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/admin/controller/adminServlet.java</file>
-            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/css/admin_dashboard.css</file>
-            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/adminDashboard.jsp</file>
-            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/web.xml</file>
+            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/WEB-INF/web.xml</file>
+            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/js/staffDashboard.js</file>
+            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/WEB-INF/view/UserDashboard.jsp</file>
+            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/user/model/Student.java</file>
+            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/database/dbconn.java</file>
         </group>
     </open-files>
 </project-private>
