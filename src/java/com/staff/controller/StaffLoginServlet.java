@@ -5,14 +5,21 @@
  */
 package com.staff.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.database.dbconn;
 import javax.servlet.ServletException;
+import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -74,34 +81,73 @@ public class StaffLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String staffId = request.getParameter("staffId");
+        String staffIdParam = request.getParameter("staffId");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
 
-        boolean isValidUser  = validateUser (staffId, password, role);
+        // Null checks for form parameters
+        if (staffIdParam == null || password == null || role == null) {
+            request.setAttribute("error", "All fields are required.");
+            request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
+            return;
+        }
 
-        if (isValidUser ) {
-            HttpSession session = request.getSession();
-            session.setAttribute("staffId", staffId);
-            session.setAttribute("role", role);
+        int staffId = 0;
+        try {
+            staffId = Integer.parseInt(staffIdParam);
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid Staff ID format.");
+            request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
+            return;
+        }
 
-            switch (role) {
-                case "HEA":
-                    request.getRequestDispatcher("/WEB-INF/view/HEAdashboard.jsp").forward(request, response);
-                    break;
-                case "HEP":
-                    request.getRequestDispatcher("/WEB-INF/view/HEPdashboard.jsp").forward(request, response);
-                    break;
-                case "UZSW":
-                    request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
-                    break;
-                default:
-                    response.sendRedirect("error.jsp");
-                    break;
+        // Database logic
+        try (Connection connection = dbconn.getConnection()) {
+            if (connection == null) {
+                throw new SQLException("Database connection failed!");
             }
-        } else {
-            request.setAttribute("errorMessage", "Invalid ID or password.");
-            request.getRequestDispatcher("staff_login.jsp").forward(request, response);
+
+            String query = "SELECT * FROM staff WHERE staff_id = ? AND BINARY staff_password = ? AND staff_role = ?";
+            
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, staffId);
+                preparedStatement.setString(2, password);  // Adjust if password is hashed
+                preparedStatement.setString(3, role);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    // Valid staff
+                    HttpSession session = request.getSession();
+                    session.setAttribute("staffId", staffId);
+                    session.setAttribute("role", role);
+
+                    // Redirect to appropriate dashboard based on staff role
+                    switch (role) {
+                        case "HEA":
+                            request.getRequestDispatcher("/WEB-INF/view/HEAdashboard.jsp").forward(request, response);
+                            break;
+                        case "HEP":
+                            request.getRequestDispatcher("/WEB-INF/view/HEPdashboard.jsp").forward(request, response);
+                            break;
+                        case "UZSW":
+                            request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
+                            break;
+                        default:
+                            request.setAttribute("error", "Invalid role.");
+                            request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
+                            break;
+                    }
+                } else {
+                    // Invalid credentials
+                    request.setAttribute("error", "Invalid credentials.");
+                    request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("error", "Database error: " + ex.getMessage());
+            request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
         }
     }
 
@@ -112,16 +158,6 @@ public class StaffLoginServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Staff Login Servlet";
     }// </editor-fold>
-private boolean validateUser (String staffId, String password, String role) {
-        if ("HEA".equals(role)) {
-            return "staff123".equals(staffId) && "passwordHEA".equals(password);
-        } else if ("HEP".equals(role)) {
-            return "staff456".equals(staffId) && "passwordHEP".equals(password);
-        } else if ("UZSW".equals(role)) {
-            return "staff789".equals(staffId) && "passwordUZSW".equals(password);
-        }
-        return false;
-    }
 }

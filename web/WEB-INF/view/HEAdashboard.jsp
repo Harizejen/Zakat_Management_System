@@ -63,7 +63,7 @@
                         <h2>1,200</h2>
                         <!-- Center the button -->
                         <div class="d-flex justify-content-center">
-                            <button class="btn btn-danger">Lihat ></button>
+                            <button class="btn btn-danger" >Lihat ></button>
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                 <h5 id="logoutModalLabel" class="mb-4">Adakah anda ingin keluar?</h5>
                 <!-- Buttons -->
                 <div class="d-flex justify-content-center gap-3">
-                    <button type="button" class="btn btn-outline-light px-4" data-bs-dismiss="modal">KELUAR</button>
+                    <a href="staff_logout.do" class="btn btn-outline-light px-4">KELUAR</a>
                     <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">BATAL</button>
                 </div>
             </div>
