@@ -188,6 +188,7 @@ public class Student implements Serializable {
             
             ResultSet resultSet = preparedStatement.executeQuery();
             isValid = resultSet.next(); // If a record is found, the student is valid
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

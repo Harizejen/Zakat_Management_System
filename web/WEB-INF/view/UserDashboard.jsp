@@ -43,8 +43,8 @@
                 <!-- Menu Items -->
                 <a href="#" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
                 <a href="#" onclick="loadPage('UserProfile.jsp')" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
-                <a href="#" onclick="loadPage('applications.html')" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
-                <a href="#" onclick="loadPage('records.html')" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+                <a href="#" onclick="loadPage('applications.jsp')" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+                <a href="#" onclick="loadPage('records.jsp')" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
                 <!-- Logout Button -->
                 <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>

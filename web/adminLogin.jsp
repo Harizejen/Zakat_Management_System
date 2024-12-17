@@ -31,14 +31,14 @@
                             </div>
                         </div>
                         
-                        <form action="admin_login.do" method="post">
+                        <form action="adminServlet" method="post">
                             <div class="mb-3">
                                 <label for="adminID" class="form-label">Admin ID :</label>
-                                <input type="text" id="studentId" name="studentId" class="form-control" required>
+                                <input type="text" id="adminId" name="adminId" class="form-control" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Kata Laluan :</label>
-                                <input type="password" id="password" name="password" class="form-control" required>
+                                <input type="password" id="admin_password" name="admin_password" class="form-control" required>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">DAFTAR MASUK</button>
                         </form>

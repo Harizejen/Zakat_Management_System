@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.database;
 
 import java.sql.Connection;
@@ -13,22 +8,44 @@ import java.sql.SQLException;
  * @author nasru
  */
 public class dbconn {
-    private static final String URL = "jdbc:mysql://localhost:3306/zakat_management"; // Change to your database URL
-    private static final String USER = "root"; // Change to your database username
-    private static final String PASSWORD = ""; // Change to your database password
+     // Database URL, username, and password
+    private static final String URL = "jdbc:mysql://localhost:3306/zakat_management"; // Modify the URL according to your setup
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
+    private static Connection connection = null;
 
+    // Method to establish connection
     public static Connection getConnection() {
-        Connection connection = null;
         try {
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Connection established successfully.");
-        } catch (SQLException e) {
+            // Load MySQL JDBC driver (optional with newer versions of Java)
+            Class.forName("com.mysql.jdbc.Driver");
+            // Establish connection
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Connection failed: " + e.getMessage());
+            return null; // Return null if connection fails
         }
-        return connection;
     }
 
+    // Method to close connection
+    public static void closeConnection() {
+        try {
+            if (connection != null) {
+                connection.close();
+                System.out.println("MySQL Database connection closed.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to close connection: " + e.getMessage());
+        }
+    }
+
+    // Example usage
     public static void main(String[] args) {
-        getConnection(); // Test the connection
+        // Connect to MySQL DB
+        getConnection();
+        // Perform database operations here...
+
+        // Close the connection after operations
+        closeConnection();
     }
 }
