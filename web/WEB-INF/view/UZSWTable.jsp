@@ -1,12 +1,12 @@
 <%-- 
-    Document   : HEATable
-    Created on : Dec 18, 2024, 1:18:41 AM
+    Document   : UZSWTable
+    Created on : Dec 18, 2024, 3:28:57 AM
     Author     : nasru
 --%>
 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.staff.model.staff"%>
 <%@page import="java.util.List"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -21,10 +21,10 @@
     <body>
         <div class="container mt-4">
             <% 
-                List<staff> staffList = (List<staff>) request.getAttribute("HEAstaffList");
+                List<staff> staffList = (List<staff>) request.getAttribute("UZSWstaffList");
                 int staffCount = (staffList != null) ? staffList.size() : 0; // Get the size safely
             %>
-            <h5>Jumlah Staf HEA <span class="text-primary"><%= staffCount %> Staf</span></h5>
+            <h5>Jumlah Staf UZSW <span class="text-primary"><%= staffCount %> Staf</span></h5>
             <table class="table">
                 <thead>
                     <tr>
