@@ -55,7 +55,46 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         String action = request.getParameter("action");
+
+        if ("profile".equals(action)) {
+            // Call the method to retrieve staff data
+            getProfile(request, response);
+        }else if("dashboard".equals(action)){
+            getDashboard(request, response);
+        }else if("borang".equals(action)){
+            getBorang(request, response);
+        }
+        else {
+            processRequest(request, response);
+        }
+    }
+    
+    private void getProfile(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException{
+        
+        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+        request.setAttribute("stud_id", stud_id);
+        request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
+        
+    }
+    
+    private void getDashboard(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException{
+        
+        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+        request.setAttribute("stud_id", stud_id);
+        request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+        
+    }
+    
+    private void getBorang(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException{
+        
+        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+        request.setAttribute("stud_id", stud_id);
+        request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+        
     }
 
     /**

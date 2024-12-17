@@ -34,8 +34,8 @@
                     <img src="https://via.placeholder.com/80" class="rounded-circle" alt="Profile Picture">
                     <p class="fw-bold mt-2">NUR AFRINA BINTI MUSTAFA</p>
                 </div>
-                <a href="UserDashboard.jsp" class="menu-item"><i class="bi bi-house"></i> Anjung</a>
-                <a href="UserProfile.jsp" class="menu-item active"><i class="bi bi-person"></i> Profil</a>
+                <a href="user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> Anjung</a>
+                <a href="user.do?action=profile" class="menu-item active"><i class="bi bi-person"></i> Profil</a>
                 <a href="#" class="menu-item"><i class="bi bi-file-earmark"></i> Permohonan</a>
                 <a href="#" class="menu-item"><i class="bi bi-clipboard"></i> Rekod</a>
                 <a href="#" class="menu-item text-danger"><i class="bi bi-box-arrow-right"></i> Log Keluar</a>
@@ -79,7 +79,7 @@
                         <p><strong>NO TELEFON PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
                         <p><strong>ALAMAT PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
                         
-                        <a href="updateForm.jsp" class="btn btn-danger mt-3">KEMASKINI</a>
+                        <a href="user.do?action=borang" class="btn btn-danger mt-3">KEMASKINI</a>
                     </div>
                 </div>
 
