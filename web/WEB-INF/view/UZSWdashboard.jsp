@@ -117,7 +117,7 @@
                         <h2>1,200</h2>
                         <!-- Center the button -->
                         <div class="d-flex justify-content-center">
-                            <button class="btn btn-danger">Lihat ></button>
+                            <a href="UZSWListPage" class="btn btn-danger" >Lihat ></a>
                         </div>
                     </div>
                 </div>
