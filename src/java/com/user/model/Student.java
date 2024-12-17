@@ -10,10 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  *
@@ -191,9 +187,7 @@ public class Student implements Serializable {
             
             ResultSet resultSet = preparedStatement.executeQuery();
             isValid = resultSet.next(); // If a record is found, the student is valid
-            preparedStatement.close();
-            resultSet.close();
-            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

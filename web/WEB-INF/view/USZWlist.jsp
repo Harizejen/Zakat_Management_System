@@ -17,16 +17,16 @@
 
 <!-- Navbar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <span class="navbar-brand text-white">Unit Zakat, Sedekah dan Wakaf</span> <!-- Updated title in the navbar -->
-        <div class="d-flex align-items-center">
+    <div class="container-fluid d-flex align-items-center">
+        <!-- Right-aligned Section -->
+        <div class="d-flex align-items-center ms-auto">
             <!-- Notification Bell -->
-            <div class="notification me-3">
-                <i class="bi bi-bell-fill fs-5 text-white"></i>
-                <span class="badge bg-danger rounded-pill">2</span>
-            </div>
+                <div class="notification me-3 position-relative" id="notificationBell" style="cursor: pointer;">
+                    <i class="bi bi-bell-fill fs-4 text-white"></i>
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle d-flex align-items-center justify-content-center" style="width: 20px; height: 20px; font-size: 12px; top: 20%; left: 80%;">1</span>
+                </div>
             <!-- Log Out -->
-            <span class="text-light">Log Keluar</span>
+            <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
         </div>
     </div>
 </nav>
