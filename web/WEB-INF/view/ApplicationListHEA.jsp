@@ -10,10 +10,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/stf.css">
+    <link rel="stylesheet" href="css/staffDashboard.css">
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- Navigation Bar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
     <div class="container-fluid d-flex align-items-center">
         <!-- Right-aligned Section -->
@@ -108,9 +109,39 @@
     </nav>
 </div>
 
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center" style="background-color: #112C55; color: white;">
+            <!-- Modal Body -->
+            <div class="modal-body py-4">
+                <h5 id="logoutModalLabel" class="mb-4">Adakah anda ingin keluar?</h5>
+                <!-- Buttons -->
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="staff_logout.do" class="btn btn-outline-light px-4">KELUAR</a>
+                    <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">BATAL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notification Box -->
+    <div id="notificationBox">
+        <div class="notification-header">
+            <span><i class="bi bi-bell me-2"></i> Notifikasi Sistem</span>
+            <small class="text-muted" id="currentDayTime"></small>
+        </div>
+        <div class="notification-body">
+            <div class="alert alert-primary m-0 py-2">
+                <small>Terdapat 1 permohonan baru.</small>
+            </div>
+        </div>
+    </div>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="/Zakat_Management_System/js/staffDashboard.js"></script>
 
 <!-- JavaScript to Update Dropdown -->
 <script>
