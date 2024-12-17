@@ -41,10 +41,10 @@
                 </div>
 
                 <!-- Menu Items -->
-                <a href="#" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
-                <a href="#" onclick="loadPage('UserProfile.jsp')" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
-                <a href="#" onclick="loadPage('applications.html')" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
-                <a href="#" onclick="loadPage('records.html')" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+                <a href="web/WEB-INF/view/UserDashboard.jsp" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
+                <a href="UserProfile.jsp" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
+                <a href="#" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+                <a href="#" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
                 <!-- Logout Button -->
                 <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
@@ -116,22 +116,6 @@
         <script>
             // Set current year dynamically
             document.getElementById("year").textContent = new Date().getFullYear();
-            
-            // Function to load external HTML files into the main section
-            function loadPage(page) {
-                fetch(page)
-                    .then(response => {
-                        if (!response.ok) throw new Error("Failed to load " + page);
-                        return response.text();
-                    })
-                    .then(html => {
-                        document.getElementById("main-content").innerHTML = html;
-                    })
-                    .catch(error => {
-                        console.error("Error loading page:", error);
-                        document.getElementById("main-content").innerHTML = "<p>Error loading content.</p>";
-                    });
-            }
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
