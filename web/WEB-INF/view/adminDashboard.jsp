@@ -36,7 +36,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Total HEA Staff</h5>
                             <p class="card-text" id="heaCount">0</p>
-                            <a href="HEATable.jsp" class="btn btn-primary">View Staff</a>
+                            <a href="adminServlet?action=viewHEAStaff" class="btn btn-primary">View Staff</a>
                         </div>
                     </div>
                 </div>
