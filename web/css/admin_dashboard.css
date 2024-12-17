@@ -1,0 +1,15 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 17, 2024, 4:02:16 PM
+    Author     : nasru
+*/
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 1rem 1rem;
+  min-height: 500px;
+}
