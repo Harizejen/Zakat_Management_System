@@ -41,8 +41,8 @@
                 </div>
 
                 <!-- Menu Items -->
-                <a href="web/WEB-INF/view/UserDashboard.jsp" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
-                <a href="UserProfile.jsp" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
+                <a href="UserDashboard.jsp" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
+                <a href="<%= request.getContextPath() %>/UserProfile.jsp" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
                 <a href="#" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
                 <a href="#" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
