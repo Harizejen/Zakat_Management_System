@@ -24,6 +24,10 @@
         <servlet-name>StaffLogoutServlet</servlet-name>
         <servlet-class>com.staff.controller.StaffLogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>staffTable</servlet-name>
+        <servlet-class>com.staff.controller.staffTable</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/staff_login.do</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>StaffLogoutServlet</servlet-name>
         <url-pattern>/staff_logout.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffTable</servlet-name>
+        <url-pattern>/staffTable</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
