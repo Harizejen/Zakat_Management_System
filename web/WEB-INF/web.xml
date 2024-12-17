@@ -21,8 +21,12 @@
         <servlet-class>com.admin.controller.adminServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.user.controller.UserServlet</servlet-class>
+        <servlet-name>StaffLogoutServlet</servlet-name>
+        <servlet-class>com.staff.controller.StaffLogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>staffTable</servlet-name>
+        <servlet-class>com.staff.controller.staffTable</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
@@ -45,8 +49,12 @@
         <url-pattern>/adminServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/user.do</url-pattern>
+        <servlet-name>StaffLogoutServlet</servlet-name>
+        <url-pattern>/staff_logout.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffTable</servlet-name>
+        <url-pattern>/staffTable</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

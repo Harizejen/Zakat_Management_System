@@ -6,12 +6,15 @@
 package com.admin.controller;
 
 import com.database.dbconn;
+import com.staff.model.staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -64,7 +67,15 @@ public class adminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+         String action = request.getParameter("action");
+
+        if ("viewHEAStaff".equals(action)) {
+            // Call the method to retrieve staff data
+            retrieveHEAStaffData(request, response);
+        } else {
+            processRequest(request, response);
+        }
     }
 
     /**
@@ -79,7 +90,7 @@ public class adminServlet extends HttpServlet {
    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        boolean isValid = false;
+         boolean isValid = false;
 
         String adminIdParam = request.getParameter("adminId");
         String admin_password = request.getParameter("admin_password");
@@ -101,7 +112,7 @@ public class adminServlet extends HttpServlet {
 
         String query = "SELECT * FROM admin WHERE admin_id = ? AND admin_password = ?";
 
-        try (Connection connection = dbconn.getConnection(); // Create a new connection for each request
+        try (Connection connection = dbconn.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, admin_id);
@@ -125,6 +136,34 @@ public class adminServlet extends HttpServlet {
             request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
         }
     }
+
+    private void retrieveHEAStaffData(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<staff> staffList = new ArrayList<>();
+        String query = "SELECT staff_id, staff_name, staff_email FROM staff WHERE staff_role = 'HEA' ";
+
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+             
+            while (resultSet.next()) {
+                staff staff = new staff();
+                staff.setStaffid(resultSet.getInt("staff_id"));
+                staff.setStaffname(resultSet.getString("staff_name"));
+                staff.setStaffemail(resultSet.getString("staff_email"));
+                staffList.add(staff);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
+            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
+            return;
+        }
+
+        request.setAttribute("staffList", staffList);
+        request.getRequestDispatcher("/WEB-INF/view/HEATable.jsp").forward(request, response);
+    }
+    
     /**
      * Returns a short description of the servlet.
      *

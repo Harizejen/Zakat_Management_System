@@ -1,3 +1,5 @@
+package com.staff.model;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,11 +14,13 @@ public class staff {
     private int staffid;
     private int adminid;
     private int applyid;
-    private char staffname;
+    private String staffname;
     private String staffemail;
     private String staffpassword;
     private char staffrole;
 
+    
+    
     public int getStaffid() {
         return staffid;
     }
@@ -41,11 +45,11 @@ public class staff {
         this.applyid = applyid;
     }
 
-    public char getStaffname() {
+    public String getStaffname() {
         return staffname;
     }
 
-    public void setStaffname(char staffname) {
+    public void setStaffname(String staffname) {
         this.staffname = staffname;
     }
 
@@ -73,7 +77,7 @@ public class staff {
         this.staffrole = staffrole;
     }
 
-    public staff(int staffid, int adminid, int applyid, char staffname, String staffemail, String staffpassword, char staffrole) {
+    public staff(int staffid, int adminid, int applyid, String staffname, String staffemail, String staffpassword, char staffrole) {
         this.staffid = staffid;
         this.adminid = adminid;
         this.applyid = applyid;
@@ -82,6 +86,11 @@ public class staff {
         this.staffpassword = staffpassword;
         this.staffrole = staffrole;
     }    
+
+    public staff() {
+    }
+    
+    
 }
 
 
