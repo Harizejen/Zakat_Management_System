@@ -4,7 +4,6 @@
  */
 package com.user.model;
 
-
 import com.database.dbconn;
 import java.io.Serializable;
 import java.sql.Connection;

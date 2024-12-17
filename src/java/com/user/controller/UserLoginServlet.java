@@ -71,31 +71,22 @@ public class UserLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String stud_id = request.getParameter("stud_id");
+        //processRequest(request, response);
+        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
         String stud_password = request.getParameter("stud_password");
-
-        if (stud_id == null || stud_password == null) {
-            request.setAttribute("error", "Please enter both student ID and password");
-            request.getRequestDispatcher("/user_login.jsp").forward(request, response);
-            return;
-        }
-
-        try {
-            int id = Integer.parseInt(stud_id);
-            Student st = new Student();
-            st.setStudID(id);
-            st.setStudPass(stud_password);
-
-            if (st.isValid()) {
-                request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
-            } else {
-                request.setAttribute("error", "Invalid student ID or password");
-                request.getRequestDispatcher("/user_login.jsp").forward(request, response);
-            }
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid student ID");
+        
+        Student st = new Student();
+        st.setStudID(stud_id);
+        st.setStudPass(stud_password);
+        
+        if(st.isValid()){
+            request.setAttribute("stud_id",stud_id);
+            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+        }else{
+            request.setAttribute("error", "Invalid student ID or password");
             request.getRequestDispatcher("/user_login.jsp").forward(request, response);
         }
+
     }
 
     /**

@@ -54,7 +54,7 @@
                                 <label for="password" class="form-label">Kata Laluan :</label>
                                 <input type="password" id="password" name="password" class="form-control" required>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">DAFTAR MASUK</button>
+                            <button type="submit" class="btn btn-primary w-100">LOG MASUK</button>
                         </form>
                         <p class="mt-3">Lupa Kata Laluan? <a href>Tekan Sini</a></p>
                     </div>

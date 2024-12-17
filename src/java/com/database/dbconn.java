@@ -47,5 +47,11 @@ public class dbconn {
 
         // Close the connection after operations
         closeConnection();
+        // Connect to MySQL DB
+        getConnection();
+        // Perform database operations here...
+
+        // Close the connection after operations
+        closeConnection();
     }
 }
