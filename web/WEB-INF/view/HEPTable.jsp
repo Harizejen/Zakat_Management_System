@@ -1,18 +1,18 @@
 <%-- 
-    Document   : HEATable
-    Created on : Dec 18, 2024, 1:18:41 AM
+    Document   : HEPTable
+    Created on : Dec 18, 2024, 3:18:13 AM
     Author     : nasru
 --%>
 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.staff.model.staff"%>
 <%@page import="java.util.List"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Jumlah Staf HEA</title>
+        <title>Jumlah Staf HEP</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="css/adminTable.css">
@@ -21,10 +21,10 @@
     <body>
         <div class="container mt-4">
             <% 
-                List<staff> staffList = (List<staff>) request.getAttribute("HEAstaffList");
+                List<staff> staffList = (List<staff>) request.getAttribute("HEPstaffList");
                 int staffCount = (staffList != null) ? staffList.size() : 0; // Get the size safely
             %>
-            <h5>Jumlah Staf HEA <span class="text-primary"><%= staffCount %> Staf</span></h5>
+            <h5>Jumlah Staf HEP <span class="text-primary"><%= staffCount %> Staf</span></h5>
             <table class="table">
                 <thead>
                     <tr>

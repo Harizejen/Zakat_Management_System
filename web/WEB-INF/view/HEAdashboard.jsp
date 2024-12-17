@@ -63,7 +63,7 @@
                         <h2>1,200</h2>
                         <!-- Center the button -->
                         <div class="d-flex justify-content-center">
-                            <a href="staffTable" class="btn btn-danger" >Lihat ></a>
+                            <a href="HEAListPage" class="btn btn-danger" >Lihat ></a>
                         </div>
                     </div>
                 </div>

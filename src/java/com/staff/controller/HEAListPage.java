@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author nasru
  */
-public class staffTable extends HttpServlet {
+public class HEAListPage extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

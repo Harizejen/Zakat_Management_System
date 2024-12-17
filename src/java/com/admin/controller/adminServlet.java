@@ -67,12 +67,49 @@ public class adminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-         String action = request.getParameter("action");
+        String action = request.getParameter("action");
+        System.out.println("Action received: " + action); // Debugging line
 
-        if ("viewHEAStaff".equals(action)) {
-            // Call the method to retrieve staff data
+        // Initialize counts
+        int heaCount = 0;
+        int hepCount = 0;
+        int uzswCount = 0;
+
+        // Check the action and retrieve data accordingly
+        if ("viewDashboard".equals(action)) {
+            // Retrieve all staff data for the dashboard
             retrieveHEAStaffData(request, response);
+            retrieveHEPStaffData(request, response);
+            retrieveUZSWStaffData(request, response);
+
+            // Get the list of HEA staff members
+            List<staff> heaStaffList = (List<staff>) request.getAttribute("HEAstaffList");
+            heaCount = (heaStaffList != null) ? heaStaffList.size() : 0;
+
+            // Get the list of HEP staff members
+            List<staff> hepStaffList = (List<staff>) request.getAttribute("HEPstaffList");
+            hepCount = (hepStaffList != null) ? hepStaffList.size() : 0;
+
+            // Get the list of UZSW staff members
+            List<staff> uzswStaffList = (List<staff>) request.getAttribute("UZSWstaffList");
+            uzswCount = (uzswStaffList != null) ? uzswStaffList.size() : 0;
+
+            // Set the counts as attributes
+            request.setAttribute("heaCount", heaCount);
+            request.setAttribute("hepCount", hepCount);
+            request.setAttribute("uzswCount", uzswCount);
+
+            // Forward to the dashboard
+            request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
+        } else if ("viewHEAStaff".equals(action)) {
+            retrieveHEAStaffData(request, response);
+            // Forward to HEA staff view (if applicable)
+        } else if ("viewHEPStaff".equals(action)) {
+            retrieveHEPStaffData(request, response);
+            // Forward to HEP staff view (if applicable)
+        } else if ("viewUZSWStaff".equals(action)) {
+            retrieveUZSWStaffData(request, response);
+            // Forward to UZSW staff view (if applicable)
         } else {
             processRequest(request, response);
         }
@@ -130,7 +167,9 @@ public class adminServlet extends HttpServlet {
         if (isValid) {
             HttpSession session = request.getSession();
             session.setAttribute("adminId", admin_id);
+            // Redirect to the dashboard action
             request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
+            //response.sendRedirect("adminServlet?action=viewDashboard");
         } else {
             request.setAttribute("error", "Invalid credentials");
             request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
@@ -139,7 +178,7 @@ public class adminServlet extends HttpServlet {
 
     private void retrieveHEAStaffData(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<staff> staffList = new ArrayList<>();
+        List<staff> HEAstaffList = new ArrayList<>();
         String query = "SELECT staff_id, staff_name, staff_email FROM staff WHERE staff_role = 'HEA' ";
 
         try (Connection connection = dbconn.getConnection();
@@ -151,7 +190,7 @@ public class adminServlet extends HttpServlet {
                 staff.setStaffid(resultSet.getInt("staff_id"));
                 staff.setStaffname(resultSet.getString("staff_name"));
                 staff.setStaffemail(resultSet.getString("staff_email"));
-                staffList.add(staff);
+                HEAstaffList.add(staff);
             }
         } catch (SQLException e) {
             Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
@@ -160,8 +199,62 @@ public class adminServlet extends HttpServlet {
             return;
         }
 
-        request.setAttribute("staffList", staffList);
+        request.setAttribute("HEAstaffList", HEAstaffList);
         request.getRequestDispatcher("/WEB-INF/view/HEATable.jsp").forward(request, response);
+    }
+    
+    private void retrieveHEPStaffData(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<staff> HEPstaffList = new ArrayList<>();
+        String query = "SELECT staff_id, staff_name, staff_email FROM staff WHERE staff_role = 'HEP' ";
+
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+             
+            while (resultSet.next()) {
+                staff staff = new staff();
+                staff.setStaffid(resultSet.getInt("staff_id"));
+                staff.setStaffname(resultSet.getString("staff_name"));
+                staff.setStaffemail(resultSet.getString("staff_email"));
+                HEPstaffList.add(staff);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
+            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
+            return;
+        }
+
+        request.setAttribute("HEPstaffList", HEPstaffList);
+        request.getRequestDispatcher("/WEB-INF/view/HEPTable.jsp").forward(request, response);
+    }
+    
+    private void retrieveUZSWStaffData(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<staff> UZSWstaffList = new ArrayList<>();
+        String query = "SELECT staff_id, staff_name, staff_email FROM staff WHERE staff_role = 'UZSW' ";
+
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+             
+            while (resultSet.next()) {
+                staff staff = new staff();
+                staff.setStaffid(resultSet.getInt("staff_id"));
+                staff.setStaffname(resultSet.getString("staff_name"));
+                staff.setStaffemail(resultSet.getString("staff_email"));
+                UZSWstaffList.add(staff);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
+            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
+            return;
+        }
+
+        request.setAttribute("UZSWstaffList", UZSWstaffList);
+        request.getRequestDispatcher("/WEB-INF/view/UZSWTable.jsp").forward(request, response);
     }
     
     /**
