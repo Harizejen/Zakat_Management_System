@@ -3,28 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/user/controller/UserLoginServlet.java</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/adminLogin.jsp</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UZSWTable.jsp</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/admin/controller/adminServlet.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UserDashboard.jsp</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEPTable.jsp</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/adminDashboard.jsp</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEATable.jsp</file>
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/StaffLoginServlet.java</file>
-=======
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/WEB-INF/view/UserProfile.jsp</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/WEB-INF/view/adminDashboard.jsp</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/admin/controller/adminServlet.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/WEB-INF/view/BorangMaklumat.jsp</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/user/controller/UserServlet.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/WEB-INF/view/UserDashboard.jsp</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/css/form.css</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/user/controller/UserLoginServlet.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/user/model/Student.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/database/dbconn.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/css/dashboard.css</file>
->>>>>>> 5de576a77678347d9189216187391a18cc6867fe
         </group>
     </open-files>
 </project-private>

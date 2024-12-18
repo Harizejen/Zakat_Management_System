@@ -59,11 +59,11 @@ public class UserServlet extends HttpServlet {
 
         if ("profile".equals(action)) {
             // Call the method to retrieve staff data
-            getProfile(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
         }else if("dashboard".equals(action)){
-            getDashboard(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
         }else if("borang".equals(action)){
-            getBorang(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
         }
         else {
             processRequest(request, response);

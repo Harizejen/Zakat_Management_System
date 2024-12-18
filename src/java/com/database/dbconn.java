@@ -38,20 +38,5 @@ public class dbconn {
             System.out.println("Failed to close connection: " + e.getMessage());
         }
     }
-
-    // Example usage
-    public static void main(String[] args) {
-        // Connect to MySQL DB
-        getConnection();
-        // Perform database operations here...
-
-        // Close the connection after operations
-        closeConnection();
-        // Connect to MySQL DB
-        getConnection();
-        // Perform database operations here...
-
-        // Close the connection after operations
-        closeConnection();
-    }
+     
 }
