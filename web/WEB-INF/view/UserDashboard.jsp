@@ -17,14 +17,12 @@
         <link rel="stylesheet" href="css/navbar.css">
         <link rel="stylesheet" href="css/dashboard.css">
     </head>
-    <body> 
+    <body style="background-color: #f9f6f1"> 
          <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-md">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="navbar-toggler-icon"></span>
+                     <i class="bi bi-list" style="color: white;"></i> <!-- Use Bootstrap Icon -->
                 </button>
             </div>
         </nav>
@@ -33,7 +31,7 @@
         <aside class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                 <!-- Profile Section -->
@@ -45,73 +43,74 @@
                 <!-- Menu Items -->
                 <a href="#" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
                 <a href="#" onclick="loadPage('UserProfile.jsp')" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
-                <a href="#" onclick="loadPage('applications.html')" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
-                <a href="#" onclick="loadPage('records.html')" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+                <a href="#" onclick="loadPage('applications.jsp')" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+                <a href="#" onclick="loadPage('records.jsp')" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
                 <!-- Logout Button -->
                 <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
             </div>
         </aside>
         <main class="dashboard-container" id="main-content">
-            <h1 class="text-center">SELAMAT DATANG</h1>
+            <h1 class="text-center mb-4">SELAMAT DATANG</h1>
             
-            <!-- User Information -->
-            <div class="section-card">
-                <h5>Maklumat Pengguna:</h5>
-                <div class="info-row">
-                    <span>NAMA:</span>
-                    <span>NUR AFRINA BINTI MUSTAFA</span>
-                </div>
-                <div class="info-row">
-                    <span>NO. PELAJAR:</span>
-                    <span>2021******</span>
-                </div>
-                <div class="info-row">
-                    <span>NO. KP:</span>
-                    <span>030115-**-****</span>
-                </div>
-            </div>
+            <div class="container">
+  
+            <!-- Left Column with Two Rows -->
+                <div class="left-column">
+                    <!-- Maklumat Pengguna -->
+                    <div class="card">
+                        <h2>Maklumat Pengguna:</h2>
+                        <div class="info-row">
+                             <span class="label">NAMA</span> <span class="value">: NUR AFRINA BINTI MUSTAFA</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">NO. PELAJAR</span> <span class="value">: 2021******</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">NO. KP</span> <span class="value">: 030115-**-****</span>
+                        </div>
+                    </div>
 
-            <!-- Application Status -->
-            <div class="section-card">
-                <h5>Status Permohonan Zakat:</h5>
-                <div class="info-row">
-                    <span>TARIKH MOHON:</span>
-                    <span>15 JANUARI 2025</span>
+                    <!-- Status Permohonan Zakat -->
+                    <div class="card">
+                        <h2>Status Permohonan Zakat:</h2>
+                            <div class="info-row">
+                                <span class="label">TARIKH MOHON</span> <span class="value">: 15 JANUARI 2025</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">STATUS</span> <span class="value">: SEDANG DIPROSES</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">ULASAN</span> <span class="value">: -</span>
+                            </div>
+                    </div>
                 </div>
-                <div class="info-row">
-                    <span>STATUS:</span>
-                    <span>SEDANG DIPROSES</span>
-                </div>
-                <div class="info-row">
-                    <span>ULASAN:</span>
-                    <span>-</span>
-                </div>
-            </div>
 
-            <!-- Current Zakat Offer -->
-            <div class="section-card">
-                <h5>Tawaran Zakat Semasa:</h5>
-                <div class="info-row">
-                    <span>STATUS TAWARAN:</span>
-                    <span>DIBUKA</span>
+                <!-- Right Column -->
+                <div class="card">
+                    <h2>Tawaran Zakat Semasa:</h2>
+                    <div class="info-row">
+                        <span class="label">STATUS TAWARAN</span> <span class="value">: DIBUKA</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">TARIKH BUKA</span> <span class="value">: 01 JANUARI 2025</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">TARIKH TUTUP</span> <span class="value">: 15 FEBRUARI 2025</span>
+                    </div>
+
+                    <div class="button-container">
+                        <a href="#" class="button">MOHON</a>
+                        <a href="#" class="button">SYARAT</a>
+                        <a href="#" class="button">SENARAI SEMAK</a>
+                    </div>
                 </div>
-                <div class="info-row">
-                    <span>TARIKH BUKA:</span>
-                    <span>01 JANUARI 2025</span>
-                </div>
-                <div class="info-row">
-                    <span>TARIKH TUTUP:</span>
-                    <span>15 FEBRUARI 2025</span>
-                </div>
-                <button class="btn-red">MOHON</button>
-                <button class="btn-red">SYARAT</button>
-                <button class="btn-red">SENARAI SEMAK</button>
+
             </div>
         </main>
         
-        <footer class="text-center mt-4 py-3 bg-light">
-            <p>&copy;copyrights<span id="year"></span></p>
+        <footer class="text-center py-3 ">
+            <p class="mb-0 text-white">&copy;copyrights<span id="year"></span></p>
         </footer>
 
         <script>

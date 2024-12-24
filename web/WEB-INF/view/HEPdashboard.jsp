@@ -37,11 +37,11 @@
     <div id="notificationBox">
         <div class="notification-header">
             <span><i class="bi bi-bell me-2"></i> Notifikasi Sistem</span>
-            <small class="text-muted">Jumaat 2:20pm</small>
+            <small class="text-muted" id="currentDayTime"></small>
         </div>
         <div class="notification-body">
             <div class="alert alert-primary m-0 py-2">
-                <small>Terdapat 2 permohonan baru.</small>
+                <small>Terdapat 1 permohonan baru.</small>
             </div>
         </div>
     </div>
