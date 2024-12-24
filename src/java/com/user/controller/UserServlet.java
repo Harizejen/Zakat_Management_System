@@ -4,12 +4,8 @@
  */
 package com.user.controller;
 
-import com.database.dbconn;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author User
  */
-public class UserSignUpServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +34,10 @@ public class UserSignUpServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserSignUpServlet</title>");            
+            out.println("<title>Servlet UserServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UserSignUpServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UserServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +55,46 @@ public class UserSignUpServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         String action = request.getParameter("action");
+
+        if ("profile".equals(action)) {
+            // Call the method to retrieve staff data
+            request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
+        }else if("dashboard".equals(action)){
+            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+        }else if("borang".equals(action)){
+            request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+        }
+        else {
+            processRequest(request, response);
+        }
+    }
+    
+    private void getProfile(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException{
+        
+        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+        request.setAttribute("stud_id", stud_id);
+        request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
+        
+    }
+    
+    private void getDashboard(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException{
+        
+        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+        request.setAttribute("stud_id", stud_id);
+        request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+        
+    }
+    
+    private void getBorang(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException{
+        
+        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+        request.setAttribute("stud_id", stud_id);
+        request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+        
     }
 
     /**
@@ -73,45 +108,7 @@ public class UserSignUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String stud_name = request.getParameter("stud_name");
-        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
-        String stud_email = request.getParameter("stud_email");
-        String stud_password = request.getParameter("stud_password");
-        
-        String query = "INSERT INTO STUDENT (stud_id, stud_name, stud_email, stud_password) VALUES (?,?,?,?)" ;
-        
-        try{
-            Connection conn = dbconn.getConnection();
-            conn.setAutoCommit(false);
-            PreparedStatement pstmt= conn.prepareStatement(query);
-            pstmt.setInt(1,stud_id);
-            pstmt.setString(2,stud_name);
-            pstmt.setString(3, stud_email);
-            pstmt.setString(4,stud_password);
-            
-            int rowsAffected = pstmt.executeUpdate(); //check num of row affected
-            
-            conn.commit();
-            conn.setAutoCommit(true);
-            
-            if(rowsAffected > 0){
-                response.setContentType("text/html");
-                PrintWriter out = response.getWriter();
-                out.println("<script type='text/javascript'>");
-                out.println("alert('Registration successful! Redirecting to login page...');");
-                out.println("window.location.href='user_login.jsp';");
-                out.println("</script>");
-                out.close();
-                request.setAttribute("stud_id",stud_id);
-                request.getRequestDispatcher("/user_login.jsp").forward(request, response);
-                pstmt.close();
-                conn.close();
-            }
-            
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
+        processRequest(request, response);
     }
 
     /**

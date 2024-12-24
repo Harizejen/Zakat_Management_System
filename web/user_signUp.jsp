@@ -30,22 +30,22 @@
                                 </h2>
                             </div>
                         </div>
-                        <form action="/user_signup.do" method="post">
+                        <form action="user_signup.do" method="post">
                             <div class="mb-3">
-                                <label for="studentName" class="form-label">Nama :</label>
-                                <input type="text" id="studentName" name="studentName" class="form-control" required>
+                                <label for="stud_name" class="form-label">Nama :</label>
+                                <input type="text" id="stud_name" name="stud_name" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="studentId" class="form-label">No Pelajar :</label>
-                                <input type="text" id="studentId" name="studentId" class="form-control" required>
+                                <label for="stud_id" class="form-label">No Pelajar :</label>
+                                <input type="text" id="stud_id" name="stud_id" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">E-mel :</label>
-                                <input type="email" id="email" class="form-control" required>
+                                <label for="stud_email" class="form-label">E-mel :</label>
+                                <input type="email" id="stud_email" name="stud_email" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Kata Laluan :</label>
-                                <input type="password" id="password" class="form-control" required>
+                                <label for="stud_password" class="form-label">Kata Laluan :</label>
+                                <input type="password" id="stud_password" name="stud_password" class="form-control" required>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">DAFTAR MASUK</button>
                         </form>
