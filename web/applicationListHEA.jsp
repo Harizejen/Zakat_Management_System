@@ -1,3 +1,8 @@
+<%-- 
+    Document   : applicationListHEA
+    Created on : 14 Dec 2024, 10:00:45 pm
+    Author     : amie
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +18,7 @@
 </head>
 <body>
 
-<!-- Navbar -->
+   <!-- Navigation Bar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
     <div class="container-fluid d-flex align-items-center">
         <!-- Right-aligned Section -->
@@ -28,6 +33,19 @@
         </div>
     </div>
 </nav>
+   <!-- Notification Box -->
+    <div id="notificationBox">
+        <div class="notification-header">
+            <span><i class="bi bi-bell me-2"></i> Notifikasi Sistem</span>
+            <small class="text-muted" id="currentDayTime"></small>
+        </div>
+        <div class="notification-body">
+            <div class="alert alert-primary m-0 py-2">
+                <small>Terdapat 1 permohonan baru.</small>
+            </div>
+        </div>
+    </div>
+
 
 <!-- Main Container -->
 <div class="container">
