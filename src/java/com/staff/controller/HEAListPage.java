@@ -8,11 +8,15 @@ package com.staff.controller;
 import com.application.model.Application;
 import com.database.dbconn;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/HEAListPageServlet")
+//@WebServlet("/HEAListPageServlet")
 public class HEAListPage extends HttpServlet {
 
     /**
@@ -84,9 +88,12 @@ public class HEAListPage extends HttpServlet {
 
                 applications.add(app);
             }
+            //set the counts as attributes
+            request.setAttribute("countApproved", approved);
+            request.setAttribute("countPending", pending);
+            request.setAttribute("countRejected", rejected);
             
-            //request.setAttribute("countApproved", approved);
-            //request.getRequestDispatcher("/WEB-INF/view/HEAdashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/HEAdashboard.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,4 +111,5 @@ public class HEAListPage extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp");
         dispatcher.forward(request, response);
     }
+    
 }
