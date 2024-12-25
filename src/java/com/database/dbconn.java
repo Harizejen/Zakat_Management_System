@@ -2,6 +2,8 @@ package com.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
  *
@@ -37,6 +39,26 @@ public class dbconn {
         } catch (SQLException e) {
             System.out.println("Failed to close connection: " + e.getMessage());
         }
+    }
+    
+    // Method to get count of staff by category
+    public static int getStaffCountByCategory(String category) {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM staff WHERE staff_role = '?'"; // Adjust the table and column names as necessary
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+             
+            pstmt.setString(1, category);
+            ResultSet rs = pstmt.executeQuery();
+            
+            count = rs.getInt(1); // Get the count from the result set
+            
+        } catch (SQLException e) {
+            System.out.println("Error retrieving staff count: " + e.getMessage());
+        }
+
+        return count;
     }
      
 }

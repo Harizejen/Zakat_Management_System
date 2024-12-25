@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="admin_dashboard.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin_dashboard.css">
     <title>Admin Dashboard</title>
 </head>
 <body>
@@ -26,22 +26,18 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="ms-auto">
-                        <a class="btn btn-outline-danger" href="logoutServlet" role="button">Logout</a> <!-- Update logout link -->
+                        <a class="btn btn-primary" href="logoutServlet" role="button">Logout</a> <!-- Update logout link -->
                     </div>
                 </div>
             </div>
         </nav>
 
-         <div class="row mt-4 d-flex align-items-stretch">
+        <div class="row mt-4 d-flex align-items-stretch">
             <div class="col-md-4">
-                <% 
-                    List<staff> staffList = (List<staff>) request.getAttribute("HEAstaffList");
-                    int staffCount = (staffList != null) ? staffList.size() : 0;
-                %>
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Total HEA Staff</h5>
-                        <p class="card-text" id="heaCount"><%= staffCount %></p>
+                        <p class="card-text" id="HEACount"><%= request.getAttribute("heaCount") != null ? request.getAttribute("heaCount") : 0 %></p>
                         <a href="adminServlet?action=viewHEAStaff" class="btn btn-primary">Lihat Staff</a>
                     </div>
                 </div>
@@ -50,7 +46,7 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Total HEP Staff</h5>
-                        <p class="card-text" id="hepCount"><%= request.getAttribute("hepCount") != null ? request.getAttribute("hepCount") : 0 %></p>
+                        <p class="card-text" id="HEPCount"><%= request.getAttribute("hepCount") != null ? request.getAttribute("hepCount") : 0 %></p>
                         <a href="adminServlet?action=viewHEPStaff" class="btn btn-primary">Lihat Staff</a>
                     </div>
                 </div>
@@ -59,7 +55,7 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Total UZSW Staff</h5>
-                        <p class="card-text" id="uzswCount"><%= request.getAttribute("uzswCount") != null ? request.getAttribute("uzswCount") : 0 %></p>
+                        <p class="card-text" id="UZSWCount"><%= request.getAttribute("uzswCount") != null ? request.getAttribute("uzswCount") : 0 %></p>
                         <a href="adminServlet?action=viewUZSWStaff" class="btn btn-primary">Lihat Staff</a>
                     </div>
                 </div>

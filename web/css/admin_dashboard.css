@@ -7,9 +7,126 @@ and open the template in the editor.
     Created on : Dec 17, 2024, 4:02:16 PM
     Author     : nasru
 */
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Light background color */
+    color: #343a40; /* Dark text color */
+}
 
+.btn-primary {
+    background-color: #7b1212;
+    border-color: #7b1212;
+}
+
+.btn-primary:hover {
+    background-color: #5a0e0e;
+}
+
+.btn{
+    color: white;
+}
+
+.btn:hover{
+    color: grey;
+}
+
+.btn-log {
+    color: white;
+    background-color:#6d1313;
+    border-color: transparent;
+    box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    padding-left: 15px; 
+    padding-right: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+  
+.btn-log:hover {
+  color: black;
+  background-color: white;
+  border-color: #6d1313;
+}
+
+.btn-check:focus + .btn-log, .btn-log:focus {
+  background-color: #f57576;
+  border-color: #fd0a54;
+  box-shadow: 0 0 0 0.25rem rgba(220, 98, 188, 0.5);
+}
+.btn-check:checked + .btn-log, .btn-check:active + .btn-log, .btn-log:active, .btn-log.active, .show > .btn-log.dropdown-toggle {
+  background-color: #c74066;
+  border-color: #8f4d65;
+}
+.btn-check:checked + .btn-log:focus, .btn-check:active + .btn-log:focus, .btn-log:active:focus, .btn-log.active:focus, .show > .btn-log.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(220, 98, 188, 0.5);
+}
+
+/* Navbar styling */
+.navbar {
+    margin-bottom: 20px; /* Space below the navbar */
+}
+
+.navbar-brand {
+    font-size: 1.5rem; /* Larger font size for the brand */
+}
+
+/* Card styling */
+.card {
+    border: 1px solid #dee2e6; /* Light border */
+    border-radius: 0.5rem; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.2s; /* Smooth transition for hover effect */
+}
 .card-body {
-  flex: 1 1 auto;
-  padding: 1rem 1rem;
-  min-height: 500px;
+    flex: 1 1 auto;
+    padding: 1rem 1rem;
+    min-height: 50vh;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Slightly enlarge the card on hover */
+}
+
+/* Card title styling */
+.card-title {
+    font-size: 1.25rem; /* Font size for card titles */
+    font-weight: bold; /* Bold titles */
+}
+
+/* Card text styling */
+.card-text {
+    font-size: 2rem; /* Larger font size for counts */
+    color: #007bff; /* Bootstrap primary color */
+}
+
+/* Button styling */
+.btn {
+    margin-top: 10px; /* Space above buttons */
+}
+
+/* Footer styling */
+footer {
+    background-color: #343a40; /* Dark footer background */
+    color: white; /* White text color */
+    padding: 10px 0; /* Padding for footer */
+    position: relative; /* Positioning for footer */
+    bottom: 0; /* Stick to the bottom */
+    width: 100%; /* Full width */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px; /* Space between cards on smaller screens */
+    }
+}
+
+.container-fluid {
+
+}
+
+.bg-light {
+
 }
