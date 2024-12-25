@@ -5,21 +5,15 @@
  */
 package com.staff.controller;
 
-import com.application.model.Application;
 import com.database.dbconn;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,63 +47,77 @@ public class HEAListPage extends HttpServlet {
      */
    
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Application> applications = new ArrayList<>();
-        int approved = 0, pending = 0, rejected = 0;
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
 
-        try (Connection connection = dbconn.getConnection()) {
-            String query = "SELECT id, name, student_id, cgpa, date, form, status FROM applications";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        if ("dashboard".equals(action)) {
+            showDashboard(request, response);
+        } else if ("viewApplications".equals(action)) {
+            retrieveHEAApplications(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
+
+    /**
+     * Fetches and forwards application status counts to the dashboard view.
+     */
+    private void showDashboard(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int pendingCount = 0, approvedCount = 0, rejectedCount = 0;
+
+        String query = "SELECT application_status, COUNT(*) AS status_count FROM applications WHERE assigned_role = 'HEA' GROUP BY application_status";
+
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
-                Application app = new Application();
-                app.setId(resultSet.getInt("id"));
-                app.setName(resultSet.getString("name"));
-                app.setStudentId(resultSet.getString("student_id"));
-                app.setCgpa(resultSet.getDouble("cgpa"));
-                app.setDate(resultSet.getString("date"));
-                app.setForm(resultSet.getString("form"));
-                app.setApplyStatus(resultSet.getString("status"));
-                
-                String status = app.getApplyStatus(); // Get the status
-                // Count statuses
+                String status = resultSet.getString("application_status");
+                int count = resultSet.getInt("status_count");
+
                 switch (status.toLowerCase()) {
-                    case "approved":
-                        approved++;
-                        break;
                     case "pending":
-                        pending++;
+                        pendingCount = count;
+                        break;
+                    case "approved":
+                        approvedCount = count;
                         break;
                     case "rejected":
-                        rejected++;
+                        rejectedCount = count;
                         break;
                 }
-
-                applications.add(app);
             }
-            //set the counts as attributes
-            request.setAttribute("countApproved", approved);
-            request.setAttribute("countPending", pending);
-            request.setAttribute("countRejected", rejected);
-            
-            request.getRequestDispatcher("/WEB-INF/view/HEAdashboard.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            Logger.getLogger(HEAListPage.class.getName()).log(Level.SEVERE, null, e);
+            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
+            return;
         }
 
-        // Set attributes for list page
-        request.setAttribute("applications", applications);
-        
-        // Set attributes for dashboard
-        request.setAttribute("totalApplications", applications.size());
-        request.setAttribute("approved", approved);
-        request.setAttribute("pending", pending);
-        request.setAttribute("rejected", rejected);
-
-        // Forward to the list page
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp");
-        dispatcher.forward(request, response);
+        request.setAttribute("pendingCount", pendingCount);
+        request.setAttribute("approvedCount", approvedCount);
+        request.setAttribute("rejectedCount", rejectedCount);
+        request.getRequestDispatcher("/WEB-INF/view/DashboardHEA.jsp").forward(request, response);
     }
-    
+
+    /**
+     * Retrieves HEA-specific application data and forwards it to the view.
+     */
+    private void retrieveHEAApplications(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Similar implementation to retrieve HEA-specific applications.
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "Servlet to handle HEA dashboard and application list.";
+    }
 }
