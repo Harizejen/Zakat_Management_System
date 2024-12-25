@@ -119,17 +119,6 @@
         <condition property="do.display.browser.debug">
             <and>
                 <isset property="do.display.browser"/>
-                <not>
-                    <isset property="do.debug.client"/>
-                </not>
-                <isset property="browser.context"/>
-            </and>
-        </condition>
-        <available file="${conf.dir}/MANIFEST.MF" property="has.custom.manifest"/>
-        <available file="${persistence.xml.dir}/persistence.xml" property="has.persistence.xml"/>
-        <condition property="do.war.package.with.custom.manifest">
-            <isset property="has.custom.manifest"/>
-        </condition>
         <condition property="do.war.package.without.custom.manifest">
             <not>
                 <isset property="has.custom.manifest"/>
