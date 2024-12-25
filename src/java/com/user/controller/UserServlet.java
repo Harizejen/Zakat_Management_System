@@ -58,14 +58,17 @@ public class UserServlet extends HttpServlet {
          String action = request.getParameter("action");
 
         if ("profile".equals(action)) {
-            // Call the method to retrieve staff data
             request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
-        }else if("dashboard".equals(action)){
+        } else if ("dashboard".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
-        }else if("borang".equals(action)){
+        } else if ("borang".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
-        }
-        else {
+        } else if ("permohonan".equals(action)) {
+            request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
+        } else if ("records".equals(action)) {
+            // Handle the records action, e.g., forward to records.jsp
+            request.getRequestDispatcher("/WEB-INF/view/records.jsp").forward(request, response);
+        } else {
             processRequest(request, response);
         }
     }

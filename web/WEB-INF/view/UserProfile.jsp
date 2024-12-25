@@ -18,27 +18,32 @@
         <nav class="navbar navbar-expand-md">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
-                     <i class="bi bi-list" style="color: white;"></i> <!-- Bootstrap Icon -->
+                     <i class="bi bi-list" style="color: white;"></i> <!-- Use Bootstrap Icon -->
                 </button>
             </div>
         </nav>
         
-        <!-- Sidebar Menu -->
+        <!-- Sidebar (Offcanvas) -->
         <aside class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <div class="text-center mb-3">
-                    <img src="https://via.placeholder.com/80" class="rounded-circle" alt="Profile Picture">
-                    <p class="fw-bold mt-2">NUR AFRINA BINTI MUSTAFA</p>
+                <!-- Profile Section -->
+                <div class="profile-section">
+                    <img src="https://via.placeholder.com/80" alt="Profile Picture">
+                    <p class="profile-name">NUR AFRINA BINTI MUSTAFA</p>
                 </div>
-                <a href="user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> Anjung</a>
-                <a href="user.do?action=profile" class="menu-item active"><i class="bi bi-person"></i> Profil</a>
-                <a href="#" class="menu-item"><i class="bi bi-file-earmark"></i> Permohonan</a>
-                <a href="#" class="menu-item"><i class="bi bi-clipboard"></i> Rekod</a>
-                <a href="#" class="menu-item text-danger"><i class="bi bi-box-arrow-right"></i> Log Keluar</a>
+
+                <!-- Menu Items -->
+                <a href="<%= request.getContextPath() %>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+
+                <!-- Logout Button -->
+                <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
             </div>
         </aside>
 
