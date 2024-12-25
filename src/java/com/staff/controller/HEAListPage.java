@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/HEAListPage")
+@WebServlet("/HEAListPageServlet")
 public class HEAListPage extends HttpServlet {
 
     /**
@@ -66,10 +66,11 @@ public class HEAListPage extends HttpServlet {
                 app.setCgpa(resultSet.getDouble("cgpa"));
                 app.setDate(resultSet.getString("date"));
                 app.setForm(resultSet.getString("form"));
-                app.setStatus(resultSet.getString("status"));
-
+                app.setApplyStatus(resultSet.getString("status"));
+                
+                String status = app.getApplyStatus(); // Get the status
                 // Count statuses
-                switch (app.getStatus().toLowerCase()) {
+                switch (status.toLowerCase()) {
                     case "approved":
                         approved++;
                         break;
@@ -83,6 +84,9 @@ public class HEAListPage extends HttpServlet {
 
                 applications.add(app);
             }
+            
+            //request.setAttribute("countApproved", approved);
+            //request.getRequestDispatcher("/WEB-INF/view/HEAdashboard.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,7 +101,7 @@ public class HEAListPage extends HttpServlet {
         request.setAttribute("rejected", rejected);
 
         // Forward to the list page
-        RequestDispatcher dispatcher = request.getRequestDispatcher("ApplicationListHEA.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp");
         dispatcher.forward(request, response);
     }
 }

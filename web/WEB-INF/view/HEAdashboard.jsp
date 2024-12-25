@@ -63,7 +63,7 @@
                         <h2>1,200</h2>
                         <!-- Center the button -->
                         <div class="d-flex justify-content-center">
-                            <a href="HEAListPage" class="btn btn-danger" >Lihat ></a>
+                            <a href="HEAListPageServlet" class="btn btn-danger" >Lihat ></a>
                         </div>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #8A2565">
                         <h5>PEMOHONAN DISAHKAN:</h5>
-                        <h3>700</h3>
+                        <h3><%= request.getAttribute("countApproved") != null ? request.getAttribute("countApproved") : 0 %></h3>
                     </div>
                 </div>
             </div>
