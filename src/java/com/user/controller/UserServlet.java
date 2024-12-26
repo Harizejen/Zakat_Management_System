@@ -68,7 +68,10 @@ public class UserServlet extends HttpServlet {
         } else if ("records".equals(action)) {
             // Handle the records action, e.g., forward to records.jsp
             request.getRequestDispatcher("/WEB-INF/view/records.jsp").forward(request, response);
-        } else {
+        } else if ("records".equals(action)) {
+            request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+        }
+        else {
             processRequest(request, response);
         }
     }

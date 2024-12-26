@@ -16,8 +16,8 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css"> <!-- Corrected path -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/form.css"> <!-- Added leading slash -->
 </head>
 <body>
              <!-- Navbar -->
@@ -43,10 +43,10 @@
             </div>
 
                 <!-- Menu Items -->
-                <a href="user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
-                <a href="user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
-                <a href="#" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
-                <a href="#" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
                 <!-- Logout Button -->
                 <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
