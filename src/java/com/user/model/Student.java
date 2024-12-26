@@ -16,8 +16,23 @@ import java.sql.SQLException;
  * @author User
  */
 public class Student implements Serializable {
+
+    /**
+     * @return the stud_ic
+     */
+    public String getStud_ic() {
+        return stud_ic;
+    }
+
+    /**
+     * @param stud_ic the stud_ic to set
+     */
+    public void setStud_ic(String stud_ic) {
+        this.stud_ic = stud_ic;
+    }
     private int stud_id;
     private String stud_name;
+    private String stud_ic;
     private String stud_email;
     private String stud_password;
     private char stud_state;

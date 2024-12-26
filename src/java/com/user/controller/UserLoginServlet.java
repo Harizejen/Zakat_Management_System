@@ -81,7 +81,6 @@ public class UserLoginServlet extends HttpServlet {
         
         if(st.isValid()){
             request.setAttribute("stud_id",stud_id);
-            //request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
             request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
         }else{
             request.setAttribute("error", "Invalid student ID or password");
