@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.database.dbconn;
 
 /**
  *
@@ -81,7 +82,7 @@ public class UserLoginServlet extends HttpServlet {
         if(st.isValid()){
             request.setAttribute("stud_id",stud_id);
             //request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
-            request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
         }else{
             request.setAttribute("error", "Invalid student ID or password");
             request.getRequestDispatcher("/user_login.jsp").forward(request, response);

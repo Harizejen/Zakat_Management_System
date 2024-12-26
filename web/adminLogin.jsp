@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         
-                        <form action="adminServlet" method="post">
+                        <form action="adminServlet?action=login" method="post">
                             <div class="mb-3">
                                 <label for="adminID" class="form-label">Admin ID :</label>
                                 <input type="text" id="adminId" name="adminId" class="form-control" required>

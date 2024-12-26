@@ -41,10 +41,10 @@
                 </div>
 
                 <!-- Menu Items -->
-                <a href="user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
-                <a href="user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
-                <a href="#" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
-                <a href="#" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+                <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
                 <!-- Logout Button -->
                 <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>

@@ -64,56 +64,26 @@ public class adminServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-        System.out.println("Action received: " + action); // Debugging line
+   @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String action = request.getParameter("action");
 
-        // Initialize counts
-        int heaCount = 0;
-        int hepCount = 0;
-        int uzswCount = 0;
-
-        // Check the action and retrieve data accordingly
-        if ("viewDashboard".equals(action)) {
-            // Retrieve all staff data for the dashboard
-            retrieveHEAStaffData(request, response);
-            retrieveHEPStaffData(request, response);
-            retrieveUZSWStaffData(request, response);
-
-            // Get the list of HEA staff members
-            List<staff> heaStaffList = (List<staff>) request.getAttribute("HEAstaffList");
-            heaCount = (heaStaffList != null) ? heaStaffList.size() : 0;
-
-            // Get the list of HEP staff members
-            List<staff> hepStaffList = (List<staff>) request.getAttribute("HEPstaffList");
-            hepCount = (hepStaffList != null) ? hepStaffList.size() : 0;
-
-            // Get the list of UZSW staff members
-            List<staff> uzswStaffList = (List<staff>) request.getAttribute("UZSWstaffList");
-            uzswCount = (uzswStaffList != null) ? uzswStaffList.size() : 0;
-
-            // Set the counts as attributes
-            request.setAttribute("heaCount", heaCount);
-            request.setAttribute("hepCount", hepCount);
-            request.setAttribute("uzswCount", uzswCount);
-
-            // Forward to the dashboard
-            request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
-        } else if ("viewHEAStaff".equals(action)) {
-            retrieveHEAStaffData(request, response);
-            // Forward to HEA staff view (if applicable)
-        } else if ("viewHEPStaff".equals(action)) {
-            retrieveHEPStaffData(request, response);
-            // Forward to HEP staff view (if applicable)
-        } else if ("viewUZSWStaff".equals(action)) {
-            retrieveUZSWStaffData(request, response);
-            // Forward to UZSW staff view (if applicable)
-        } else {
-            processRequest(request, response);
-        }
+    // Check the action and retrieve data accordingly
+    if ("viewHEAStaff".equals(action)) {
+        retrieveHEAStaffData(request, response);
+        // Forward to HEA staff view (if applicable)
+    } else if ("viewHEPStaff".equals(action)) {
+        retrieveHEPStaffData(request, response);
+        // Forward to HEP staff view (if applicable)
+    } else if ("viewUZSWStaff".equals(action)) {
+        retrieveUZSWStaffData(request, response);
+        // Forward to UZSW staff view (if applicable)
+    } else {
+        // If no valid action is provided, redirect to the login page or show an error
+        request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
     }
+}
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -127,54 +97,69 @@ public class adminServlet extends HttpServlet {
    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         boolean isValid = false;
+    boolean isValid = false;
 
-        String adminIdParam = request.getParameter("adminId");
-        String admin_password = request.getParameter("admin_password");
+    String adminIdParam = request.getParameter("adminId");
+    String admin_password = request.getParameter("admin_password");
 
-        if (adminIdParam == null || admin_password == null) {
-            request.setAttribute("error", "Admin ID and password are required.");
-            request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
-            return;
-        }
-
-        int admin_id = 0;
-        try {
-            admin_id = Integer.parseInt(adminIdParam);
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid Admin ID format.");
-            request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
-            return;
-        }
-
-        String query = "SELECT * FROM admin WHERE admin_id = ? AND admin_password = ?";
-
-        try (Connection connection = dbconn.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setInt(1, admin_id);
-            preparedStatement.setString(2, admin_password);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            isValid = resultSet.next(); // If a record is found, the admin is valid
-        } catch (SQLException ex) {
-            Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("error", "Database error: " + ex.getMessage());
-            request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
-            return;
-        }
-
-        if (isValid) {
-            HttpSession session = request.getSession();
-            session.setAttribute("adminId", admin_id);
-            // Redirect to the dashboard action
-            request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
-            //response.sendRedirect("adminServlet?action=viewDashboard");
-        } else {
-            request.setAttribute("error", "Invalid credentials");
-            request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
-        }
+    if (adminIdParam == null || admin_password == null) {
+        request.setAttribute("error", "Admin ID and password are required.");
+        request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
+        return;
     }
+
+    int admin_id = 0;
+    try {
+        admin_id = Integer.parseInt(adminIdParam);
+    } catch (NumberFormatException e) {
+        request.setAttribute("error", "Invalid Admin ID format.");
+        request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
+        return;
+    }
+
+    String query = "SELECT * FROM admin WHERE admin_id = ? AND admin_password = ?";
+
+    try (Connection connection = dbconn.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+        preparedStatement.setInt(1, admin_id);
+        preparedStatement.setString(2, admin_password);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        isValid = resultSet.next(); // If a record is found, the admin is valid
+    } catch (SQLException ex) {
+        Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        request.setAttribute("error", "Database error: " + ex.getMessage());
+        request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
+        return;
+    }
+
+    if (isValid) {
+        HttpSession session = request.getSession();
+        session.setAttribute("adminId", admin_id);
+
+        // Retrieve staff counts
+        int heaCount = dbconn.getStaffCountByCategory("HEA");
+        int hepCount = dbconn.getStaffCountByCategory("HEP");
+        int uzswCount = dbconn.getStaffCountByCategory("UZSW");
+
+        // Set the counts as attributes
+        request.setAttribute("heaCount", heaCount);
+        request.setAttribute("hepCount", hepCount);
+        request.setAttribute("uzswCount", uzswCount);
+
+        // Retrieve all staff data for the dashboard
+        retrieveHEAStaffData(request, response);
+        retrieveHEPStaffData(request, response);
+        retrieveUZSWStaffData(request, response);
+
+        // Forward to the dashboard
+        request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
+    } else {
+        request.setAttribute("error", "Invalid credentials");
+        request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
+    }
+}
 
     private void retrieveHEAStaffData(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
