@@ -12,14 +12,40 @@ and open the template in the editor.
     overflow: hidden;
 }
 .navbar {
-    background-color: #2f4f4f;
+    background-color: #013220; /* Dark green */
+    height: fit-content;
 }
 .navbar-toggler {
     border: none;
+    display: block;
 }
 .navbar-toggler-icon {
     color: white;
 }
+
+.navbar-toggler i {
+   font-size: 32px; /* Adjust the size based on viewport width */
+   min-width: 1.5rem
+}
+
+/* Sidebar (Offcanvas) */
+.offcanvas {
+  background-color: #8b0000; /* Dark red */
+  color: white;
+  width: 300px;
+}
+
+.offcanvas-header {
+  border-bottom: 1px solid #495057;
+}
+
+.offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
 .container {
     margin-top: 20px;
 }
@@ -80,39 +106,6 @@ and open the template in the editor.
 }
 .pagination-dots .dot.active {
     background-color: #717171;
-}
-/* Navbar Styles */
-.navbar {
-  background-color: #013220; /* Dark green */
-  height: fit-content;
-}
-
-.navbar-toggler {
-  border: none;
-  display: block;
-}
-
-.navbar-toggler i {
-   font-size: 32px; /* Adjust the size based on viewport width */
-   min-width: 1.5rem
-}
-
-/* Sidebar (Offcanvas) */
-.offcanvas {
-  background-color: #8b0000; /* Dark red */
-  color: white;
-  width: 300px;
-}
-
-.offcanvas-header {
-  border-bottom: 1px solid #495057;
-}
-
-.offcanvas-body {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  padding: 1.5rem;
 }
 
 /* Profile Section */

@@ -100,7 +100,7 @@
                     </div>
 
                     <div class="button-container">
-                        <a href="#" class="button">MOHON</a>
+                        <a href="<%= request.getContextPath() %>/user.do?action=borang" class="button">MOHON</a>
                         <a href="#" class="button">SYARAT</a>
                         <a href="#" class="button">SENARAI SEMAK</a>
                     </div>

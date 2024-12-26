@@ -1,5 +1,109 @@
-body {
-    background-color: #f8f9fa;
+.body {
+    background-color: #f5f5dc;
+    overflow: hidden;
+}
+.container {
+    margin-top: 20px;
+}
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.card-header {
+    background-color: #f5f5dc;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+.card-body {
+    background-color: #fff;
+}
+.form-control {
+    background-color: #f5f5dc;
+}
+.btn-danger {
+    background-color: #8b0000;
+    border: none;
+}
+.btn-danger:hover {
+    background-color: #a52a2a;
+}
+.btn-primary {
+    background-color: #8b0000;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #a52a2a;
+}
+.footer {
+    text-align: right;
+    padding: 10px;
+    font-size: 12px;
+    color: #666;
+}
+
+.pagination-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.pagination-dots .dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+.pagination-dots .dot.active {
+    background-color: #717171;
+}
+
+/* Profile Section */
+.profile-section {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-section img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.profile-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Menu Items */
+.menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item:hover {
+  background-color: #6b0000;
+}
+
+.menu-item i {
+  font-size: 1.5rem;
+  margin-right: 15px;
+}
+
+/* Logout Button */
+.btn-logout {
+  margin-top: auto;
+  width: 100%;
+  text-align: left;
 }
 
 h2 {
@@ -25,3 +129,5 @@ footer {
     text-align: center;
     padding: 10px 0;
 }
+
+
