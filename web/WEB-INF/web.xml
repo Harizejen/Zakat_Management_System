@@ -40,6 +40,10 @@
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>com.user.controller.UserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>borangMaklumatServlet</servlet-name>
+        <servlet-class>com.borang_maklumat.controller.borangMaklumatServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/staff_login.do</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/user.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>borangMaklumatServlet</servlet-name>
+        <url-pattern>/borangMaklumat_kemaskini.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
