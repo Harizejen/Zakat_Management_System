@@ -33,29 +33,42 @@
         </nav>
 
         <div class="row mt-4 d-flex align-items-stretch">
+            
             <div class="col-md-4">
+                <% 
+                List<staff> HEAstaffList = (List<staff>) request.getAttribute("HEAstaffList");
+                int HEAstaffCount = (HEAstaffList != null) ? HEAstaffList.size() : 0; // Get the size safely
+                %>
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Total HEA Staff</h5>
-                        <p class="card-text" id="HEACount"><%= request.getAttribute("heaCount") != null ? request.getAttribute("heaCount") : 0 %></p>
+                        <p class="card-text" id="HEACount"><%= HEAstaffCount %></p>
                         <a href="adminServlet?action=viewHEAStaff" class="btn btn-primary">Lihat Staff</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
+                <% 
+                List<staff> HEPstaffList = (List<staff>) request.getAttribute("HEPstaffList");
+                int HEPstaffCount = (HEPstaffList != null) ? HEPstaffList.size() : 0; // Get the size safely
+                %>
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Total HEP Staff</h5>
-                        <p class="card-text" id="HEPCount"><%= request.getAttribute("hepCount") != null ? request.getAttribute("hepCount") : 0 %></p>
+                        <p class="card-text" id="HEPCount"><%= HEPstaffCount %></p>
                         <a href="adminServlet?action=viewHEPStaff" class="btn btn-primary">Lihat Staff</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
+                <% 
+                List<staff> UZSWstaffList = (List<staff>) request.getAttribute("UZSWstaffList");
+                int UZSWstaffCount = (UZSWstaffList != null) ? UZSWstaffList.size() : 0; // Get the size safely
+                %>
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">Total UZSW Staff</h5>
-                        <p class="card-text" id="UZSWCount"><%= request.getAttribute("uzswCount") != null ? request.getAttribute("uzswCount") : 0 %></p>
+                        <p class="card-text" id="UZSWCount"><%= UZSWstaffCount %></p>
                         <a href="adminServlet?action=viewUZSWStaff" class="btn btn-primary">Lihat Staff</a>
                     </div>
                 </div>

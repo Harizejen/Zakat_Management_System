@@ -1,4 +1,9 @@
+<%@page import="com.user.model.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+    // Retrieve the student data from the session
+    Student st = (Student) request.getSession().getAttribute("student_data"); 
+%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -33,7 +38,7 @@
                 <!-- Profile Section -->
                 <div class="profile-section">
                     <img src="https://via.placeholder.com/80" alt="Profile Picture">
-                    <p class="profile-name">NUR AFRINA BINTI MUSTAFA</p>
+                    <p class="profile-name"><%= st.getStudName() %></p>
                 </div>
 
                 <!-- Menu Items -->
