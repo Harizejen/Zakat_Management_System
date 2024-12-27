@@ -80,6 +80,8 @@ public class UserLoginServlet extends HttpServlet {
         st.setStudPass(stud_password);
         
         if(st.isValid()){
+            Student stl = st.findStudent(stud_id);
+            request.setAttribute("student_data", stl);
             request.setAttribute("stud_id",stud_id);
             request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
         }else{

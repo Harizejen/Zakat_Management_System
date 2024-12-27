@@ -4,7 +4,9 @@
     Author     : Hariz
 --%>
 
+<%@page import="com.user.model.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% Student st = (Student)request.getAttribute("student_data"); %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,7 +39,7 @@
                 <!-- Profile Section -->
                 <div class="profile-section">
                     <img src="https://via.placeholder.com/80" alt="Profile Picture">
-                    <p class="profile-name">NUR AFRINA BINTI MUSTAFA</p>
+                    <p class="profile-name"><%= st.getStudName() %></p>
                 </div>
 
                 <!-- Menu Items -->
@@ -61,13 +63,17 @@
                     <div class="card">
                         <h2>Maklumat Pengguna:</h2>
                         <div class="info-row">
-                             <span class="label">NAMA</span> <span class="value">: NUR AFRINA BINTI MUSTAFA</span>
+                            <span class="label">NAMA</span> <span class="value">: <%= st.getStudName() %></span>
                         </div>
                         <div class="info-row">
-                            <span class="label">NO. PELAJAR</span> <span class="value">: 2021******</span>
+                            <span class="label">NO. PELAJAR</span> <span class="value">: <%= st.getStudID() %></span>
                         </div>
                         <div class="info-row">
-                            <span class="label">NO. KP</span> <span class="value">: 030115-**-****</span>
+                            <% if(st.getStudIC() == " ") { %>
+                                <span class="label">NO. KP</span> <span class="value" style="color: red">: TIADA MAKLUMAT </span>
+                            <% }else { %>
+                                <span class="label">NO. KP</span> <span class="value">: <%= st.getStudIC() %></span>
+                            <% } %>
                         </div>
                     </div>
 

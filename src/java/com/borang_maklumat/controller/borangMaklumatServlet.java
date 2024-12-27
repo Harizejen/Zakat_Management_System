@@ -73,10 +73,11 @@ public class borangMaklumatServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         boolean upStud = false;
         boolean upGuard = false;
-        //Student Information
+
+        // Gather parameters
         String stud_ic = request.getParameter("stud_ic");
         String stud_name = request.getParameter("stud_name").toUpperCase();
         String stud_address = request.getParameter("stud_address");
@@ -89,12 +90,10 @@ public class borangMaklumatServlet extends HttpServlet {
         String stud_course = request.getParameter("stud_course");
         String stud_faculty = request.getParameter("stud_faculty");
         String stud_campus = request.getParameter("stud_campus");
-        
-        //Bank Information
         String stud_bankNum = request.getParameter("stud_bankNum");
         String stud_bankName = request.getParameter("stud_bankName");
-        
-        //Guardian Information
+
+        // Guardian Information
         String father_name = request.getParameter("father_name");
         String father_occupation = request.getParameter("father_occupation");
         double father_income = Double.parseDouble(request.getParameter("father_income"));
@@ -114,155 +113,121 @@ public class borangMaklumatServlet extends HttpServlet {
         String guard_relation = request.getParameter("guard_relation");
         char guard_residence = request.getParameter("guard_residence").charAt(0);
         double other_income = Double.parseDouble(request.getParameter("other_income"));
-        
+
         String updateStudQuery = "UPDATE student SET " +
-                                 "stud_name = ?, " +
-                                 "stud_ic = ?," +
-                                 "stud_state = ?, " +
-                                 "stud_zipcode = ?, " +
-                                 "stud_course = ?, " +
-                                 "stud_faculty = ?, " +
-                                 "stud_campus = ?, " +
-                                 "stud_gender = ?, " +
-                                 "stud_phoneNum = ?, " +
-                                 "stud_bankName = ?, " +
-                                 "stud_bankNum = ?, " +
-                                 "stud_address = ?, " +
-                                 "stud_marriage = ?, " + 
-                                 "WHERE stud_id = ?";
-        
-        try{
-            Connection conn = dbconn.getConnection();
-            conn.setAutoCommit(false);
-            
-            //To update Student
-            PreparedStatement pstmt= conn.prepareStatement(updateStudQuery);
-            pstmt.setString(1, stud_name);
-            pstmt.setString(2,stud_ic);
-            pstmt.setString(3,stud_state);
-            pstmt.setString(4, stud_zipcode);
-            pstmt.setString(5, stud_course);
-            pstmt.setString(6, stud_faculty);
-            pstmt.setString(7,stud_campus);
-            pstmt.setString(8, String.valueOf(stud_gender));
-            pstmt.setString(9,stud_phoneNum);
-            pstmt.setString(10,stud_bankName);
-            pstmt.setString(11,stud_bankNum);
-            pstmt.setString(12,stud_address);
-            pstmt.setString(13,String.valueOf(stud_marriage));
-            pstmt.setInt(14, stud_id);
-            
-            int rowsUpdated = pstmt.executeUpdate();
-            
-            if (rowsUpdated > 0) {
-                upStud = true;
+                                 "stud_name = ?, stud_ic = ?, stud_state = ?, stud_zipcode = ?, " +
+                                 "stud_course = ?, stud_faculty = ?, stud_campus = ?, stud_gender = ?, " +
+                                 "stud_phoneNum = ?, stud_bankName = ?, stud_bankNum = ?, stud_address = ?, " +
+                                 "stud_marriage = ? WHERE stud_id = ?";
+
+        try (Connection conn = dbconn.getConnection()) {
+            conn.setAutoCommit(false); // Start transaction
+
+            // Update Student
+            try (PreparedStatement pstmt = conn.prepareStatement(updateStudQuery)) {
+                pstmt.setString(1, stud_name);
+                pstmt.setString(2, stud_ic);
+                pstmt.setString(3, stud_state);
+                pstmt.setString(4, stud_zipcode);
+                pstmt.setString(5, stud_course);
+                pstmt.setString(6, stud_faculty);
+                pstmt.setString(7, stud_campus);
+                pstmt.setString(8, String.valueOf(stud_gender));
+                pstmt.setString(9, stud_phoneNum);
+                pstmt.setString(10, stud_bankName);
+                pstmt.setString(11, stud_bankNum);
+                pstmt.setString(12, stud_address);
+                pstmt.setString(13, String.valueOf(stud_marriage));
+                pstmt.setInt(14, stud_id);
+
+                upStud = pstmt.executeUpdate() > 0;
             }
-            
-            //To check if there is any data on guard
-            String checkGuardian = "SELECT guard_id FROM guardian " +
-                                   "JOIN student ON guardian.stud_id = student.stud_id " +
-                                   "WHERE student.stud_name = ?";
-            
-            PreparedStatement ps2 = conn.prepareStatement(checkGuardian);
-            ps2.setString(1,stud_name);
-            
-            ResultSet rs = ps2.executeQuery();
-            if(rs.next()){
-                String updateGuardian = "UPDATE guardian SET " +
-                                        "father_name = ?, " +
-                                        "father_occupation = ?, " +
-                                        "father_phoneNum = ?, " +
-                                        "father_address = ?, " +
-                                        "mother_name = ?, " +
-                                        "mother_occupation = ?, " +
-                                        "mother_phoneNum = ?, " +
-                                        "mother_address = ?, " +
-                                        "guard_name = ?, " +
-                                        "guard_relation = ?, " +
-                                        "guard_occupation = ?, " +
-                                        "guard_phoneNum = ?, " +
-                                        "guard_address = ?, " +
-                                        "guard_postcode = ?, " +
-                                        "guard_residence = ?, " +
-                                        "guard_income = ?, " +
-                                        "mother_income = ?, " +
-                                        "father_income = ?, " +
-                                        "other_income = ? " +
-                                        "WHERE guard_id = ? AND stud_id = ?;";
-                
-                PreparedStatement ps3 = conn.prepareStatement(updateGuardian);
-                ps3.setString(1, father_name);
-                ps3.setString(2, father_occupation);
-                ps3.setString(3, father_phoneNum);
-                ps3.setString(4, father_address);
-                ps3.setString(5, mother_name);
-                ps3.setString(6, mother_occupation);
-                ps3.setString(7, mother_phoneNum);
-                ps3.setString(8, mother_address);
-                ps3.setString(9, guard_name);
-                ps3.setString(10, guard_relation);
-                ps3.setString(11, guard_occupation);
-                ps3.setString(12, guard_phoneNum);
-                ps3.setString(13, guard_address);
-                ps3.setString(14, guard_postcode);
-                ps3.setString(15, String.valueOf(guard_residence));
-                ps3.setDouble(16, guard_income);
-                ps3.setDouble(17, mother_income);
-                ps3.setDouble(18, father_income);
-                ps3.setDouble(19, other_income);
-                ps3.setInt(20, rs.getInt("guard_id")); // The condition for updating the correct record
-                ps3.setInt(21, stud_id);
-                
-                int rowsGuardUpdated = ps3.executeUpdate();
-                if (rowsGuardUpdated > 0) {
-                    upGuard = true;
-                }
-            }else{
-                // If no record exists, perform an insertion
-                String insertGuardian = "INSERT INTO guardian (" +
-                                        "stud_id, father_name, father_occupation, father_phoneNum, father_address, " +
-                                        "mother_name, mother_occupation, mother_phoneNum, mother_address, " +
-                                        "guard_name, guard_relation, guard_occupation, guard_phoneNum, guard_address, " +
-                                        "guard_postcode, guard_residence, guard_income, mother_income, father_income, other_income) " +
-                                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-                PreparedStatement ps4 = conn.prepareStatement(insertGuardian);
-                ps4.setInt(1, stud_id); // Use the student ID
-                ps4.setString(2, father_name);
-                ps4.setString(3, father_occupation);
-                ps4.setString(4, father_phoneNum);
-                ps4.setString(5, father_address);
-                ps4.setString(6, mother_name);
-                ps4.setString(7, mother_occupation);
-                ps4.setString(8, mother_phoneNum);
-                ps4.setString(9, mother_address);
-                ps4.setString(10, guard_name);
-                ps4.setString(11, guard_relation);
-                ps4.setString(12, guard_occupation);
-                ps4.setString(13, guard_phoneNum);
-                ps4.setString(14, guard_address);
-                ps4.setString(15, guard_postcode);
-                ps4.setString(16, String.valueOf(guard_residence));
-                ps4.setDouble(17, guard_income);
-                ps4.setDouble(18, mother_income);
-                ps4.setDouble(19, father_income);
-                ps4.setDouble(20, other_income);
+            // Check if guardian exists
+            String checkGuardian = "SELECT guard_id FROM guardian WHERE stud_id = ?";
+            try (PreparedStatement ps2 = conn.prepareStatement(checkGuardian)) {
+                ps2.setInt(1, stud_id);
+                ResultSet rs = ps2.executeQuery();
 
-                int rowsInserted = ps4.executeUpdate();
-                if (rowsInserted > 0) {
-                    upGuard = true;
+                if (rs.next()) {
+                    // Update Guardian
+                    String updateGuardian = "UPDATE guardian SET " +
+                                            "father_name = ?, father_occupation = ?, father_phoneNum = ?, father_address = ?, " +
+                                            "mother_name = ?, mother_occupation = ?, mother_phoneNum = ?, mother_address = ?, " +
+                                            "guard_name = ?, guard_relation = ?, guard_occupation = ?, guard_phoneNum = ?, " +
+                                            "guard_address = ?, guard_postcode = ?, guard_residence = ?, guard_income = ?, " +
+                                            "mother_income = ?, father_income = ?, other_income = ? WHERE guard_id = ?";
+                    try (PreparedStatement ps3 = conn.prepareStatement(updateGuardian)) {
+                        ps3.setString(1, father_name);
+                        ps3.setString(2, father_occupation);
+                        ps3.setString(3, father_phoneNum);
+                        ps3.setString(4, father_address);
+                        ps3.setString(5, mother_name);
+                        ps3.setString(6, mother_occupation);
+                        ps3.setString(7, mother_phoneNum);
+                        ps3.setString(8, mother_address);
+                        ps3.setString(9, guard_name);
+                        ps3.setString(10, guard_relation);
+                        ps3.setString(11, guard_occupation);
+                        ps3.setString(12, guard_phoneNum);
+                        ps3.setString(13, guard_address);
+                        ps3.setString(14, guard_postcode);
+                        ps3.setString(15, String.valueOf(guard_residence));
+                        ps3.setDouble(16, guard_income);
+                        ps3.setDouble(17, mother_income);
+                        ps3.setDouble(18, father_income);
+                        ps3.setDouble(19, other_income);
+                        ps3.setInt(20, rs.getInt("guard_id"));
+
+                        upGuard = ps3.executeUpdate() > 0;
+                    }
+                } else {
+                    // Insert Guardian
+                    String insertGuardian = "INSERT INTO guardian " +
+                                            "(stud_id, father_name, father_occupation, father_phoneNum, father_address, " +
+                                            "mother_name, mother_occupation, mother_phoneNum, mother_address, " +
+                                            "guard_name, guard_relation, guard_occupation, guard_phoneNum, guard_address, " +
+                                            "guard_postcode, guard_residence, guard_income, mother_income, father_income, other_income) " +
+                                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    try (PreparedStatement ps4 = conn.prepareStatement(insertGuardian)) {
+                        ps4.setInt(1, stud_id);
+                        ps4.setString(2, father_name);
+                        ps4.setString(3, father_occupation);
+                        ps4.setString(4, father_phoneNum);
+                        ps4.setString(5, father_address);
+                        ps4.setString(6, mother_name);
+                        ps4.setString(7, mother_occupation);
+                        ps4.setString(8, mother_phoneNum);
+                        ps4.setString(9, mother_address);
+                        ps4.setString(10, guard_name);
+                        ps4.setString(11, guard_relation);
+                        ps4.setString(12, guard_occupation);
+                        ps4.setString(13, guard_phoneNum);
+                        ps4.setString(14, guard_address);
+                        ps4.setString(15, guard_postcode);
+                        ps4.setString(16, String.valueOf(guard_residence));
+                        ps4.setDouble(17, guard_income);
+                        ps4.setDouble(18, mother_income);
+                        ps4.setDouble(19, father_income);
+                        ps4.setDouble(20, other_income);
+
+                        upGuard = ps4.executeUpdate() > 0;
+                    }
                 }
             }
-            
-            if(upStud && upGuard){
-                request.setAttribute("stud_id",stud_id);
+
+            if (upStud && upGuard) {
+                conn.commit(); // Commit transaction
+                request.setAttribute("stud_id", stud_id);
                 request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+            } else {
+                conn.rollback(); // Rollback transaction
             }
-                        
-        }catch(SQLException e){
-             e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log error
         }
     }
+
 
     /**
      * Returns a short description of the servlet.
