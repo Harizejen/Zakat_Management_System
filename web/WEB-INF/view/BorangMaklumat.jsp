@@ -13,6 +13,7 @@
     <title>Borang Pemohonan Zakat Pendidikan Pelajar</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css"> <!-- Corrected path -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/form.css"> <!-- Added leading slash -->
@@ -20,9 +21,9 @@
 <body>
              <!-- Navbar -->
     <nav class="navbar navbar-expand-md">
-        <div class="container-fluid" style="height: 42px">
-            <button class="navbar-toggler justify-content-center" style="height: 42px; width: 42px " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
-                <i class="bi bi-list" style="color: white;">=</i> <!-- Use Bootstrap Icon -->
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+                     <i class="bi bi-list" style="color: white;"></i> <!-- Use Bootstrap Icon -->
             </button>
         </div>
     </nav>
@@ -51,12 +52,12 @@
             </div>
         </aside>
     
-        <div class="container py-5">
+        <div class="container">
             <h2 class="text-center mb-4 fw-bold">BORANG PERMOHONAN AGIHAN ZAKAT PENDIDIKAN PELAJAR</h2>
             <form action="borangMaklumat_kemaskini.do" method="post" id="form-paginated">
                 <!-- Step 1: Section A and B -->
                 <div class="card mb-4 form-step">
-                    <div class="card-header bg-dark text-white">LANGKAH 1: MAKLUMAT PEMOHON & PELAJAR</div>
+                    <div class="card-header bg-dark text text-white">LANGKAH 1: MAKLUMAT PEMOHON & PELAJAR</div>
                     <div class="card-body">
                         <!-- Section A: Maklumat Pengenalan Pemohon -->
                         <h5 class="mb-3">A. MAKLUMAT PENGENALAN PEMOHON</h5>

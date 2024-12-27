@@ -1,9 +1,16 @@
 .body {
     background-color: #f5f5dc;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full height of the viewport */
+    margin: 0;
     overflow: hidden;
 }
 .container {
     margin-top: 20px;
+    flex: 1; /* Allow the container to grow and fill the available space */
+    overflow-y: auto;
+    font-size: 16px; /* Set the desired font size */
 }
 .card {
     border-radius: 10px;
@@ -36,11 +43,14 @@
 }
 .footer {
     text-align: right;
-    padding: 10px;
+    padding: 10px 0;
     font-size: 12px;
     color: #666;
 }
 
+.form-step {
+    min-height: 300px; /* Ensure each step has a minimum height */
+}
 .pagination-dots {
     display: flex;
     justify-content: center;
@@ -108,14 +118,28 @@
 
 h2 {
     color: #333;
+    font-size: clamp(12px, 2vw + 1rem, 16px);
+}
+
+h5 {
+    font-size: clamp(8px, 1vw + 1rem, 12px);
+}
+
+.text{
+    font-size: clamp(12px, 2vw + 1rem, 14px);
 }
 
 .card-header {
     font-weight: bold;
 }
 
+.label {
+    font-size: clamp(8px, 1vw + 1rem, 12px);
+}
+
 .form-label {
     font-weight: 500;
+    font-size: clamp(8px, 1vw + 1rem, 12px);
 }
 
 .btn {
@@ -123,11 +147,5 @@ h2 {
     font-size: 1rem;
 }
 
-footer {
-    background-color: #013220;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-}
 
 
