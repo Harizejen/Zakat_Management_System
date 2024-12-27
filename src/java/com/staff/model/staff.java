@@ -17,9 +17,7 @@ public class staff {
     private String staffname;
     private String staffemail;
     private String staffpassword;
-    private char staffrole;
-
-    
+    private String staffrole;
     
     public int getStaffid() {
         return staffid;
@@ -69,15 +67,15 @@ public class staff {
         this.staffpassword = staffpassword;
     }
 
-    public char getStaffrole() {
+    public String getStaffrole() {
         return staffrole;
     }
 
-    public void setStaffrole(char staffrole) {
+    public void setStaffrole(String staffrole) {
         this.staffrole = staffrole;
     }
 
-    public staff(int staffid, int adminid, int applyid, String staffname, String staffemail, String staffpassword, char staffrole) {
+    public staff(int staffid, int adminid, int applyid, String staffname, String staffemail, String staffpassword, String staffrole) {
         this.staffid = staffid;
         this.adminid = adminid;
         this.applyid = applyid;

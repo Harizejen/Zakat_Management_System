@@ -142,6 +142,10 @@ h5 {
     font-size: clamp(8px, 1vw + 1rem, 12px);
 }
 
+.form-control {
+    
+}
+
 .btn {
     padding: 10px 20px;
     font-size: 1rem;

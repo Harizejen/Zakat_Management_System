@@ -4,8 +4,12 @@
     Author     : nasru
 --%>
 
+<%@page import="com.user.model.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<% 
+    // Retrieve the student data from the session
+    Student st = (Student) request.getSession().getAttribute("student_data"); 
+%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -37,7 +41,7 @@
                 <!-- Profile Section -->
                 <div class="profile-section">
                     <img src="https://via.placeholder.com/80" alt="Profile Picture">
-                    <p class="profile-name">NUR AFRINA BINTI MUSTAFA</p>
+                    <p class="profile-name"><%= st.getStudName() %></p>
                 </div>
 
                 <!-- Menu Items -->

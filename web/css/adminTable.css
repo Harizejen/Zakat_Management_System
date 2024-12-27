@@ -30,3 +30,53 @@ and open the template in the editor.
     padding: 10px 20px;
     font-size: 16px;
 }
+
+.btn-link {
+    color: inherit; /* Use the current text color */
+    text-decoration: none; /* Remove underline */
+}
+
+.btn-link:hover {
+    color: #007bff; /* Change to your desired hover color */
+    background-color: transparent; /* Ensure background remains transparent */
+}
+
+.btn-link i {
+    color: inherit; /* Ensure icon color matches text color */
+}
+
+.btn-link:hover i {
+    color: inherit; /* Ensure icon color remains the same on hover */
+}
+
+.btn-log {
+    color: white;
+    background-color:#6d1313;
+    border-color: transparent;
+    box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    padding-left: 15px; 
+    padding-right: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+  
+.btn-log:hover {
+  color: black;
+  background-color: white;
+  border-color: #6d1313;
+}
+
+.btn-check:focus + .btn-log, .btn-log:focus {
+  background-color: #f57576;
+  border-color: #fd0a54;
+  box-shadow: 0 0 0 0.25rem rgba(220, 98, 188, 0.5);
+}
+.btn-check:checked + .btn-log, .btn-check:active + .btn-log, .btn-log:active, .btn-log.active, .show > .btn-log.dropdown-toggle {
+  background-color: #c74066;
+  border-color: #8f4d65;
+}
+.btn-check:checked + .btn-log:focus, .btn-check:active + .btn-log:focus, .btn-log:active:focus, .btn-log.active:focus, .show > .btn-log.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(220, 98, 188, 0.5);
+}
