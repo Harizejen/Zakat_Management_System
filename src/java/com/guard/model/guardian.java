@@ -13,17 +13,19 @@ public class guardian {
     private String father_name;
     private String father_occupation;
     private String father_phoneNum;
+    private String father_address;
     private double father_income;
     private String mother_name;
     private String mother_occupation;
     private String mother_phoneNum;
+    private String mother_address;
     private double mother_income;
     private String guard_name;
     private String guard_relation;
     private String guard_occupation;
     private String guard_phoneNum;
     private String guard_address;
-    private int guard_postcode;
+    private String guard_postcode;
     private String guard_residence;
     private double guard_income;
     private double other_income;
@@ -42,6 +44,10 @@ public class guardian {
     public String getFather_phoneNum() {
         return father_phoneNum;
     }
+    
+    public String getFather_Address(){
+        return father_address;
+    }
 
     public double getFather_income() {
         return father_income;
@@ -57,6 +63,10 @@ public class guardian {
 
     public String getMother_phoneNum() {
         return mother_phoneNum;
+    }
+    
+    public String getMother_Address(){
+        return mother_address;
     }
 
     public double getMother_income() {
@@ -83,7 +93,7 @@ public class guardian {
         return guard_address;
     }
 
-    public int getGuard_postcode() {
+    public String getGuard_postcode() {
         return guard_postcode;
     }
 
@@ -110,6 +120,10 @@ public class guardian {
     public void setFather_phoneNum(String father_phoneNum) {
         this.father_phoneNum = father_phoneNum;
     }
+    
+    public void setFather_Address(String father_address){
+        this.father_address = father_address;
+    }
 
     public void setFather_income(double father_income) {
         this.father_income = father_income;
@@ -125,6 +139,10 @@ public class guardian {
 
     public void setMother_phoneNum(String mother_phoneNum) {
         this.mother_phoneNum = mother_phoneNum;
+    }
+    
+    public void setMother_Address(String mother_address){
+        this.mother_address = mother_address;
     }
 
     public void setMother_income(double mother_income) {
@@ -151,7 +169,7 @@ public class guardian {
         this.guard_address = guard_address;
     }
 
-    public void setGuard_postcode(int guard_postcode) {
+    public void setGuard_postcode(String guard_postcode) {
         this.guard_postcode = guard_postcode;
     }
 

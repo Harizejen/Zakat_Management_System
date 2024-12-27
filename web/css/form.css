@@ -1,17 +1,145 @@
-body {
-    background-color: #f8f9fa;
+.body {
+    background-color: #f5f5dc;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full height of the viewport */
+    margin: 0;
+    overflow: hidden;
+}
+.container {
+    margin-top: 20px;
+    flex: 1; /* Allow the container to grow and fill the available space */
+    overflow-y: auto;
+    font-size: 16px; /* Set the desired font size */
+}
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.card-header {
+    background-color: #f5f5dc;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+.card-body {
+    background-color: #fff;
+}
+.form-control {
+    background-color: #f5f5dc;
+}
+.btn-danger {
+    background-color: #8b0000;
+    border: none;
+}
+.btn-danger:hover {
+    background-color: #a52a2a;
+}
+.btn-primary {
+    background-color: #8b0000;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #a52a2a;
+}
+.footer {
+    text-align: right;
+    padding: 10px 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.form-step {
+    min-height: 300px; /* Ensure each step has a minimum height */
+}
+.pagination-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.pagination-dots .dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+.pagination-dots .dot.active {
+    background-color: #717171;
+}
+
+/* Profile Section */
+.profile-section {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-section img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.profile-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Menu Items */
+.menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item:hover {
+  background-color: #6b0000;
+}
+
+.menu-item i {
+  font-size: 1.5rem;
+  margin-right: 15px;
+}
+
+/* Logout Button */
+.btn-logout {
+  margin-top: auto;
+  width: 100%;
+  text-align: left;
 }
 
 h2 {
     color: #333;
+    font-size: clamp(12px, 2vw + 1rem, 16px);
+}
+
+h5 {
+    font-size: clamp(8px, 1vw + 1rem, 12px);
+}
+
+.text{
+    font-size: clamp(12px, 2vw + 1rem, 14px);
 }
 
 .card-header {
     font-weight: bold;
 }
 
+.label {
+    font-size: clamp(8px, 1vw + 1rem, 12px);
+}
+
 .form-label {
     font-weight: 500;
+    font-size: clamp(8px, 1vw + 1rem, 12px);
 }
 
 .btn {
@@ -19,9 +147,5 @@ h2 {
     font-size: 1rem;
 }
 
-footer {
-    background-color: #013220;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-}
+
+

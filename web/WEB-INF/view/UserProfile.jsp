@@ -67,24 +67,6 @@
                         <p><strong>Status Perkahwinan:</strong> BUJANG</p>
                         <p><strong>No. Akaun Bank:</strong> 06696945*****78</p>
                         <p><strong>Nama Bank:</strong> BANK SIMPANAN RAKYAT (BSN)</p>
-                        
-                        <h4 class="mt-4 fw-bold">📌 Maklumat Keluarga (Ibu Bapa & Penjaga)</h4>
-                        <p><strong>NAMA BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>PEKERJAAN BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>PENDAPATAN KASAR:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>NO TELEFON BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>ALAMAT BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p><br>
-                        <p><strong>NAMA IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>PEKERJAAN IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>PENDAPATAN KASAR:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>NO TELEFON IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>ALAMAT IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p><br>
-                        <p><strong>NAMA PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>PEKERJAAN PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>NO TELEFON PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>ALAMAT PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        
-                        <a href="user.do?action=borang" class="btn btn-danger mt-3">KEMASKINI</a>
                     </div>
                 </div>
 
@@ -95,6 +77,39 @@
                         <p><strong>Status Permohonan:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
                         <p><strong>Tarikh Temuduga:</strong> TIADA</p>
                         <p><strong>Tarikh Akhir 2025:</strong> 15 FEBRUARI</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="p-4 shadow-sm bg-white rounded">
+                    <h4 class="fw-bold">📌 Maklumat Keluarga (Ibu Bapa & Penjaga)</h4>
+                    <div class="row mt-4">
+                        <!-- Maklumat Bapa -->
+                        <div class="col-md-4">
+                            <p><strong>NAMA BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>PEKERJAAN BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>PENDAPATAN KASAR:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>NO TELEFON BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>ALAMAT BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                        </div>
+                        <!-- Maklumat Ibu -->
+                        <div class="col-md-4">
+                            <p><strong>NAMA IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>PEKERJAAN IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>PENDAPATAN KASAR:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>NO TELEFON IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>ALAMAT IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                        </div>
+                        <!-- Maklumat Penjaga -->
+                        <div class="col-md-4">
+                            <p><strong>NAMA PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>PEKERJAAN PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>NO TELEFON PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>ALAMAT PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a href="user.do?action=borang" class="btn btn-danger mt-3">KEMASKINI</a>
                     </div>
                 </div>
             </div>

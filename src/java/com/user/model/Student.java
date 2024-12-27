@@ -18,12 +18,14 @@ import java.sql.SQLException;
 public class Student implements Serializable {
     private int stud_id;
     private String stud_name;
+    private String stud_ic;
     private String stud_email;
     private String stud_password;
-    private char stud_state;
-    private char stud_course;
-    private char stud_faculty;
-    private char stud_campus;
+    private String stud_state;
+    private String stud_zipcode;
+    private String stud_course;
+    private String stud_faculty;
+    private String stud_campus;
     private char stud_marriage;
     private char stud_gender;
     private String stud_phoneNum;
@@ -34,12 +36,14 @@ public class Student implements Serializable {
     // Constructor
     public Student() {}
     
-    public Student(int stud_id, String stud_name, String stud_email, String stud_password, char stud_state, char stud_course, char stud_faculty, char stud_campus, char stud_marriage, char stud_gender,String stud_phoneNum,String stud_bankNum, String stud_bankName, String stud_address){
+    public Student(int stud_id, String stud_name, String stud_ic, String stud_email, String stud_password, String stud_state, String stud_zipcode, String stud_course, String stud_faculty, String stud_campus, char stud_marriage, char stud_gender,String stud_phoneNum,String stud_bankNum, String stud_bankName, String stud_address){
         this.stud_id = stud_id;
         this.stud_name = stud_name;
+        this.stud_ic = stud_ic;
         this.stud_email = stud_email;
         this.stud_password = stud_password;
         this.stud_state = stud_state;
+        this.stud_zipcode = stud_zipcode;
         this.stud_course = stud_course;
         this.stud_faculty = stud_faculty;
         this.stud_campus = stud_campus;
@@ -59,6 +63,13 @@ public class Student implements Serializable {
     public String getStudName() {
         return stud_name;
     }
+    
+        /**
+     * @return the stud_ic
+     */
+    public String getStudIC() {
+        return stud_ic;
+    }
 
     public String getStudEmail() {
         return stud_email;
@@ -68,19 +79,23 @@ public class Student implements Serializable {
         return stud_password;
     }
 
-    public char getStudState() {
+    public String getStudState() {
         return stud_state;
     }
+    
+    public String getStudZipCode(){
+        return stud_zipcode;
+    }
 
-    public char getStudCourse() {
+    public String getStudCourse() {
         return stud_course;
     }
 
-    public char getStudFaculty() {
+    public String getStudFaculty() {
         return stud_faculty;
     }
 
-    public char getStudCampus() {
+    public String getStudCampus() {
         return stud_campus;
     }
 
@@ -116,6 +131,14 @@ public class Student implements Serializable {
     public void setStudName(String stud_name) {
         this.stud_name = stud_name;
     }
+    
+        /**
+     * @param stud_ic the stud_ic to set
+     */
+    public void setStudIC(String stud_ic) {
+        this.stud_ic = stud_ic;
+    }
+
 
     public void setStudEmail(String stud_email) {
         this.stud_email = stud_email;
@@ -125,19 +148,23 @@ public class Student implements Serializable {
         this.stud_password = stud_password;
     }
 
-    public void setStudState(char stud_state) {
+    public void setStudState(String stud_state) {
         this.stud_state = stud_state;
     }
+    
+    public void setStudZipCode(String stud_zipcode){
+        this.stud_zipcode = stud_zipcode;
+    }
 
-    public void setStudCourse(char stud_course) {
+    public void setStudCourse(String stud_course) {
         this.stud_course = stud_course;
     }
 
-    public void setStudFaculty(char stud_faculty) {
+    public void setStudFaculty(String stud_faculty) {
         this.stud_faculty = stud_faculty;
     }
 
-    public void setStudCampus(char stud_campus) {
+    public void setStudCampus(String stud_campus) {
         this.stud_campus = stud_campus;
     }
 
@@ -193,5 +220,59 @@ public class Student implements Serializable {
         }
         return isValid;
     }
+   
+    public Student findStudent(int stud_id) {
+        Student st = null; // Initialize as null in case no student is found.
+        String query = "SELECT * FROM Student WHERE stud_id = ?";
+        try {
+            Connection conn = dbconn.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, stud_id);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                // Safely retrieve values, allowing for potential nulls
+                String s_name = rs.getString("stud_name");
+                String s_ic = rs.getString("stud_ic") != null ? rs.getString("stud_ic") : ""; // Default to empty string if null
+                String s_email = rs.getString("stud_email");
+                String s_password = rs.getString("stud_password");
+                String s_state = rs.getString("stud_state") != null ? rs.getString("stud_state") : "";
+                String s_zipcode = rs.getString("stud_zipcode") != null ? rs.getString("stud_zipcode") : "";
+                String s_course = rs.getString("stud_course") != null ? rs.getString("stud_course") : "";
+                String s_faculty = rs.getString("stud_faculty") != null ? rs.getString("stud_faculty") : "";
+                String s_campus = rs.getString("stud_campus") != null ? rs.getString("stud_campus") : "";
+                char s_marriage = rs.getString("stud_marriage") != null ? rs.getString("stud_marriage").charAt(0) : 'U'; // Default to 'U' (Unknown) if null
+                char s_gender = rs.getString("stud_gender") != null ? rs.getString("stud_gender").charAt(0) : 'U'; // Default to 'U' (Unknown) if null
+                String s_phoneNum = rs.getString("stud_phoneNum") != null ? rs.getString("stud_phoneNum") : "";
+                String s_bankNum = rs.getString("stud_bankNum") != null ? rs.getString("stud_bankNum") : "";
+                String s_bankName = rs.getString("stud_bankName") != null ? rs.getString("stud_bankName") : "";
+                String s_address = rs.getString("stud_address") != null ? rs.getString("stud_address") : "";
+
+                // Create a new Student object
+                st = new Student();
+                st.setStudID(stud_id);
+                st.setStudName(s_name != null ? s_name : ""); // Default to empty string
+                st.setStudIC(s_ic);
+                st.setStudEmail(s_email);
+                st.setStudPass(s_password);
+                st.setStudState(s_state);
+                st.setStudZipCode(s_zipcode);
+                st.setStudCourse(s_course);
+                st.setStudFaculty(s_faculty);
+                st.setStudCampus(s_campus);
+                st.setStudMarriage(s_marriage);
+                st.setStudGender(s_gender);
+                st.setStudPhoneNum(s_phoneNum);
+                st.setStudBankNum(s_bankNum);
+                st.setStudBankName(s_bankName);
+                st.setStudAddress(s_address);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately
+        }
+        return st; // Return the Student object or null if not found
+    }
+
+
 }
 
