@@ -29,26 +29,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Pie chart setup
-    const ctx = document.getElementById('myPieChart').getContext('2d');
-    const myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Menunggu', 'Disahkan', 'Ditolak'],
-            datasets: [{
-                data: [425, 700, 75],
-                backgroundColor: ['#B74A4C', '#8A2565', '#7B577D'],
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false,
-                }
+const ctx = document.getElementById('myPieChart').getContext('2d');
+const myPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Menunggu', 'Disahkan', 'Ditolak'],  // Status Labels
+        datasets: [{
+            data: [pendingApplications, approvedApplications, rejectedApplications],  // Use the dynamic values
+            backgroundColor: ['#B74A4C', '#8A2565', '#7B577D'],  // Colors for each status
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: true,  // Display the legend
             }
         }
-    });
+    }
+});
+
+
 
     // Function to get the current day in Malay and time
     function updateDayTime() {
