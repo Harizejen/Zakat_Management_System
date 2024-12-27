@@ -45,7 +45,7 @@
                 <th>Disemak</th>
                 <th>Nama</th>
                 <th>No. Pelajar</th>
-                <th>CGPA</th> <!-- Changed from Gaji -->
+                <th>CGPA</th> 
                 <th>Tarikh Mohon</th>
                 <th>Borang</th>
                 <th>Status</th>
@@ -59,7 +59,7 @@
                 <td><input type="checkbox"></td>
                 <td>Aris Aidil Bin Baharuddin</td>
                 <td>2023******</td>
-                <td>3.85</td> <!-- Changed to CGPA -->
+                <td>3.85</td> 
                 <td>01/01/2025</td>
                 <td>
                     <a href="#" class="text-decoration-none">
