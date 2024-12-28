@@ -21,9 +21,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/staffDashboard.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/staffDashboard.css">
 </head>
 <body>
     
@@ -120,7 +117,11 @@
                 <div class="card text-center border-0 shadow-sm">
                     <div class="card-body card-body-lg text-white" style="background-color: #112C55">
                         <h5>JUMLAH PERMOHONAN:</h5>
-                        <h2>${totalApplications != null ? totalApplications : 0}</h2>
+                        <% 
+                        List<Application> totalList = (List<Application>) request.getAttribute("totalList");
+                        int totalCount = (totalList != null) ? totalList.size() : 0; // Get the size safely
+                        %>
+                        <h2><%= totalCount %></h2>
                         <!-- Center the button -->
                         <div class="d-flex justify-content-center">
                             <a href="UZSWListPage" class="btn btn-danger" >Lihat ></a>
@@ -145,9 +146,9 @@
                     <div class="card-body text-white" style="background-color: #B74A4C">
                         <h5>PEMOHONAN MENUNGGU:</h5>
                         <% 
-                List<Application> pendingList = (List<Application>) request.getAttribute("pendingList");
-                int pendingCount = (pendingList != null) ? pendingList.size() : 0; // Get the size safely
-                %>
+                        List<Application> pendingList = (List<Application>) request.getAttribute("pendingList");
+                        int pendingCount = (pendingList != null) ? pendingList.size() : 0; // Get the size safely
+                        %>
                         <h3><%= pendingCount %></h3>
                     </div>
                 </div>
@@ -157,7 +158,11 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #8A2565">
                         <h5>PEMOHONAN DISAHKAN:</h5>
-                        <h3>${request.getAttribute("approvedCount") != null ? approvedCount : 0}</h3>
+                        <% 
+                        List<Application> approvedList = (List<Application>) request.getAttribute("approvedList");
+                        int approvedCount = (approvedList != null) ? approvedList.size() : 0; // Get the size safely
+                        %>
+                        <h3><%= approvedCount %></h3>
                     </div>
                 </div>
             </div>
@@ -166,7 +171,11 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #7B577D">
                         <h5>PEMOHONAN DITOLAK:</h5>
-                        <h3>${request.getAttribute("rejectedCount") != null ? rejectedCount : 0}</h3>
+                        <% 
+                        List<Application> rejectedList = (List<Application>) request.getAttribute("rejectedList");
+                        int rejectedCount = (rejectedList != null) ? rejectedList.size() : 0; // Get the size safely
+                        %>
+                        <h3><%= rejectedCount %></h3>
                     </div>
                 </div>
             </div>
@@ -179,12 +188,12 @@
     <div class="modal-dialog modal-dialog-centered">
          <div class="modal-content" style="background-color: #6E97B2; color: white;">
             <!-- Modal Header -->
+            <form action="saveZakatAmount" method="post">
             <div class="modal-header text-white d-flex justify-content-center border-0" style="background-color: #6E97B2">
                 <h5 class="modal-title fw-bold text-center w-100" id="zakatModalLabel">
-                    Masukkan Nilai Zakat untuk Sesi: 
-                    <span class="d-block fs-6 fw-bold">MAC2025/OGOS2025</span>
+                    <span class="d-block fs-6 fw-bold">SESI MAC2025/OGOS2025</span>
+                    Masukkan Nilai Zakat: 
                 </h5>
-                <button type="button" class="btn-close position-absolute end-0 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <!-- Modal Body -->
@@ -194,11 +203,24 @@
                 </div>
             </div>
 
+            <div class="modal-header text-white d-flex justify-content-center border-0" style="background-color: #6E97B2">
+                <h5 class="modal-title fw-bold text-center w-100" id="zakatModalLabel">
+                    Masukkan Tarikh Zakat: 
+                </h5>
+            </div>
+            
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <input type="date" class="form-control" id="tarikhZakat" required>
+                </div>
+            </div>
+
             <!-- Modal Footer -->
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-light text-danger" data-bs-dismiss="modal">BATAL</button>
-                <button type="button" class="btn btn-danger">TETAPKAN</button>
+                <button type="submit" class="btn btn-danger">TETAPKAN</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -216,7 +238,7 @@
 
             <!-- Modal Body -->
             <div class="modal-body">
-                <form>
+                <form action="deadline_save.do" method="post">
                     <!-- Tarikh Mula -->
                     <div class="mb-3">
                         <label for="tarikhMula" class="form-label">Tarikh Mula</label>
@@ -227,13 +249,12 @@
                         <label for="tarikhAkhir" class="form-label">Tarikh Akhir</label>
                         <input type="date" class="form-control" id="tarikhAkhir" required>
                     </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-light text-danger" data-bs-dismiss="modal">BATAL</button>
+                        <button type="submit" class="btn btn-danger">TETAPKAN</button>
+                    </div>
                 </form>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-light text-danger" data-bs-dismiss="modal">BATAL</button>
-                <button type="button" class="btn btn-danger">TETAPKAN</button>
             </div>
         </div>
     </div>
@@ -262,7 +283,6 @@
     <script src="/Zakat_Management_System/js/staffDashboard.js"></script>
 
 
-    
 </body>
 </html>
 

@@ -141,7 +141,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         request.setAttribute("error", "Invalid credentials.");
         request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
     }
-    int staffid=0;
+    
     if (st.isValid()) {
         
         HttpSession session = request.getSession();
@@ -149,24 +149,28 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         String userRole = (String) session.getAttribute("role");
             
         // Retrieve application counts
+        int totalCount = dbconn.getAppCount();
         int pendingCount = dbconn.getAppCountByStatus("MENUNGGU");
         int approvedCount = dbconn.getAppCountByStatus("DISAHKAN");
         int rejectedCount = dbconn.getAppCountByStatus("DITOLAK");
 
         // Set the counts as attributes
+        request.setAttribute("totalCount", totalCount);
         request.setAttribute("pendingCount", pendingCount);
         request.setAttribute("approvedCount", approvedCount);
         request.setAttribute("rejectedCount", rejectedCount);
 
         // Retrieve all staff data for the dashboard
-        List<Application> pendingList = retrieveAppData();
-        //List<staff> HEPstaffList = retrieveHEPStaffData();
-        //List<staff> UZSWstaffList = retrieveUZSWStaffData();
+        List<Application> totalList = retrieveTotalApp();
+        List<Application> pendingList = retrievePendingApp();
+        List<Application> approvedList = retrieveApprovedApp();
+        List<Application> rejectedList = retrieveRejectedApp();
 
         // Set the staff lists as attributes
+        request.setAttribute("totalList", totalList);
         request.setAttribute("pendingList", pendingList);
-        //request.setAttribute("HEPstaffList", HEPstaffList);
-        //request.setAttribute("UZSWstaffList", UZSWstaffList);
+        request.setAttribute("approvedList", approvedList);
+        request.setAttribute("rejectedList", rejectedList);
 
         // Decide which JSP to forward based on the user role
         if ("UZSW".equals(userRole)) {
@@ -186,7 +190,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     }
 }
 
-private List<Application> retrieveAppData() {
+private List<Application> retrievePendingApp() {
     List<Application> pendingList = new ArrayList<>();
     String query = "SELECT * FROM application WHERE apply_status = 'MENUNGGU' ";
 
@@ -206,6 +210,65 @@ private List<Application> retrieveAppData() {
     return pendingList;
 }    
     
+private List<Application> retrieveApprovedApp() {
+    List<Application> approvedList = new ArrayList<>();
+    String query = "SELECT * FROM application WHERE apply_status = 'DISAHKAN' ";
+
+    try (Connection connection = dbconn.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
+         
+        while (resultSet.next()) {
+            Application app = new Application();
+            app.setApplyID(resultSet.getInt("apply_id"));
+            approvedList.add(app);
+        }
+    } catch (SQLException e) {
+        Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
+    }
+
+    return approvedList;
+} 
+
+private List<Application> retrieveRejectedApp() {
+    List<Application> rejectedList = new ArrayList<>();
+    String query = "SELECT * FROM application WHERE apply_status = 'DITOLAK' ";
+
+    try (Connection connection = dbconn.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
+         
+        while (resultSet.next()) {
+            Application app = new Application();
+            app.setApplyID(resultSet.getInt("apply_id"));
+            rejectedList.add(app);
+        }
+    } catch (SQLException e) {
+        Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
+    }
+
+    return rejectedList;
+} 
+
+private List<Application> retrieveTotalApp() {
+    List<Application> totalList = new ArrayList<>();
+    String query = "SELECT * FROM application";
+
+    try (Connection connection = dbconn.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
+         
+        while (resultSet.next()) {
+            Application app = new Application();
+            app.setApplyID(resultSet.getInt("apply_id"));
+            totalList.add(app);
+        }
+    } catch (SQLException e) {
+        Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
+    }
+
+    return totalList;
+} 
 
     /**
      * Returns a short description of the servlet.
