@@ -59,11 +59,11 @@
                     <div class="mb-3">
                         <label>Adakah anda menerima bantuan makanan?</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="bantuanMakanan" id="bantuanMakananYa" value="YA" required>
+                            <input class="form-check-input" type="radio" name="apply_foodIncentive" id="bantuanMakananYa" value="YA" required>
                             <label class="form-check-label" for="bantuanMakananYa">YA</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="bantuanMakanan" id="bantuanMakananTidak" value="TIDAK" required>
+                            <input class="form-check-input" type="radio" name="apply_foodIncentive" id="bantuanMakananTidak" value="TIDAK" required>
                             <label class="form-check-label" for="bantuanMakananTidak">TIDAK</label>
                         </div>
                     </div>
@@ -71,54 +71,53 @@
                     <div class="mb-3">
                         <label>Menerima bantuan lain (PTPTN, JPA dll)?</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="bantuanLain" id="bantuanLainYa" value="YA" required>
+                            <input class="form-check-input" type="radio" name="apply_otherSupport" id="bantuanLainYa" value="YA" required>
                             <label class="form-check-label" for="bantuanLainYa">YA</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="bantuanLain" id="bantuanLainTidak" value="TIDAK" required>
+                            <input class="form-check-input" type="radio" name="apply_otherSupport" id="bantuanLainTidak" value="TIDAK" required>
                             <label class="form-check-label" for="bantuanLainTidak">TIDAK</label>
                         </div>
                     </div>
 
                     <div class="mb-3" id="bantuanLainDetails" style="display: none;">
                         <label for="namaBantuanLain">Nama Bantuan:</label>
-                        <input type="text" class="form-control" id="namaBantuanLain" name="namaBantuanLain" placeholder="Masukkan nama bantuan">
+                        <input type="text" class="form-control" id="namaBantuanLain" name="apply_otherSupportName" placeholder="Masukkan nama bantuan">
                         <label for="jumlahBantuanLain">Jumlah Bantuan:</label>
-                        <input type="text" class="form-control" id="jumlahBantuanLain" name="jumlahBantuanLain" placeholder="Masukkan jumlah bantuan (RM)">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="semester">Semester Semasa:</label>
-                        <input type="text" class="form-control" id="semester" name="semester" placeholder="Masukkan semester semasa">
+                        <input type="text" class="form-control" id="jumlahBantuanLain" name="apply_otherSupportAmount" placeholder="Masukkan jumlah bantuan (RM)">
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="gpa" class="col-sm-2 col-form-label">GPA:</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="gpa" name="gpa" required>
+                        <label for="semester" class="col-sm-2 col-form-label">Semester Semasa:</label>
+                        <div class="col-sm-2">
+                            <input type="number" class="form-control" id="semester" name="apply_part" placeholder="Contoh: 1" min="1" max="10" required>
                         </div>
-                        <label for="cgpa" class="col-sm-2 col-form-label">CGPA:</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="cgpa" name="cgpa" required>
+                        <label for="gpa" class="col-sm-2 col-form-label">GPA:</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="gpa" name="apply_gpa" placeholder="Contoh: 3.50" required>
+                        </div>
+                        <label for="cgpa" class="col-sm-1 col-form-label">CGPA:</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="cgpa" name="apply_cgpa" placeholder="Contoh: 3.75" required>
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label>Tujuan memohon zakat</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="tujuanZakat" id="yuranPengajian" value="Yuran Pengajian" required>
+                            <input class="form-check-input" type="radio" name="apply_purpose" id="yuranPengajian" value="Yuran Pengajian" required>
                             <label class="form-check-label" for="yuranPengajian">Yuran Pengajian</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="tujuanZakat" id="bantuanSaraHidup" value="Bantuan Sara Hidup" required>
+                            <input class="form-check-input" type="radio" name="apply_purpose" id="bantuanSaraHidup" value="Bantuan Sara Hidup" required>
                             <label class="form-check-label" for="bantuanSaraHidup">Bantuan Sara Hidup</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="tujuanZakat" id="lainLain" value="Lain-Lain" required>
+                            <input class="form-check-input" type="radio" name="apply_purpose" id="lainLain" value="Lain-Lain" required>
                             <label class="form-check-label" for="lainLain">Lain-Lain</label>
                         </div>
-                        <div>
-                            <input type="text" class="form-control mt-2" id="lainLainNyatakan" placeholder="nyatakan, jika memilih lain-lain">   
+                        <div id="lainLainNyatakanContainer" style="display: none;">
+                            <input type="text" class="form-control mt-2" id="lainLainNyatakan" name="lainLainNyatakan" placeholder="nyatakan, jika memilih lain-lain">
                         </div>
                     </div>
                 </div>
@@ -184,15 +183,25 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Elements for form steps
             const steps = document.querySelectorAll('.form-step');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
+            let currentStep = 0;
+
+            // Elements for "bantuan lain" details toggle
             const bantuanLainDetails = document.getElementById('bantuanLainDetails');
             const bantuanLainYa = document.getElementById('bantuanLainYa');
             const bantuanLainTidak = document.getElementById('bantuanLainTidak');
-            let currentStep = 0;
 
+            // Elements for "Lain-Lain" input toggle
+            const lainLainRadio = document.getElementById('lainLain');
+            const lainLainNyatakanContainer = document.getElementById('lainLainNyatakanContainer');
+            const lainLainNyatakanInput = document.getElementById('lainLainNyatakan');
+            const radioButtons = document.querySelectorAll("input[name='apply_purpose']");
+
+            // Update form steps
             function updateFormSteps() {
                 steps.forEach((step, index) => {
                     step.classList.toggle('d-none', index !== currentStep);
@@ -203,6 +212,25 @@
                 submitBtn.classList.toggle('d-none', currentStep !== steps.length - 1);
             }
 
+            // Toggle "bantuan lain" details
+            function toggleBantuanLainDetails() {
+                bantuanLainDetails.style.display = bantuanLainYa.checked ? 'block' : 'none';
+            }
+
+            // Toggle "Lain-Lain" input
+            function toggleLainLainInput() {
+                if (lainLainRadio.checked) {
+                    lainLainNyatakanContainer.style.display = 'block';
+                    lainLainNyatakanInput.required = true;
+                    lainLainNyatakanInput.name = "apply_purpose"; // Use as apply_purpose
+                } else {
+                    lainLainNyatakanContainer.style.display = 'none';
+                    lainLainNyatakanInput.required = false;
+                    lainLainNyatakanInput.name = "lainLainNyatakan"; // Reset name
+                }
+            }
+
+            // Event listeners for navigation buttons
             nextBtn.addEventListener('click', () => {
                 if (currentStep < steps.length - 1) currentStep++;
                 updateFormSteps();
@@ -213,16 +241,19 @@
                 updateFormSteps();
             });
 
-            updateFormSteps();
-
-            function toggleBantuanLainDetails() {
-                bantuanLainDetails.style.display = bantuanLainYa.checked ? 'block' : 'none';
-            }
-
+            // Event listeners for "bantuan lain" toggle
             bantuanLainYa.addEventListener('change', toggleBantuanLainDetails);
             bantuanLainTidak.addEventListener('change', toggleBantuanLainDetails);
 
+            // Event listeners for "Lain-Lain" toggle
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', toggleLainLainInput);
+            });
+
+            // Initialize form
+            updateFormSteps();
             toggleBantuanLainDetails();
+            toggleLainLainInput();
         });
     </script>
 </body>

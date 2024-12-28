@@ -219,7 +219,7 @@ public class borangMaklumatServlet extends HttpServlet {
             if (upStud && upGuard) {
                 conn.commit(); // Commit transaction
                 request.setAttribute("stud_id", stud_id);
-                request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
             } else {
                 conn.rollback(); // Rollback transaction
             }
