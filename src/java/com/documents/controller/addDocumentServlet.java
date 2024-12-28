@@ -1,24 +1,22 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-package com.application.controller;
+package com.documents.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  *
- * @author User
+ * @author nasru
  */
-public class AddApplicationServlet extends HttpServlet {
+public class addDocumentServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +35,10 @@ public class AddApplicationServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddApplicationServlet</title>");            
+            out.println("<title>Servlet addDocumentServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddApplicationServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet addDocumentServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,23 +68,9 @@ public class AddApplicationServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Retrieve form data
-        String bantuanMakanan = request.getParameter("bantuanMakanan");
-        String bantuanLain = request.getParameter("bantuanLain");
-        String namaBantuanLain = request.getParameter("namaBantuanLain");
-        String jumlahBantuanLain = request.getParameter("jumlahBantuanLain");
-        String semester = request.getParameter("semester");
-        String gpa = request.getParameter("gpa");
-        String cgpa = request.getParameter("cgpa");
-        String tujuanZakat = request.getParameter("tujuanZakat");
-
-        // Process the data (e.g., save to database)
-        // Example: Application application = new Application(bantuanMakanan, bantuanLain, ...);
-        // applicationService.save(application);
-
-        // Redirect or forward to a success page
-        response.sendRedirect("success.jsp");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**
