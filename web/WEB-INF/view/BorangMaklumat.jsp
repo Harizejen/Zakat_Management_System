@@ -273,8 +273,8 @@
                                     <label class="form-check-label" for="warganegara">Warganegara</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="guard_residence" id="bukan warganegara" value="N">
-                                    <label class="form-check-label" for="bukan warganegara">Bukan Warganegara</label>
+                                    <input class="form-check-input" type="radio" name="guard_residence" id="bukan_warganegara" value="N">
+                                    <label class="form-check-label" for="bukan_warganegara">Bukan Warganegara</label>
                                 </div>
                             </div>
                         </div>

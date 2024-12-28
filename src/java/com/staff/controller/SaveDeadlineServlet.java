@@ -12,10 +12,11 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.Date;
 
 @WebServlet(name = "SaveDeadlineServlet", urlPatterns = {"/deadline_save.do"})
 public class SaveDeadlineServlet extends HttpServlet {
@@ -24,56 +25,59 @@ public class SaveDeadlineServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        Integer staffid = (Integer) session.getAttribute("staffid");
 
-        try (PrintWriter out = response.getWriter()) {
-            String startDateStr = request.getParameter("start_date");
-            String endDateStr = request.getParameter("end_date");
-
-            // Parse dates
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date startDate = sdf.parse(startDateStr);
-            Date endDate = sdf.parse(endDateStr);
-            Date currentDate = new Date();
-
-            // Determine status
-            String status = (currentDate.after(startDate) && currentDate.before(endDate)) || currentDate.equals(startDate) ? "Dibuka" : "Ditutup";
-
-            // Get staff ID from session
-            HttpSession session = request.getSession();
-            Integer staffId = (Integer) session.getAttribute("staffId");
-
-            if (staffId == null) {
-                out.println("<script>alert('Staff ID is missing. Please log in.'); window.location.href='staff_login.jsp';</script>");
-                return;
-            }
-
-            // Save deadline
-            try {
-                saveDeadlineToDatabase(staffId, startDate, endDate, status);
-                out.println("<script>alert('Deadline successfully saved!'); window.location.href='staffDashboard.jsp';</script>");
-            } catch (SQLException ex) {
-                Logger.getLogger(SaveDeadlineServlet.class.getName()).log(Level.SEVERE, null, ex);
-                out.println("<script>alert('Database error: " + ex.getMessage() + "'); window.location.href='staffDashboard.jsp';</script>");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.getWriter().println("<script>alert('Error processing request: " + e.getMessage() + "'); window.location.href='staffDashboard.jsp';</script>");
+        if (staffid == null) {
+            request.setAttribute("error", "Session expired. Please log in again.");
+            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+            return;
         }
-    }
 
-    private void saveDeadlineToDatabase(int staffId, Date startDate, Date endDate, String status) throws SQLException {
-        String insertSQL = "INSERT INTO deadlines (staff_id, application_open_date, application_deadline, application_dur_stat) VALUES (?, ?, ?, ?)";
+        String applicationOpenDateStr = request.getParameter("tarikhMula");
+        String applicationDeadlineStr = request.getParameter("tarikhAkhir");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date applicationOpenDate;
+        java.sql.Date applicationDeadline;
+
+        try {
+            java.util.Date openDateUtil = sdf.parse(applicationOpenDateStr);
+            java.util.Date deadlineDateUtil = sdf.parse(applicationDeadlineStr);
+            applicationOpenDate = new java.sql.Date(openDateUtil.getTime());
+            applicationDeadline = new java.sql.Date(deadlineDateUtil.getTime());
+        } catch (ParseException e) {
+            request.setAttribute("error", "Invalid date format. Please use yyyy-MM-dd.");
+            request.getRequestDispatcher("/WEB-INF/view/addStaff.jsp").forward(request, response);
+            return;
+        }
+
+        // Determine application_dur_start
+        String applicationDurStart;
+        java.util.Date currentDateUtil = new java.util.Date();
+        if (currentDateUtil.before(applicationOpenDate) || currentDateUtil.after(applicationDeadline)) {
+            applicationDurStart = "DITUTUP";
+        } else {
+            applicationDurStart = "DIBUKA";
+        }
+
+        String insertQuery = "INSERT INTO deadline (staff_id, application_open_date, application_deadline, application_dur_start) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = dbconn.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
-            preparedStatement.setInt(1, staffId);
-            preparedStatement.setDate(2, new java.sql.Date(startDate.getTime()));
-            preparedStatement.setDate(3, new java.sql.Date(endDate.getTime()));
-            preparedStatement.setString(4, status);
+            preparedStatement.setInt(1, staffid);
+            preparedStatement.setDate(2, applicationOpenDate);
+            preparedStatement.setDate(3, applicationDeadline);
+            preparedStatement.setString(4, applicationDurStart);
 
             preparedStatement.executeUpdate();
+
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
         }
     }
 }

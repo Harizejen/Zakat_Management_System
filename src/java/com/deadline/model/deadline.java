@@ -11,23 +11,23 @@ import java.util.Date;
  * @author nasru
  */
 public class deadline {
-    private String deaadline_id;
+    private int deaadline_id;
     private Date application_deadline;
     private Date application_open_date;
     private Date application_dur_stat;
 
-    public deadline(String deaadline_id, Date application_deadline, Date application_open_date, Date application_dur_stat) {
+    public deadline(int deaadline_id, Date application_deadline, Date application_open_date, Date application_dur_stat) {
         this.deaadline_id = deaadline_id;
         this.application_deadline = application_deadline;
         this.application_open_date = application_open_date;
         this.application_dur_stat = application_dur_stat;
     }
 
-    public String getDeaadline_id() {
+    public int getDeaadline_id() {
         return deaadline_id;
     }
 
-    public void setDeaadline_id(String deaadline_id) {
+    public void setDeaadline_id(int deaadline_id) {
         this.deaadline_id = deaadline_id;
     }
 

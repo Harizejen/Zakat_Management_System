@@ -151,15 +151,6 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         HttpSession session = request.getSession();
         session.setAttribute("adminId", admin_id);
 
-        // Retrieve staff counts
-        int heaCount = dbconn.getStaffCountByCategory("HEA");
-        int hepCount = dbconn.getStaffCountByCategory("HEP");
-        int uzswCount = dbconn.getStaffCountByCategory("UZSW");
-
-        // Set the counts as attributes
-        request.setAttribute("heaCount", heaCount);
-        request.setAttribute("hepCount", hepCount);
-        request.setAttribute("uzswCount", uzswCount);
 
         // Retrieve all staff data for the dashboard
         List<staff> HEAstaffList = retrieveHEAStaffData();

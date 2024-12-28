@@ -46,14 +46,14 @@
                         <td>
                             <!-- Form for deleting staff -->
                             <form action="deleteStaffServlet" method="post" style="display:inline;">
-                                <input type="hidden" name="staffId" value="<%= staff.getStaffid() %>"/> <!-- Hidden input for staffId -->
+                                <input type="hidden" id="staffId" name="staffId" value="<%= staff.getStaffid() %>"/> <!-- Hidden input for staffId -->
                                 <button type="submit" class="btn btn-link" title="Delete">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
                             <!-- Form for updating staff -->
                             <form action="updateStaffServlet" method="post" style="display:inline;">
-                                <input type="hidden" name="staffId" value="<%= staff.getStaffid() %>"/> <!-- Hidden input for staffId -->
+                                <input type="hidden" id="staffId" name="staffId" value="<%= staff.getStaffid() %>"/> <!-- Hidden input for staffId -->
                                 <button type="submit" class="btn btn-link" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>

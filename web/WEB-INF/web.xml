@@ -56,6 +56,15 @@
         <servlet-name>updateStaffServlet</servlet-name>
         <servlet-class>com.staff.controller.updateStaffServlet</servlet-class>
     </servlet>
+    <servlet>
+<<<<<<< HEAD
+        <servlet-name>saveZakatAmount</servlet-name>
+        <servlet-class>com.staff.controller.saveZakatAmount</servlet-class>
+=======
+        <servlet-name>addDocumentServlet</servlet-name>
+        <servlet-class>com.documents.controller.addDocumentServlet</servlet-class>
+>>>>>>> eddcf810c62f4e795ec8cacae381fdf84c7ea50e
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/staff_login.do</url-pattern>
@@ -111,6 +120,15 @@
     <servlet-mapping>
         <servlet-name>updateStaffServlet</servlet-name>
         <url-pattern>/updateStaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+<<<<<<< HEAD
+        <servlet-name>saveZakatAmount</servlet-name>
+        <url-pattern>/saveZakatAmount</url-pattern>
+=======
+        <servlet-name>addDocumentServlet</servlet-name>
+        <url-pattern>/addDocumentServlet</url-pattern>
+>>>>>>> eddcf810c62f4e795ec8cacae381fdf84c7ea50e
     </servlet-mapping>
     <session-config>
         <session-timeout>
