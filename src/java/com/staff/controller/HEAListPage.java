@@ -56,10 +56,17 @@ public class HEAListPage extends HttpServlet {
         } else if ("viewApplications".equals(action)) {
             retrieveHEAApplications(request, response);
         } else {
-            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/HEAdashboard.jsp").forward(request, response);
         }
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

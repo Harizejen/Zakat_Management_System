@@ -3,7 +3,14 @@
     Created on : Dec 15, 2024, 8:02:45 AM
     Author     : User
 --%>
+<%@page import="java.util.List"%>
+<%@page import="com.application.model.Application"%>
+<%@page import="com.staff.model.staff"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+    // Retrieve the staff data from the session
+    staff st = (staff) request.getSession().getAttribute("staff_data"); 
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,23 +24,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="css/staffDashboard.css">
-    <script type="text/javascript">
-    // Passing the dynamic values to JavaScript
-    var pendingApplications = ${pendingApplications} || 0;
-    var approvedApplications = ${approvedApplications} || 0;
-    var rejectedApplications = ${rejectedApplications} || 0;
-</script>
-
 </head>
 <body>
     
     <!-- Sidebar -->
-<!-- Sidebar -->
 <div id="sidebar">
     <!-- Profile Section -->
     <div class="profile-section d-flex flex-column align-items-center justify-content-center mb-4">
         <img src="https://via.placeholder.com/80" class="rounded-circle mb-2" alt="Profile" style="width: 80px; height: 80px;">
-        <h5 class="text-white text-center">NUR NATHASHA BINTI FAIZ</h5>
+        <h5 class="text-white text-center"><%= st.getStaffname() %></h5>
     </div>
 
     <!-- Sidebar Menu -->
@@ -145,7 +144,11 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #B74A4C">
                         <h5>PEMOHONAN MENUNGGU:</h5>
-                        <h3>${pendingApplications != null ? pendingApplications : 0}</h3>
+                        <% 
+                List<Application> pendingList = (List<Application>) request.getAttribute("pendingList");
+                int pendingCount = (pendingList != null) ? pendingList.size() : 0; // Get the size safely
+                %>
+                        <h3><%= pendingCount %></h3>
                     </div>
                 </div>
             </div>
@@ -154,7 +157,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #8A2565">
                         <h5>PEMOHONAN DISAHKAN:</h5>
-                        <h3>${approvedApplications != null ? approvedApplications : 0}</h3>
+                        <h3>${request.getAttribute("approvedCount") != null ? approvedCount : 0}</h3>
                     </div>
                 </div>
             </div>
@@ -163,7 +166,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #7B577D">
                         <h5>PEMOHONAN DITOLAK:</h5>
-                        <h3>${rejectedApplications != null ? rejectedApplications : 0}</h3>
+                        <h3>${request.getAttribute("rejectedCount") != null ? rejectedCount : 0}</h3>
                     </div>
                 </div>
             </div>
