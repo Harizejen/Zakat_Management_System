@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/MY%20PC/OneDrive/Desktop/CSC584/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/HEAListPage.java</file>
+            <file>file:/C:/Users/MY%20PC/OneDrive/Desktop/CSC584/NetBeansProjects/Zakat_Management_System/src/java/com/database/dbconn.java</file>
+            <file>file:/C:/Users/MY%20PC/OneDrive/Desktop/CSC584/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/UZSWListPage.java</file>
+            <file>file:/C:/Users/MY%20PC/OneDrive/Desktop/CSC584/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/ApplicationListHEA.jsp</file>
+            <file>file:/C:/Users/MY%20PC/OneDrive/Desktop/CSC584/NetBeansProjects/Zakat_Management_System/src/java/com/staff/model/staff.java</file>
+            <file>file:/C:/Users/MY%20PC/OneDrive/Desktop/CSC584/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/USZWlist.jsp</file>
+            <file>file:/C:/Users/MY%20PC/OneDrive/Desktop/CSC584/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEATable.jsp</file>
+        </group>
     </open-files>
 </project-private>
