@@ -1,5 +1,12 @@
 package com.staff.model;
 
+import com.database.dbconn;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,9 +24,7 @@ public class staff {
     private String staffname;
     private String staffemail;
     private String staffpassword;
-    private char staffrole;
-
-    
+    private String staffrole;
     
     public int getStaffid() {
         return staffid;
@@ -69,15 +74,15 @@ public class staff {
         this.staffpassword = staffpassword;
     }
 
-    public char getStaffrole() {
+    public String getStaffrole() {
         return staffrole;
     }
 
-    public void setStaffrole(char staffrole) {
+    public void setStaffrole(String staffrole) {
         this.staffrole = staffrole;
     }
 
-    public staff(int staffid, int adminid, int applyid, String staffname, String staffemail, String staffpassword, char staffrole) {
+    public staff(int staffid, int adminid, int applyid, String staffname, String staffemail, String staffpassword, String staffrole) {
         this.staffid = staffid;
         this.adminid = adminid;
         this.applyid = applyid;
@@ -89,6 +94,67 @@ public class staff {
 
     public staff() {
     }
+    
+   public boolean isValid() {
+    boolean isValid = false;
+    // Updated query with correct column names
+    String query = "SELECT * FROM staff WHERE staff_id = ? AND staff_password = ?";
+
+    try (Connection connection = dbconn.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+        preparedStatement.setInt(1, staffid);  // Assuming staffid is passed to the method
+        preparedStatement.setString(2, staffpassword);  // Assuming staffpassword is passed to the method
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        isValid = resultSet.next();  // If a record is found, the staff is valid
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return isValid;
+}
+
+public staff findStaff(int staffid) {
+    staff staff = null; // Initialize as null in case no staff member is found.
+    // Updated query with correct column names
+    String query = "SELECT * FROM staff WHERE staff_id = ?";
+
+    try (Connection conn = dbconn.getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+
+        ps.setInt(1, staffid);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            // Retrieve values safely, allowing for potential nulls
+            int adminid = rs.getInt("admin_id");  // Updated column name
+            int applyid = rs.getInt("apply_id");  // Updated column name
+            String staffname = rs.getString("staff_name") != null ? rs.getString("staff_name") : "";  // Updated column name
+            String staffemail = rs.getString("staff_email") != null ? rs.getString("staff_email") : "";  // Updated column name
+            String staffpassword = rs.getString("staff_password") != null ? rs.getString("staff_password") : "";  // Updated column name
+            String staffrole = rs.getString("staff_role") != null ? rs.getString("staff_role") : "";  // Updated column name
+
+            // Create a new staff object
+            staff = new staff();
+            staff.setStaffid(staffid);
+            staff.setAdminid(adminid);
+            staff.setApplyid(applyid);
+            staff.setStaffname(staffname);
+            staff.setStaffemail(staffemail);
+            staff.setStaffpassword(staffpassword);
+            staff.setStaffrole(staffrole);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace(); // Handle exceptions appropriately
+    }
+
+    return staff; // Return the staff object or null if not found
+}
+
+
+
     
     
 }

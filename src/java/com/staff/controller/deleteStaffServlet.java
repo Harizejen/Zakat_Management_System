@@ -1,12 +1,16 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-package com.user.controller;
+package com.staff.controller;
 
-import com.user.model.Student;
+import com.database.dbconn;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author User
+ * @author nasru
  */
-public class UserLoginServlet extends HttpServlet {
+public class deleteStaffServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +39,10 @@ public class UserLoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserLoginServlet</title>");            
+            out.println("<title>Servlet deleteStaffServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UserLoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet deleteStaffServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,33 +71,35 @@ public class UserLoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
+        // Retrieve staff ID from the request
+        int staffId = Integer.parseInt(request.getParameter("staffId")); // Assuming you have a hidden input for staffId
 
-        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
-        String stud_password = request.getParameter("stud_password");
+        // SQL Delete Query
+        String deleteQuery = "DELETE FROM staff WHERE staff_id = ?";
 
-        Student st = new Student();
-        st.setStudID(stud_id);
-        st.setStudPass(stud_password);
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
-        if (st.isValid()) {
-            Student stl = st.findStudent(stud_id);
+            preparedStatement.setInt(1, staffId);
 
-            // Store the student data in the session
-            request.getSession().setAttribute("student_data", stl);
-
-            // Check if the student's information is complete
-            boolean isComplete = stl.isInformationComplete(); // Implement this method in your Student class
-            request.setAttribute("isInformationComplete", isComplete);
-
-            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
-        } else {
-            request.setAttribute("error", "Invalid student ID or password");
-            request.getRequestDispatcher("/user_login.jsp").forward(request, response);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                // Successfully deleted
+                response.sendRedirect("adminServlet?action=viewHEAStaff"); // Redirect to the appropriate page
+            } else {
+                // Handle failure
+                request.setAttribute("error", "Failed to delete staff.");
+                request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
         }
-}
+    }
 
     /**
      * Returns a short description of the servlet.

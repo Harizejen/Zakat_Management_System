@@ -4,8 +4,12 @@
     Author     : User
 --%>
 
+<%@page import="com.user.model.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<% 
+    // Retrieve the student data from the session
+    Student st = (Student) request.getSession().getAttribute("student_data"); 
+%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,46 +23,46 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css"> <!-- Corrected path -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/form.css"> <!-- Added leading slash -->
 </head>
-<body>
-             <!-- Navbar -->
-    <nav class="navbar navbar-expand-md">
-        <div class="container-fluid" style="height: 42px">
-            <button class="navbar-toggler justify-content-center" style="height: 42px; width: 42px " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
-                <i class="bi bi-list" style="color: white;"></i> <!-- Use Bootstrap Icon -->
-            </button>
-        </div>
-    </nav>
-     
-    <!-- Sidebar (Offcanvas) -->
-    <aside class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
-       <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
-          <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-       </div>
-       <div class="offcanvas-body">
-            <!-- Profile Section -->
-            <div class="profile-section">
-                <img src="https://via.placeholder.com/80" alt="Profile Picture">
-                <p class="profile-name">NUR AFRINA BINTI MUSTAFA</p>
-            </div>
+    <body>
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-md">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+                         <i class="bi bi-list" style="color: white;"></i> <!-- Use Bootstrap Icon -->
+                    </button>
+                </div>
+            </nav>
 
-                <!-- Menu Items -->
-                <a href="<%= request.getContextPath() %>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
-                <a href="<%= request.getContextPath() %>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
-                <a href="<%= request.getContextPath() %>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
-                <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+            <!-- Sidebar (Offcanvas) -->
+            <aside class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
+                    <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <!-- Profile Section -->
+                    <div class="profile-section">
+                        <img src="https://via.placeholder.com/80" alt="Profile Picture">
+                        <p class="profile-name"><%= st.getStudName() %></p>
+                    </div>
 
-                <!-- Logout Button -->
-                <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
-            </div>
-        </aside>
+                    <!-- Menu Items -->
+                    <a href="<%= request.getContextPath() %>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
+                    <a href="<%= request.getContextPath() %>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
+                    <a href="<%= request.getContextPath() %>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+                    <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+
+                    <!-- Logout Button -->
+                    <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
+                </div>
+            </aside>
     
-        <div class="container py-5">
+        <div class="container">
             <h2 class="text-center mb-4 fw-bold">BORANG PERMOHONAN AGIHAN ZAKAT PENDIDIKAN PELAJAR</h2>
             <form action="borangMaklumat_kemaskini.do" method="post" id="form-paginated">
                 <!-- Step 1: Section A and B -->
                 <div class="card mb-4 form-step">
-                    <div class="card-header bg-dark text-white">LANGKAH 1: MAKLUMAT PEMOHON & PELAJAR</div>
+                    <div class="card-header bg-dark text text-white">LANGKAH 1: MAKLUMAT PEMOHON & PELAJAR</div>
                     <div class="card-body">
                         <!-- Section A: Maklumat Pengenalan Pemohon -->
                         <h5 class="mb-3">A. MAKLUMAT PENGENALAN PEMOHON</h5>
@@ -269,8 +273,8 @@
                                     <label class="form-check-label" for="warganegara">Warganegara</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="guard_residence" id="bukan warganegara" value="N">
-                                    <label class="form-check-label" for="bukan warganegara">Bukan Warganegara</label>
+                                    <input class="form-check-input" type="radio" name="guard_residence" id="bukan_warganegara" value="N">
+                                    <label class="form-check-label" for="bukan_warganegara">Bukan Warganegara</label>
                                 </div>
                             </div>
                         </div>

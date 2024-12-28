@@ -12,7 +12,7 @@
 
 .navbar-toggler i {
    font-size: 32px; /* Adjust the size based on viewport width */
-   min-width: 1.5rem
+   min-width: 1.5rem;
 }
 
 /* Sidebar (Offcanvas) */

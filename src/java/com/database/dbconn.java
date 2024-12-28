@@ -61,4 +61,23 @@ public class dbconn {
         return count;
     }
      
+    //Method to get count of application by status
+    public static int getAppCountByStatus(String status) {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM application WHERE apply_status = '?'"; // Adjust the table and column names as necessary
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+             
+            pstmt.setString(1, status);
+            ResultSet rs = pstmt.executeQuery();
+            
+            count = rs.getInt(1); // Get the count from the result set
+            
+        } catch (SQLException e) {
+            System.out.println("Error retrieving application count: " + e.getMessage());
+        }
+
+        return count;
+    }
 }

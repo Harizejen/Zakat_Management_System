@@ -44,6 +44,18 @@
         <servlet-name>borangMaklumatServlet</servlet-name>
         <servlet-class>com.borang_maklumat.controller.borangMaklumatServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>addStaffServlet</servlet-name>
+        <servlet-class>com.staff.controller.addStaffServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteStaffServlet</servlet-name>
+        <servlet-class>com.staff.controller.deleteStaffServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateStaffServlet</servlet-name>
+        <servlet-class>com.staff.controller.updateStaffServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/staff_login.do</url-pattern>
@@ -87,6 +99,18 @@
     <servlet-mapping>
         <servlet-name>borangMaklumatServlet</servlet-name>
         <url-pattern>/borangMaklumat_kemaskini.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addStaffServlet</servlet-name>
+        <url-pattern>/addStaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteStaffServlet</servlet-name>
+        <url-pattern>/deleteStaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateStaffServlet</servlet-name>
+        <url-pattern>/updateStaffServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

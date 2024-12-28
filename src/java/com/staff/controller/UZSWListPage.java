@@ -5,9 +5,19 @@
  */
 package com.staff.controller;
 
+import com.database.dbconn;
+import com.application.model.Application;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author User
  */
+@WebServlet("/UZSWServlet")
 public class UZSWListPage extends HttpServlet {
 
     /**
@@ -53,11 +64,18 @@ public class UZSWListPage extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Forward the request to HEATable.jsp
-        request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
+        String action = request.getParameter("action");
+
+        if ("viewApplications".equals(action)) {
+            listApplications(request, response);
+        } else if ("logout".equals(action)) {
+            logout(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/view/uzswDashboard.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -68,10 +86,84 @@ public class UZSWListPage extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+
+        if ("approveApplication".equals(action)) {
+            approveApplication(request, response);
+        } else {
+            doGet(request, response);
+        }
+    }
+     private void listApplications(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<Application> applications = new ArrayList<>();
+        String query = "SELECT apply_id, stud_id, apply_session, apply_part, apply_cgpa, apply_foodIncentive, apply_otherSupport, apply_otherSupportAmount, apply_purpose, apply_status, apply_date FROM applications WHERE apply_status = 'Pending UZSW'";
+
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Application app = new Application();
+                app.setApplyID(resultSet.getInt("apply_id"));
+                app.setStudID(resultSet.getInt("stud_id"));
+                app.setApplySession(resultSet.getString("apply_session"));
+                app.setApplyPart(resultSet.getInt("apply_part"));
+                app.setApplyCGPA(resultSet.getDouble("apply_cgpa"));
+                app.setApplyFoodIncentive(resultSet.getBoolean("apply_foodIncentive"));
+                app.setApplyOtherSupport(resultSet.getBoolean("apply_otherSupport"));
+                app.setApplyOtherSupAmount(resultSet.getDouble("apply_otherSupportAmount"));
+                app.setApplyPurpose(resultSet.getString("apply_purpose"));
+                app.setApplyStatus(resultSet.getString("apply_status"));
+                app.setApplyDate(resultSet.getDate("apply_date"));
+
+                applications.add(app);
+            }
+
+            request.setAttribute("applications", applications);
+            request.getRequestDispatcher("/WEB-INF/view/uzswDashboard.jsp").forward(request, response);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
+        }
+    }
+     private void approveApplication(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int applyId = Integer.parseInt(request.getParameter("applyId"));
+        String creditDate = request.getParameter("creditDate");
+        double creditAmount = Double.parseDouble(request.getParameter("creditAmount"));
+
+        String updateQuery = "UPDATE applications SET apply_status = 'Approved', credit_date = ?, credit_amount = ? WHERE apply_id = ?";
+
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setString(1, creditDate);
+            preparedStatement.setDouble(2, creditAmount);
+            preparedStatement.setInt(3, applyId);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated > 0) {
+                request.setAttribute("message", "Application approved successfully!");
+            } else {
+                request.setAttribute("error", "Failed to approve application.");
+            }
+
+        } catch (SQLException e) {
+            request.setAttribute("error", "Database error: " + e.getMessage());
+        }
+
+        listApplications(request, response);
+    }
+       private void logout(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getSession().invalidate();
+        response.sendRedirect("staffLogin.jsp");
     }
 
     /**
@@ -81,7 +173,6 @@ public class UZSWListPage extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Servlet to handle UZSW staff dashboard and application approval.";
+    }
 }

@@ -62,7 +62,9 @@
                 </tbody> <!-- Corrected closing tag -->
             </table>
             <div class="text-center">
-                <button class="btn-log"><i class="fas fa-plus"></i> TAMBAH</button>
+                <a href="adminServlet?action=addStaff" class="btn btn-log">
+                    <i class="fas fa-plus"></i> TAMBAH
+                </a>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
