@@ -44,6 +44,7 @@
     </aside>
 
     <div class="container form-steps">
+        <form action="" method="post" enctype="multipart/form-data">
         <h2 class="text-center my-4">PERMOHONAN</h2>
         
         <!-- Step 1 -->
@@ -156,8 +157,9 @@
         <div class="d-flex justify-content-between mb-4">
             <button class="btn btn-secondary" id="prevBtn" type="button">Kembali</button>
             <button class="btn btn-primary" id="nextBtn" type="button">Seterusnya</button>
-            <button class="btn btn-danger d-none" id="submitBtn">HANTAR PERMOHONAN</button>
+            <button class="btn btn-danger d-none" id="submitBtn" type="submit">HANTAR PERMOHONAN</button>
         </div>
+        </form>
     </div>
 
     <footer class="footer">
@@ -171,6 +173,11 @@
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
+            const nyatakanContainer = document.getElementById('nyatakanContainer');
+            const bantuanYa = document.getElementById('bantuanYa');
+            const bantuanTidak = document.getElementById('bantuanTidak');
+            const lainLainContainer = document.getElementById('lainLainContainer');
+            const lainLain = document.getElementById('lainLain');
             let currentStep = 0;
 
             function updateFormSteps() {
@@ -194,6 +201,21 @@
             });
 
             updateFormSteps();
+
+            function toggleNyatakanInput() {
+                nyatakanContainer.classList.toggle('d-none', !bantuanYa.checked);
+            }
+
+            function toggleLainLainInput() {
+                lainLainContainer.classList.toggle('d-none', !lainLain.checked);
+            }
+
+            bantuanYa.addEventListener('change', toggleNyatakanInput);
+            bantuanTidak.addEventListener('change', toggleNyatakanInput);
+            lainLain.addEventListener('change', toggleLainLainInput);
+
+            toggleNyatakanInput();
+            toggleLainLainInput();
         });
     </script>
 </body>
