@@ -273,6 +273,25 @@ public class Student implements Serializable {
         return st; // Return the Student object or null if not found
     }
 
-
+    public boolean isInformationComplete() {
+        return (null != this.stud_name && !this.stud_name.isEmpty()) &&
+                (this.stud_id > 0) && // Assuming stud_id should be a positive integer
+                (this.stud_ic != null && !this.stud_ic.isEmpty()) &&
+                (this.stud_password != null && !this.stud_password.isEmpty()) &&
+                (this.stud_email != null && !this.stud_email.isEmpty()) &&
+                (this.stud_state != null && !this.stud_state.isEmpty()) &&
+                (this.stud_zipcode != null && !this.stud_zipcode.isEmpty()) &&
+                (this.stud_course != null && !this.stud_course.isEmpty()) &&
+                (this.stud_faculty != null && !this.stud_faculty.isEmpty()) &&
+                (this.stud_campus != null && !this.stud_campus.isEmpty()) &&
+                (this.stud_phoneNum != null && !this.stud_phoneNum.isEmpty()) &&
+                (this.stud_bankNum != null && !this.stud_bankNum.isEmpty()) &&
+                (this.stud_bankName != null && !this.stud_bankName.isEmpty()) &&
+                (this.stud_marriage !='\0') && 
+                (this.stud_gender !='\0') && 
+                (this.stud_address != null && !this.stud_address.isEmpty());
+    }
 }
+  
+
 

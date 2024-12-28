@@ -69,7 +69,7 @@ public class UserLoginServlet extends HttpServlet {
      */
    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
 
         int stud_id = Integer.parseInt(request.getParameter("stud_id"));
         String stud_password = request.getParameter("stud_password");
@@ -78,11 +78,15 @@ public class UserLoginServlet extends HttpServlet {
         st.setStudID(stud_id);
         st.setStudPass(stud_password);
 
-        if(st.isValid()){
+        if (st.isValid()) {
             Student stl = st.findStudent(stud_id);
 
             // Store the student data in the session
             request.getSession().setAttribute("student_data", stl);
+
+            // Check if the student's information is complete
+            boolean isComplete = stl.isInformationComplete(); // Implement this method in your Student class
+            request.setAttribute("isInformationComplete", isComplete);
 
             request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
         } else {
