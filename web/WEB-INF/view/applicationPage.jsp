@@ -54,44 +54,48 @@
                 <p><strong>NAMA:</strong> <%= st.getStudName() %></p>
                 <p><strong>NO. PELAJAR:</strong> <%= st.getStudID() %></p>
                 <p><strong>NO. KP:</strong> <%= st.getStudIC() %></p>
-                <div class="mb-3">
-                    <label>Adakah anda menerima bantuan kewangan (PTPTN, JPA dll)?</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="bantuan" id="bantuanYa" value="YA" required>
-                        <label class="form-check-label" for="bantuanYa">YA</label>
+                <form> 
+                    <div class="mb-3">
+                        <label>Adakah anda menerima bantuan kewangan (PTPTN, JPA dll)?</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="bantuan" id="bantuanYa" value="YA" required>
+                            <label class="form-check-label" for="bantuanYa">YA</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="bantuan" id="bantuanTidak" value="TIDAK" required>
+                            <label class="form-check-label" for="bantuanTidak">TIDAK</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="bantuan" id="bantuanTidak" value="TIDAK" required>
-                        <label class="form-check-label" for="bantuanTidak">TIDAK</label>
+                    <!-- Other fields omitted for brevity -->
+                    <div class="mb-3">
+                        <label for="nyatakan">Jika ada, nyatakan.</label>
+                        <input type="text" class="form-control" id="nyatakan">
                     </div>
-                </div>
-                <!-- Other fields omitted for brevity -->
-                <div class="mb-3">
-                    <label for="nyatakan">Jika ada, nyatakan.</label>
-                    <input type="text" class="form-control" id="nyatakan">
-                </div>
-                <div class="mb-3">
-                    <label for="cgpa">Keputusan Terkini CGPA</label>
-                    <input type="text" class="form-control" id="cgpa" required>
-                </div>
-                <div class="mb-3">
-                    <label>Tujuan memohon zakat</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="tujuanZakat" id="yuranPengajian" value="Yuran Pengajian" required>
-                        <label class="form-check-label" for="yuranPengajian">Yuran Pengajian</label>
+                    <div class="mb-3">
+                        <label for="gpa">Keputusan Terkini GPA</label>
+                        <input type="text" class="form-control" id="gpa" required>
+                        <label for="cgpa">Keputusan Terkini CGPA</label>
+                        <input type="text" class="form-control" id="cgpa" required>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="tujuanZakat" id="bantuanSaraHidup" value="Bantuan Sara Hidup" required>
-                        <label class="form-check-label" for="bantuanSaraHidup">Bantuan Sara Hidup</label>
+                    <div class="mb-3">
+                        <label>Tujuan memohon zakat</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tujuanZakat" id="yuranPengajian" value="Yuran Pengajian" required>
+                            <label class="form-check-label" for="yuranPengajian">Yuran Pengajian</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tujuanZakat" id="bantuanSaraHidup" value="Bantuan Sara Hidup" required>
+                            <label class="form-check-label" for="bantuanSaraHidup">Bantuan Sara Hidup</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tujuanZakat" id="lainLain" value="Lain-Lain" required>
+                            <label class="form-check-label" for="lainLain">Lain-Lain</label>
+                        </div>
+                        <div>
+                            <input type="text" class="form-control mt-2" id="lainLainNyatakan" placeholder="nyatakan, jika memilih lain-lain">   
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="tujuanZakat" id="lainLain" value="Lain-Lain" required>
-                        <label class="form-check-label" for="lainLain">Lain-Lain</label>
-                    </div>
-                    <div>
-                        <input type="text" class="form-control mt-2" id="lainLainNyatakan" placeholder="nyatakan, jika memilih lain-lain">   
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -101,41 +105,44 @@
             <div class="card-body">
                 <p>Hanya fail PDF sahaja yang diterima.</p>
                 <p><strong>Dokumen wajib:</strong></p>
-                <table class="invisible-table">
-                    <tr>
-                        <td>1. Salinan Kad Pengenalan Ibu dan Bapa / Penjaga.</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>2. Pengesahan Pendapatan / Slip gaji.</td>
-                        <td><a href="#">slip_gaji_mac.pdf</a></td>
-                        <td><button class="btn btn-danger btn-sm"><i class="fas fa-times"></i> BUANG</button></td>
-                    </tr>
-                    <tr>
-                        <td>3. Salinan Kad Matrik Pelajar.</td>
-                        <td><a href="#">kad_matriks.pdf</a></td>
-                        <td><button class="btn btn-primary btn-sm"><i class="fas fa-upload"></i> MUAT NAIK</button></td>
-                    </tr>
-                </table>
-                <p><strong>Sertakan jika perlu:</strong></p>
-                <table class="invisible-table">
-                    <tr>
-                        <td>1. Sijil Kematian 1.</td>
-                        <td></td>
-                        <td><button class="btn btn-secondary btn -sm">Pilih Fail</button></td>
-                    </tr>
-                    <tr>
-                        <td>2. Sijil Kematian  2.</td>
-                        <td></td>
-                        <td><button class="btn btn-secondary btn-sm">Pilih Fail</button></td>
-                    </tr>
-                    <tr>
-                        <td>3. Sijil Doktor.</td>
-                        <td></td>
-                        <td><button class="btn btn-secondary btn-sm">Pilih Fail</button></td>
-                    </tr>
-                </table>
+                <form>
+                    <table class="invisible-table">
+                        <tr>
+                            <td>1. Salinan Kad Pengenalan Ibu dan Bapa / Penjaga.</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>2. Pengesahan Pendapatan / Slip gaji.</td>
+                            <td><a href="#">slip_gaji_mac.pdf</a></td>
+                            <td><button class="btn btn-danger btn-sm"><i class="fas fa-times"></i> BUANG</button></td>
+                        </tr>
+                        <tr>
+                            <td>3. Salinan Kad Matrik Pelajar.</td>
+                            <td><a href="#">kad_matriks.pdf</a></td>
+                            <td><button class="btn btn-primary btn-sm"><i class="fas fa-upload"></i> MUAT NAIK</button></td>
+                        </tr>
+                    </table>
+                    <p><strong>Sertakan jika perlu:</strong></p>
+                    <table class="invisible-table">
+                        <tr>
+                            <td>1. Sijil Kematian 1.</td>
+                            <td></td>
+                            <td><button class="btn btn-secondary btn -sm">Pilih Fail</button></td>
+                        </tr>
+                        <tr>
+                            <td>2. Sijil Kematian  2.</td>
+                            <td></td>
+                            <td><button class="btn btn-secondary btn-sm">Pilih Fail</button></td>
+                        </tr>
+                        <tr>
+                            <td>3. Sijil Doktor.</td>
+                            <td></td>
+                            <td><button class="btn btn-secondary btn-sm">Pilih Fail</button></td>
+                        </tr>
+                    </table>
+                </form>
+                    
                 <div class="form-check mt-3">
                     <input class="form-check-input" type="checkbox" id="maklumatBenar" required>
                     <label class="form-check-label" for="maklumatBenar">
