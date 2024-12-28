@@ -14,9 +14,11 @@ import java.util.Date;
 public class Application implements Serializable {
     private int apply_id;
     private int stud_id;
+    private int deadline_id;
     private String apply_session;
     private int apply_part;
     private double apply_cgpa;
+    private double apply_gpa;
     private boolean apply_foodIncentive;
     private boolean apply_otherSupport;
     private double apply_otherSupportAmount;
@@ -28,12 +30,14 @@ public class Application implements Serializable {
     public Application() {}
     
     // Normal Constructor
-    public Application(int apply_id,int stud_id,String apply_session,int apply_part, double apply_cgpa, boolean apply_foodIncentive, boolean apply_otherSupport, double apply_otherSupportAmount, String apply_purpose, String apply_status, Date apply_date){
+    public Application(int apply_id,int stud_id,int deadline_id,String apply_session,int apply_part, double apply_cgpa,double apply_gpa,boolean apply_foodIncentive, boolean apply_otherSupport, double apply_otherSupportAmount, String apply_purpose,String apply_status,Date apply_date){
         this.apply_id = apply_id;
         this.stud_id = stud_id;
+        this.deadline_id = deadline_id;
         this.apply_session = apply_session;
         this.apply_part = apply_part;
         this.apply_cgpa = apply_cgpa;
+        this.apply_gpa = apply_gpa;
         this.apply_foodIncentive = apply_foodIncentive;
         this.apply_otherSupport = apply_otherSupport;
         this.apply_purpose = apply_purpose;
@@ -49,6 +53,10 @@ public class Application implements Serializable {
     public int getStudID() {
         return stud_id;
     }
+    
+    public int getDeadlineID(){
+        return deadline_id;
+    }
 
     public String getApplySession() {
         return apply_session;
@@ -60,6 +68,10 @@ public class Application implements Serializable {
 
     public double getApplyCGPA() {
         return apply_cgpa;
+    }
+    
+    public double getApplyGPA(){
+        return apply_gpa;
     }
 
     public boolean getApplyFoodIncentive() {
@@ -94,6 +106,10 @@ public class Application implements Serializable {
     public void setStudID(int stud_id) {
         this.stud_id = stud_id;
     }
+    
+    public void setDeadlineID(int deadline_id){
+        this.deadline_id = deadline_id;
+    }
 
     public void setApplySession(String apply_session) {
         this.apply_session = apply_session;
@@ -105,6 +121,10 @@ public class Application implements Serializable {
 
     public void setApplyCGPA(double apply_cgpa) {
         this.apply_cgpa = apply_cgpa;
+    }
+    
+    public void setApplyGPA(double apply_gpa){
+        this.apply_gpa = apply_gpa;
     }
 
     public void setApplyFoodIncentive(boolean apply_foodIncentive) {
@@ -136,36 +156,5 @@ public class Application implements Serializable {
         // Logic to check application status
     }
 
-    public void setId(int aInt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setName(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setStudentId(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setCgpa(double aDouble) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setDate(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setForm(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setStatus(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Object getStatus() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
 
