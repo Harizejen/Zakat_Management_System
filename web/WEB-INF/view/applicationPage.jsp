@@ -44,6 +44,7 @@
     </aside>
 
     <div class="container form-steps">
+        <form action="" method="post" enctype="multipart/form-data">
         <h2 class="text-center my-4">PERMOHONAN</h2>
         
         <!-- Step 1 -->
@@ -65,8 +66,7 @@
                         <label class="form-check-label" for="bantuanTidak">TIDAK</label>
                     </div>
                 </div>
-                <!-- Other fields omitted for brevity -->
-                <div class="mb-3">
+                <div class="mb-3 d-none" id="nyatakanContainer">
                     <label for="nyatakan">Jika ada, nyatakan.</label>
                     <input type="text" class="form-control" id="nyatakan">
                 </div>
@@ -88,7 +88,7 @@
                         <input class="form-check-input" type="radio" name="tujuanZakat" id="lainLain" value="Lain-Lain" required>
                         <label class="form-check-label" for="lainLain">Lain-Lain</label>
                     </div>
-                    <div>
+                    <div class="d-none" id="lainLainContainer">
                         <input type="text" class="form-control mt-2" id="lainLainNyatakan" placeholder="nyatakan, jika memilih lain-lain">   
                     </div>
                 </div>
@@ -104,36 +104,30 @@
                 <table class="invisible-table">
                     <tr>
                         <td>1. Salinan Kad Pengenalan Ibu dan Bapa / Penjaga.</td>
-                        <td></td>
-                        <td></td>
+                        <td><input type="file" class="form-control" name="dokumen1" accept=".pdf" required></td>
                     </tr>
                     <tr>
                         <td>2. Pengesahan Pendapatan / Slip gaji.</td>
-                        <td><a href="#">slip_gaji_mac.pdf</a></td>
-                        <td><button class="btn btn-danger btn-sm"><i class="fas fa-times"></i> BUANG</button></td>
+                        <td><input type="file" class="form-control" name="dokumen2" accept=".pdf" required></td>
                     </tr>
                     <tr>
                         <td>3. Salinan Kad Matrik Pelajar.</td>
-                        <td><a href="#">kad_matriks.pdf</a></td>
-                        <td><button class="btn btn-primary btn-sm"><i class="fas fa-upload"></i> MUAT NAIK</button></td>
+                        <td><input type="file" class="form-control" name="dokumen3" accept=".pdf" required></td>
                     </tr>
                 </table>
                 <p><strong>Sertakan jika perlu:</strong></p>
                 <table class="invisible-table">
                     <tr>
                         <td>1. Sijil Kematian 1.</td>
-                        <td></td>
-                        <td><button class="btn btn-secondary btn -sm">Pilih Fail</button></td>
+                        <td><input type="file" class="form-control" name="dokumenOpsyenal1" accept=".pdf"></td>
                     </tr>
                     <tr>
-                        <td>2. Sijil Kematian  2.</td>
-                        <td></td>
-                        <td><button class="btn btn-secondary btn-sm">Pilih Fail</button></td>
+                        <td>2. Sijil Kematian 2.</td>
+                        <td><input type="file" class="form-control" name="dokumenOpsyenal2" accept=".pdf"></td>
                     </tr>
                     <tr>
                         <td>3. Sijil Doktor.</td>
-                        <td></td>
-                        <td><button class="btn btn-secondary btn-sm">Pilih Fail</button></td>
+                        <td><input type="file" class="form-control" name="dokumenOpsyenal3" accept=".pdf"></td>
                     </tr>
                 </table>
                 <div class="form-check mt-3">
@@ -149,8 +143,9 @@
         <div class="d-flex justify-content-between mb-4">
             <button class="btn btn-secondary" id="prevBtn" type="button">Kembali</button>
             <button class="btn btn-primary" id="nextBtn" type="button">Seterusnya</button>
-            <button class="btn btn-danger d-none" id="submitBtn">HANTAR PERMOHONAN</button>
+            <button class="btn btn-danger d-none" id="submitBtn" type="submit">HANTAR PERMOHONAN</button>
         </div>
+        </form>
     </div>
 
     <footer class="footer">
@@ -164,6 +159,11 @@
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
+            const nyatakanContainer = document.getElementById('nyatakanContainer');
+            const bantuanYa = document.getElementById('bantuanYa');
+            const bantuanTidak = document.getElementById('bantuanTidak');
+            const lainLainContainer = document.getElementById('lainLainContainer');
+            const lainLain = document.getElementById('lainLain');
             let currentStep = 0;
 
             function updateFormSteps() {
@@ -187,6 +187,21 @@
             });
 
             updateFormSteps();
+
+            function toggleNyatakanInput() {
+                nyatakanContainer.classList.toggle('d-none', !bantuanYa.checked);
+            }
+
+            function toggleLainLainInput() {
+                lainLainContainer.classList.toggle('d-none', !lainLain.checked);
+            }
+
+            bantuanYa.addEventListener('change', toggleNyatakanInput);
+            bantuanTidak.addEventListener('change', toggleNyatakanInput);
+            lainLain.addEventListener('change', toggleLainLainInput);
+
+            toggleNyatakanInput();
+            toggleLainLainInput();
         });
     </script>
 </body>
