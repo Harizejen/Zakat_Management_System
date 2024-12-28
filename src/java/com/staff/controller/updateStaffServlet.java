@@ -62,10 +62,10 @@ public class updateStaffServlet extends HttpServlet {
         throws ServletException, IOException {
         // Retrieve the adminId from the session
         HttpSession session = request.getSession();
-        Integer adminId = (Integer) session.getAttribute("adminId"); // Assuming adminId is stored as an Integer in the session
+        Integer adminId = (Integer) session.getAttribute("adminId");
 
         // Retrieve form data
-        int staffId = Integer.parseInt(request.getParameter("staffId")); // Assuming you have a hidden input for staffId
+        int staffId = Integer.parseInt(request.getParameter("staffId")); 
         String staffName = request.getParameter("namaStaf");
         String staffEmail = request.getParameter("stafEmail");
         String password = request.getParameter("password");
@@ -73,7 +73,7 @@ public class updateStaffServlet extends HttpServlet {
 
         // SQL Update Query
         String updateQuery = "UPDATE staff SET admin_id = ?, staff_email = ?, staff_password = ?, staff_role = ?, staff_name = ? WHERE staff_id = ?";
-
+//UPDATE `staff` SET `admin_id` = 1001, `staff_email` = 'hzq@gmail.com', `staff_password` = '12345New', `staff_role` = 'UZSW', `staff_name` = 'Haziq Human Hamilrol' WHERE `staff_id` = 14;
         try (Connection connection = dbconn.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
@@ -86,8 +86,22 @@ public class updateStaffServlet extends HttpServlet {
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
-                // Successfully updated
-                response.sendRedirect("adminServlet?action=viewHEAStaff"); // Redirect to the appropriate page
+                switch (staffRole) {
+                    case "HEA":
+                        response.sendRedirect("adminServlet?action=viewHEAStaff");
+                        break;
+                    case "HEP":
+                        response.sendRedirect("adminServlet?action=viewHEPStaff");
+                        break;
+                    case "UZSW":
+                        response.sendRedirect("adminServlet?action=viewUZSWStaff");
+                        break;
+                    default:
+                        // Handle unexpected roles if necessary
+                        request.setAttribute("error", "Staff role is not recognized.");
+                        request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
+                        break;
+                }
             } else {
                 // Handle failure
                 request.setAttribute("error", "Failed to update staff.");
