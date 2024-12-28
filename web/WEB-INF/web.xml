@@ -56,6 +56,10 @@
         <servlet-name>updateStaffServlet</servlet-name>
         <servlet-class>com.staff.controller.updateStaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>addDocumentServlet</servlet-name>
+        <servlet-class>com.documents.controller.addDocumentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/staff_login.do</url-pattern>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>updateStaffServlet</servlet-name>
         <url-pattern>/updateStaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addDocumentServlet</servlet-name>
+        <url-pattern>/addDocumentServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

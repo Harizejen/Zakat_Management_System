@@ -44,40 +44,65 @@
     </aside>
 
     <div class="container form-steps">
-        <form action="" method="post" enctype="multipart/form-data">
-        <h2 class="text-center my-4">PERMOHONAN</h2>
-        
-        <!-- Step 1 -->
-        <div class="card mb-4 form-step">
-            <div class="card-header">Borang Permohonan Zakat</div>
-            <div class="card-body">
-                <p><strong>SESI ZAKAT: MAC2025/OGOS2025</strong></p>
-                <p><strong>NAMA:</strong> <%= st.getStudName() %></p>
-                <p><strong>NO. PELAJAR:</strong> <%= st.getStudID() %></p>
-                <p><strong>NO. KP:</strong> <%= st.getStudIC() %></p>
-                <form> 
+        <form action="add_application.do" method="post" enctype="multipart/form-data">
+            <h2 class="text-center my-4">PERMOHONAN</h2>
+
+            <!-- Step 1 -->
+            <div class="card mb-4 form-step">
+                <div class="card-header">Borang Permohonan Zakat</div>
+                <div class="card-body">
+                    <p><strong>SESI ZAKAT: MAC2025/OGOS2025</strong></p>
+                    <p><strong>NAMA:</strong> <%= st.getStudName() %></p>
+                    <p><strong>NO. PELAJAR:</strong> <%= st.getStudID() %></p>
+                    <p><strong>NO. KP:</strong> <%= st.getStudIC() %></p>
+
                     <div class="mb-3">
-                        <label>Adakah anda menerima bantuan kewangan (PTPTN, JPA dll)?</label><br>
+                        <label>Adakah anda menerima bantuan makanan?</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="bantuan" id="bantuanYa" value="YA" required>
-                            <label class="form-check-label" for="bantuanYa">YA</label>
+                            <input class="form-check-input" type="radio" name="bantuanMakanan" id="bantuanMakananYa" value="YA" required>
+                            <label class="form-check-label" for="bantuanMakananYa">YA</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="bantuan" id="bantuanTidak" value="TIDAK" required>
-                            <label class="form-check-label" for="bantuanTidak">TIDAK</label>
+                            <input class="form-check-input" type="radio" name="bantuanMakanan" id="bantuanMakananTidak" value="TIDAK" required>
+                            <label class="form-check-label" for="bantuanMakananTidak">TIDAK</label>
                         </div>
                     </div>
-                    <!-- Other fields omitted for brevity -->
+
                     <div class="mb-3">
-                        <label for="nyatakan">Jika ada, nyatakan.</label>
-                        <input type="text" class="form-control" id="nyatakan">
+                        <label>Menerima bantuan lain (PTPTN, JPA dll)?</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="bantuanLain" id="bantuanLainYa" value="YA" required>
+                            <label class="form-check-label" for="bantuanLainYa">YA</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="bantuanLain" id="bantuanLainTidak" value="TIDAK" required>
+                            <label class="form-check-label" for="bantuanLainTidak">TIDAK</label>
+                        </div>
                     </div>
+
+                    <div class="mb-3" id="bantuanLainDetails" style="display: none;">
+                        <label for="namaBantuanLain">Nama Bantuan:</label>
+                        <input type="text" class="form-control" id="namaBantuanLain" name="namaBantuanLain" placeholder="Masukkan nama bantuan">
+                        <label for="jumlahBantuanLain">Jumlah Bantuan:</label>
+                        <input type="text" class="form-control" id="jumlahBantuanLain" name="jumlahBantuanLain" placeholder="Masukkan jumlah bantuan (RM)">
+                    </div>
+
                     <div class="mb-3">
-                        <label for="gpa">Keputusan Terkini GPA</label>
-                        <input type="text" class="form-control" id="gpa" required>
-                        <label for="cgpa">Keputusan Terkini CGPA</label>
-                        <input type="text" class="form-control" id="cgpa" required>
+                        <label for="semester">Semester Semasa:</label>
+                        <input type="text" class="form-control" id="semester" name="semester" placeholder="Masukkan semester semasa">
                     </div>
+
+                    <div class="mb-3 row">
+                        <label for="gpa" class="col-sm-2 col-form-label">GPA:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="gpa" name="gpa" required>
+                        </div>
+                        <label for="cgpa" class="col-sm-2 col-form-label">CGPA:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="cgpa" name="cgpa" required>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <label>Tujuan memohon zakat</label><br>
                         <div class="form-check form-check-inline">
@@ -96,69 +121,59 @@
                             <input type="text" class="form-control mt-2" id="lainLainNyatakan" placeholder="nyatakan, jika memilih lain-lain">   
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
 
-        <!-- Step 2 -->
-        <div class="card mb-4 form-step d-none">
-            <div class="card-header">Dokumen Sokongan</div>
-            <div class="card-body">
-                <p>Hanya fail PDF sahaja yang diterima.</p>
-                <p><strong>Dokumen wajib:</strong></p>
-                <form>
+            <!-- Step 2 -->
+            <div class="card mb-4 form-step d-none">
+                <div class="card-header">Dokumen Sokongan</div>
+                <div class="card-body">
+                    <p>Hanya fail PDF sahaja yang diterima.</p>
+                    <p><strong>Dokumen wajib:</strong></p>
                     <table class="invisible-table">
                         <tr>
                             <td>1. Salinan Kad Pengenalan Ibu dan Bapa / Penjaga.</td>
-                            <td></td>
-                            <td></td>
+                            <td><input type="file" name="kadPengenalan" accept=".pdf" required></td>
                         </tr>
                         <tr>
                             <td>2. Pengesahan Pendapatan / Slip gaji.</td>
-                            <td><a href="#">slip_gaji_mac.pdf</a></td>
-                            <td><button class="btn btn-danger btn-sm"><i class="fas fa-times"></i> BUANG</button></td>
+                            <td><input type="file" name="slipGaji" accept=".pdf" required></td>
                         </tr>
                         <tr>
                             <td>3. Salinan Kad Matrik Pelajar.</td>
-                            <td><a href="#">kad_matriks.pdf</a></td>
-                            <td><button class="btn btn-primary btn-sm"><i class="fas fa-upload"></i> MUAT NAIK</button></td>
+                            <td><input type="file" name="kadMatrik" accept=".pdf" required></td>
                         </tr>
                     </table>
                     <p><strong>Sertakan jika perlu:</strong></p>
                     <table class="invisible-table">
                         <tr>
                             <td>1. Sijil Kematian 1.</td>
-                            <td></td>
-                            <td><button class="btn btn-secondary btn -sm">Pilih Fail</button></td>
+                            <td><input type="file" name="sijilKematian1" accept=".pdf"></td>
                         </tr>
                         <tr>
-                            <td>2. Sijil Kematian  2.</td>
-                            <td></td>
-                            <td><button class="btn btn-secondary btn-sm">Pilih Fail</button></td>
+                            <td>2. Sijil Kematian 2.</td>
+                            <td><input type="file" name="sijilKematian2" accept=".pdf"></td>
                         </tr>
                         <tr>
                             <td>3. Sijil Doktor.</td>
-                            <td></td>
-                            <td><button class="btn btn-secondary btn-sm">Pilih Fail</button></td>
+                            <td><input type="file" name="sijilDoktor" accept=".pdf"></td>
                         </tr>
                     </table>
-                </form>
-                    
-                <div class="form-check mt-3">
-                    <input class="form-check-input" type="checkbox" id="maklumatBenar" required>
-                    <label class="form-check-label" for="maklumatBenar">
-                        Saya akui maklumat yang diberi adalah benar.
-                    </label>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="maklumatBenar" name="maklumatBenar" required>
+                        <label class="form-check-label" for="maklumatBenar">
+                            Saya akui maklumat yang diberi adalah benar.
+                        </label>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Navigation buttons -->
-        <div class="d-flex justify-content-between mb-4">
-            <button class="btn btn-secondary" id="prevBtn" type="button">Kembali</button>
-            <button class="btn btn-primary" id="nextBtn" type="button">Seterusnya</button>
-            <button class="btn btn-danger d-none" id="submitBtn" type="submit">HANTAR PERMOHONAN</button>
-        </div>
+
+            <!-- Navigation buttons -->
+            <div class="d-flex justify-content-between mb-4">
+                <button class="btn btn-secondary" id="prevBtn" type="button">Kembali</button>
+                <button class="btn btn-primary" id="nextBtn" type="button">Seterusnya</button>
+                <button class="btn btn-danger d-none" id="submitBtn" type="submit">HANTAR PERMOHONAN</button>
+            </div>
         </form>
     </div>
 
@@ -173,11 +188,9 @@
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
-            const nyatakanContainer = document.getElementById('nyatakanContainer');
-            const bantuanYa = document.getElementById('bantuanYa');
-            const bantuanTidak = document.getElementById('bantuanTidak');
-            const lainLainContainer = document.getElementById('lainLainContainer');
-            const lainLain = document.getElementById('lainLain');
+            const bantuanLainDetails = document.getElementById('bantuanLainDetails');
+            const bantuanLainYa = document.getElementById('bantuanLainYa');
+            const bantuanLainTidak = document.getElementById('bantuanLainTidak');
             let currentStep = 0;
 
             function updateFormSteps() {
@@ -202,20 +215,14 @@
 
             updateFormSteps();
 
-            function toggleNyatakanInput() {
-                nyatakanContainer.classList.toggle('d-none', !bantuanYa.checked);
+            function toggleBantuanLainDetails() {
+                bantuanLainDetails.style.display = bantuanLainYa.checked ? 'block' : 'none';
             }
 
-            function toggleLainLainInput() {
-                lainLainContainer.classList.toggle('d-none', !lainLain.checked);
-            }
+            bantuanLainYa.addEventListener('change', toggleBantuanLainDetails);
+            bantuanLainTidak.addEventListener('change', toggleBantuanLainDetails);
 
-            bantuanYa.addEventListener('change', toggleNyatakanInput);
-            bantuanTidak.addEventListener('change', toggleNyatakanInput);
-            lainLain.addEventListener('change', toggleLainLainInput);
-
-            toggleNyatakanInput();
-            toggleLainLainInput();
+            toggleBantuanLainDetails();
         });
     </script>
 </body>
