@@ -73,7 +73,9 @@ public class UserLoginServlet extends HttpServlet {
 
         int stud_id = Integer.parseInt(request.getParameter("stud_id"));
         String stud_password = request.getParameter("stud_password");
-
+        
+        request.getSession().setAttribute("studentID", stud_id);
+        
         Student st = new Student();
         st.setStudID(stud_id);
         st.setStudPass(stud_password);

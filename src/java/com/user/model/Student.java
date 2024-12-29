@@ -202,6 +202,17 @@ public class Student implements Serializable {
         // Submit application logic here
     }
     
+    public String getGenderDisplay() {
+        switch (stud_gender) {
+            case 'L':
+                return "LELAKI";
+            case 'P':
+                return "PEREMPUAN";
+            default:
+                return "UNKNOWN"; // Handle unexpected values
+        }
+    }
+    
    public boolean isValid() {
         boolean isValid = false;
         String query = "SELECT * FROM Student WHERE stud_id = ? AND stud_password =  ? " ;

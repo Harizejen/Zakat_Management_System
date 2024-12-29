@@ -1,8 +1,13 @@
 <%@page import="com.user.model.Student"%>
+<%@page import="com.guard.model.guardian"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
     // Retrieve the student data from the session
     Student st = (Student) request.getSession().getAttribute("student_data"); 
+%>
+<% 
+    // Retrieve the student data from the session
+    guardian gd = (guardian) request.getSession().getAttribute("guard_info"); 
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,24 +59,24 @@
 
         <!-- Main Content -->
         <main class="container mt-4">
-            <h1 class="text-center mb-4 fw-bold">PROFIL</h1>
+            <h1 class="text-center mb-0 fw-bold">PROFIL</h1>
             <div class="row">
                 <!-- Left Section -->
                 <div class="col-md-8">
                     <div class="p-4 shadow-sm bg-white rounded">
                         <h4 class="mb-3 fw-bold">📌 Maklumat Peribadi</h4>
-                        <p><strong>Nama Penuh:</strong> NUR AFRINA BINTI MUSTAFA</p>
-                        <p><strong>Jantina:</strong> PEREMPUAN</p>
-                        <p><strong>No. Telefon:</strong> 010-****-****</p>
-                        <p><strong>Email:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>Alamat Menyurat:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>No. Pelajar:</strong> 2021***</p>
-                        <p><strong>No. KP:</strong> 030115-**-****</p>
-                        <p><strong>Kod Program:</strong> ADM10</p>
-                        <p><strong>Kampus:</strong> RAUB - PAHANG</p>
+                        <p><strong>Nama Penuh:</strong> &nbsp;<%= st.getStudName() %></p>
+                        <p><strong>Jantina:</strong>&nbsp;<%= st.getGenderDisplay() %></p>
+                        <p><strong>No. Telefon:</strong>&nbsp;<%= st.getStudPhoneNum() %></p>
+                        <p><strong>Email:</strong>&nbsp;<%= st.getStudEmail() %>
+                        <p><strong>Alamat Menyurat:</strong>&nbsp;<%= st.getStudAddress() %></p>
+                        <p><strong>No. Pelajar:</strong>&nbsp;<%= st.getStudID() %></p>
+                        <p><strong>No. KP:</strong>&nbsp;<%= st.getStudIC() %></p>
+                        <p><strong>Kod Program:</strong>&nbsp;<%= st.getStudCourse() %></p>
+                        <p><strong>Kampus:</strong>&nbsp;<%= st.getStudCampus() %></p>
                         <p><strong>Status Perkahwinan:</strong> BUJANG</p>
-                        <p><strong>No. Akaun Bank:</strong> 06696945*****78</p>
-                        <p><strong>Nama Bank:</strong> BANK SIMPANAN RAKYAT (BSN)</p>
+                        <p><strong>No. Akaun Bank:</strong>&nbsp;<%= st.getStudBankNum() %></p>
+                        <p><strong>Nama Bank:</strong>&nbsp;<%= st.getStudBankName() %></p>
                     </div>
                 </div>
 
@@ -85,40 +90,39 @@
                     </div>
                 </div>
             </div>
-            <div class="container mt-4">
-                <div class="p-4 shadow-sm bg-white rounded">
+            
+                <div class="p-4 mt-2 shadow-sm bg-white rounded">
                     <h4 class="fw-bold">📌 Maklumat Keluarga (Ibu Bapa & Penjaga)</h4>
                     <div class="row mt-4">
                         <!-- Maklumat Bapa -->
                         <div class="col-md-4">
-                            <p><strong>NAMA BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>PEKERJAAN BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>PENDAPATAN KASAR:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>NO TELEFON BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>ALAMAT BAPA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>NAMA BAPA:</strong>&nbsp;<%= gd.getFather_name() %></p>
+                            <p><strong>PEKERJAAN BAPA:</strong>&nbsp;<%= gd.getFather_occupation().toUpperCase() %></p>
+                            <p><strong>PENDAPATAN KASAR:</strong>&nbsp;RM <%= gd.getFather_income() %></p>
+                            <p><strong>NO TELEFON BAPA:</strong>&nbsp;<%= gd.getFather_phoneNum() %></p>
+                            <p><strong>ALAMAT BAPA:</strong>&nbsp;<%= gd.getFather_Address().toUpperCase() %></p>
                         </div>
                         <!-- Maklumat Ibu -->
                         <div class="col-md-4">
-                            <p><strong>NAMA IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>PEKERJAAN IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>PENDAPATAN KASAR:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>NO TELEFON IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>ALAMAT IBU:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>NAMA IBU:</strong>&nbsp;<%= gd.getMother_name().toUpperCase() %></p>
+                            <p><strong>PEKERJAAN IBU:</strong> &nbsp;<%= gd.getMother_occupation().toUpperCase() %></p>
+                            <p><strong>PENDAPATAN KASAR:</strong>&nbsp;RM <%= gd.getMother_income() %></p>
+                            <p><strong>NO TELEFON IBU:</strong>&nbsp;<%= gd.getMother_phoneNum() %></p>
+                            <p><strong>ALAMAT IBU:</strong>&nbsp;<%= gd.getMother_Address().toUpperCase() %></p>
                         </div>
                         <!-- Maklumat Penjaga -->
                         <div class="col-md-4">
-                            <p><strong>NAMA PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>PEKERJAAN PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>NO TELEFON PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                            <p><strong>ALAMAT PENJAGA:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
+                            <p><strong>NAMA PENJAGA:</strong>&nbsp;<%= gd.getGuard_name().toUpperCase() %></p>
+                            <p><strong>PEKERJAAN PENJAGA:</strong>&nbsp;<%= gd.getGuard_occupation().toUpperCase() %></p>
+                            <p><strong>NO TELEFON PENJAGA:</strong>&nbsp;<%= gd.getGuard_phoneNum() %></p>
+                            <p><strong>ALAMAT PENJAGA:</strong>&nbsp;<%= gd.getGuard_address().toUpperCase() %></p>
                         </div>
                     </div>
                     <div class="text-center">
                         <a href="user.do?action=borang" class="btn btn-danger mt-3">KEMASKINI</a>
                     </div>
                 </div>
-            </div>
-        </main>
+            </main>
 
         <!-- Footer -->
         <footer class="text-center py-3 mt-3" style="background-color: #013220">

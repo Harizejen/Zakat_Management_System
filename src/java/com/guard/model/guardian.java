@@ -5,6 +5,12 @@
  */
 package com.guard.model;
 
+import com.database.dbconn;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author nasru
@@ -183,6 +189,65 @@ public class guardian {
 
     public void setOther_income(double other_income) {
         this.other_income = other_income;
+    }
+
+    public guardian findGuardian(int stud_id) {
+        guardian gd = null; // Initialize as null in case no student is found.
+        String query = "SELECT * FROM guardian WHERE stud_id = ?";
+        try {
+            Connection conn = dbconn.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, stud_id);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                // Safely retrieve values, allowing for potential nulls
+                String f_name = rs.getString("father_name");
+                String f_occupation = rs.getString("father_occupation");
+                String f_pNum = rs.getString("father_phoneNum"); 
+                String f_address = rs.getString("father_address");
+                double f_income = Double.parseDouble(rs.getString("father_income"));
+                String m_name = rs.getString("mother_name");
+                String m_occupation = rs.getString("mother_occupation");
+                String m_pNum = rs.getString("mother_phoneNum"); 
+                String m_address = rs.getString("mother_address");
+                double m_income = Double.parseDouble(rs.getString("mother_income"));
+                String g_name = rs.getString("guard_name");
+                String g_relation = rs.getString("guard_relation");
+                String g_residence = rs.getString("guard_residence");
+                String g_postcode = rs.getString("guard_postcode");
+                String g_occupation = rs.getString("guard_occupation");
+                String g_pNum = rs.getString("guard_phoneNum"); 
+                String g_address = rs.getString("guard_address");
+                double g_income = Double.parseDouble(rs.getString("guard_income"));
+                double oth_income = Double.parseDouble(rs.getString("other_income"));
+                
+                // Create a new Student object
+                gd = new guardian();
+                gd.setFather_name(f_name);
+                gd.setFather_occupation(f_occupation);
+                gd.setFather_phoneNum(f_pNum);
+                gd.setFather_Address(f_address);
+                gd.setFather_income(f_income);
+                gd.setMother_name(m_name);
+                gd.setMother_occupation(m_occupation);
+                gd.setMother_phoneNum(m_pNum);
+                gd.setMother_Address(m_address);
+                gd.setMother_income(m_income);
+                gd.setGuard_name(g_name);
+                gd.setGuard_relation(g_relation);
+                gd.setGuard_residence(g_residence);
+                gd.setGuard_postcode(g_postcode);
+                gd.setGuard_occupation(g_occupation);
+                gd.setGuard_phoneNum(g_pNum);
+                gd.setGuard_income(g_income);
+                gd.setGuard_address(g_address);
+                gd.setOther_income(oth_income);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately
+        }
+        return gd; // Return the Student object or null if not found
     }
     
     

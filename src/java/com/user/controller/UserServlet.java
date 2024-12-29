@@ -4,6 +4,7 @@
  */
 package com.user.controller;
 
+import com.guard.model.guardian;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -58,6 +59,10 @@ public class UserServlet extends HttpServlet {
          String action = request.getParameter("action");
 
         if ("profile".equals(action)) {
+            int stud_id = (Integer) request.getSession().getAttribute("studentID");
+            guardian gd = new guardian();
+            guardian gd1 = gd.findGuardian(stud_id);
+            request.getSession().setAttribute("guard_info", gd1);
             request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
         } else if ("dashboard".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
