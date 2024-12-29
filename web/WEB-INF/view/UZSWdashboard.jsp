@@ -242,12 +242,12 @@
                     <!-- Tarikh Mula -->
                     <div class="mb-3">
                         <label for="tarikhMula" class="form-label">Tarikh Mula</label>
-                        <input type="date" class="form-control" id="tarikhMula" required>
+                        <input type="date" class="form-control" id="tarikhMula" name="tarikhMula" required>
                     </div>
                     <!-- Tarikh Akhir -->
                     <div class="mb-3">
                         <label for="tarikhAkhir" class="form-label">Tarikh Akhir</label>
-                        <input type="date" class="form-control" id="tarikhAkhir" required>
+                        <input type="date" class="form-control" id="tarikhAkhir" name="tarikhAkhir" required>
                     </div>
                     <!-- Modal Footer -->
                     <div class="modal-footer d-flex justify-content-between">

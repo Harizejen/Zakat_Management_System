@@ -3,17 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/staff/controller/StaffLoginServlet.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/staff/model/staff.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/staff_login.jsp</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/deadline/model/deadline.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/user/controller/UserLoginServlet.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/application/model/Application.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/WEB-INF/view/applicationPage.jsp</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/borang_maklumat/controller/borangMaklumatServlet.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/application/controller/AddApplicationServlet.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/documents/model/document.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/database/dbconn.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/updateStaffServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UZSWdashboard.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/SaveDeadlineServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/admin/controller/adminServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/admin/model/admin.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/StaffLoginServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/model/staff.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEAdashboard.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/adminLogin.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/saveZakatAmount.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/donation/model/donation.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/nbproject/private/private.xml</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/application/model/Application.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/addStaffServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/user/controller/UserLoginServlet.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/nbproject/private/private.properties</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/database/dbconn.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/adminDashboard.jsp</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/staff_login.jsp</file>
         </group>
     </open-files>
 </project-private>
