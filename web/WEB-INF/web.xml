@@ -57,6 +57,10 @@
         <servlet-class>com.staff.controller.updateStaffServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>saveZakatAmount</servlet-name>
+        <servlet-class>com.staff.controller.saveZakatAmount</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>addDocumentServlet</servlet-name>
         <servlet-class>com.documents.controller.addDocumentServlet</servlet-class>
     </servlet>
@@ -115,6 +119,10 @@
     <servlet-mapping>
         <servlet-name>updateStaffServlet</servlet-name>
         <url-pattern>/updateStaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>saveZakatAmount</servlet-name>
+        <url-pattern>/saveZakatAmount</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>addDocumentServlet</servlet-name>

@@ -16,7 +16,6 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="css/adminTable.css">
-        <link rel="stylesheet" href="css/home.css">
     </head>
     <body>
         <div class="container mt-4">
@@ -45,8 +44,20 @@
                         <td><%= staff.getStaffname() %><br>
                         <td><%= staff.getStaffemail() %></td>
                         <td>
-                            <a href="#"><i class="fas fa-trash-alt"></i></a>
-                            <a href="#"><i class="fas fa-edit"></i></a>
+                            <!-- Form for deleting staff -->
+                            <form action="deleteStaffServlet" method="post" style="display:inline;">
+                                <input type="hidden" id="staffId" name="staffId" value="<%= staff.getStaffid() %>"/> <!-- Hidden input for staffId -->
+                                <button type="submit" class="btn btn-link" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                            <!-- Form for updating staff -->
+                            <form action="updateStaffServlet" method="post" style="display:inline;">
+                                <input type="hidden" id="staffId" name="staffId" value="<%= staff.getStaffid() %>"/> <!-- Hidden input for staffId -->
+                                <button type="submit" class="btn btn-link" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     <% 

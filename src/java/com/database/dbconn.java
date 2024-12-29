@@ -80,4 +80,23 @@ public class dbconn {
 
         return count;
     }
+    
+    public static int getAppCount() {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM application"; // Adjust the table and column names as necessary
+
+        try (Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+             
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            count = rs.getInt(1); // Get the count from the result set
+            
+        } catch (SQLException e) {
+            System.out.println("Error retrieving application count: " + e.getMessage());
+        }
+
+        return count;
+    }
 }
