@@ -129,7 +129,7 @@ public staff findStaff(int staffid) {
         if (rs.next()) {
             // Retrieve values safely, allowing for potential nulls
             int adminid = rs.getInt("admin_id");  // Updated column name
-            int applyid = rs.getInt("apply_id");  // Updated column name
+            //int applyid = rs.getInt("apply_id");  // Updated column name
             String staffname = rs.getString("staff_name") != null ? rs.getString("staff_name") : "";  // Updated column name
             String staffemail = rs.getString("staff_email") != null ? rs.getString("staff_email") : "";  // Updated column name
             String staffpassword = rs.getString("staff_password") != null ? rs.getString("staff_password") : "";  // Updated column name
@@ -139,7 +139,7 @@ public staff findStaff(int staffid) {
             staff = new staff();
             staff.setStaffid(staffid);
             staff.setAdminid(adminid);
-            staff.setApplyid(applyid);
+            //staff.setApplyid(applyid);
             staff.setStaffname(staffname);
             staff.setStaffemail(staffemail);
             staff.setStaffpassword(staffpassword);
