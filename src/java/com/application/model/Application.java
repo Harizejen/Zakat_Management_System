@@ -8,7 +8,13 @@ package com.application.model;
  *
  * @author User
  */
+import com.database.dbconn;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Application implements Serializable {
@@ -40,6 +46,7 @@ public class Application implements Serializable {
         this.apply_gpa = apply_gpa;
         this.apply_foodIncentive = apply_foodIncentive;
         this.apply_otherSupport = apply_otherSupport;
+        this.apply_otherSupportAmount = apply_otherSupportAmount;
         this.apply_purpose = apply_purpose;
         this.apply_status = apply_status;
         this.apply_date = apply_date;
@@ -152,8 +159,77 @@ public class Application implements Serializable {
     }
 
     // Additional Methods
-    public void checkStatus() {
-        // Logic to check application status
+    public String checkStatus(int apply_id) {
+        String status = "SEDANG DIPROSES";
+        String query = "SELECT approve_status FROM `status_approval` WHERE apply_id = ?;";
+        try{
+            Connection conn = dbconn.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, apply_id);
+            
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                status = rs.getString("approve_status") !=null ? rs.getString("approve_status"): "SEDANG DIPROSES";
+            }
+            return status;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return status;
+    }
+    
+    public ArrayList<Application> getApplicationList(){
+        ArrayList<Application> applicationList = new ArrayList<>();
+        
+        String query = "SELECT * FROM `application`";
+        try{
+            Connection conn = dbconn.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()){
+                boolean apply_foodIncentive = false;
+                boolean apply_otherSupport = false;
+                int apply_id = rs.getInt("apply_id");
+                int stud_id = rs.getInt("stud_id");
+                int deadline_id = rs.getInt("deadline_id");
+                String apply_session = rs.getString("apply_session");
+                int apply_part = rs.getInt("apply_part");
+                double apply_cgpa = rs.getDouble("apply_cgps");
+                double apply_gpa = rs.getDouble("apply_gpa");
+                String apply_foodIncentiveParams = rs.getString("apply_foodIncentive");
+                String apply_otherSupportParams = rs.getString("apply_otherSupport");
+                double apply_otherSupportAmount = rs.getDouble("apply_otherSupportAmount");
+                String apply_purpose = rs.getString("apply_purpose");
+                Date apply_date = rs.getDate("apply_date");
+                
+                if ("YA".equalsIgnoreCase(apply_foodIncentiveParams) && "YA".equalsIgnoreCase(apply_otherSupportParams)) {
+                    apply_foodIncentive = true;
+                    apply_otherSupport = true;
+                }
+                
+                
+                Application ap = new Application();
+                ap.setApplyID(apply_id);
+                ap.setStudID(stud_id);
+                ap.setDeadlineID(deadline_id);
+                ap.setApplySession(apply_session);
+                ap.setApplyPart(apply_part);
+                ap.setApplyCGPA(apply_cgpa);
+                ap.setApplyGPA(apply_gpa);
+                ap.setApplyFoodIncentive(apply_foodIncentive);
+                ap.setApplyOtherSupport(apply_otherSupport);
+                ap.setApplyOtherSupAmount(apply_otherSupportAmount);
+                ap.setApplyPurpose(apply_purpose);
+                ap.setApplyDate(apply_date);
+                
+                applicationList.add(ap);
+            }
+            return applicationList;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return applicationList;
     }
 
 }

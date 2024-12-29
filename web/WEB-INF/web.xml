@@ -62,7 +62,7 @@
     </servlet>
     <servlet>
         <servlet-name>addDocumentServlet</servlet-name>
-        <servlet-class>com.documents.controller.addDocumentServlet</servlet-class>
+        <servlet-class>com.documents.controller.GetDocumentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>

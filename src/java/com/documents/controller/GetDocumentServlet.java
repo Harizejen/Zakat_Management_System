@@ -5,6 +5,9 @@
  */
 package com.documents.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,7 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author nasru
  */
-public class addDocumentServlet extends HttpServlet {
+public class GetDocumentServlet extends HttpServlet {
+    private static final String UPLOAD_DIR = "uploads";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,9 +59,40 @@ public class addDocumentServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+                throws ServletException, IOException {
+            // Retrieve the file name from the request parameter
+            String fileName = request.getParameter("fileName");
+
+            if (fileName == null || fileName.trim().isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "File name is required.");
+                return;
+            }
+
+            // Determine the file path
+            String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
+            File file = new File(uploadPath, fileName);
+
+            if (!file.exists()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found.");
+                return;
+            }
+
+            // Set the response headers for file download
+            response.setContentType(getServletContext().getMimeType(file.getAbsolutePath()));
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+            response.setContentLengthLong(file.length());
+
+            // Stream the file content to the client
+            try (FileInputStream fileInputStream = new FileInputStream(file);
+                 OutputStream outputStream = response.getOutputStream()) {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+
+                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+        }
 
     /**
      * Handles the HTTP <code>POST</code> method.
