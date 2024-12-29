@@ -95,7 +95,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         return;
     }
 
-    int staffId = 0;
+    int staffId;
     try {
         staffId = Integer.parseInt(staffIdParam);
     } catch (NumberFormatException e) {

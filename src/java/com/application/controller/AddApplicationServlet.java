@@ -5,24 +5,33 @@
 package com.application.controller;
 
 import com.database.dbconn;
+import com.user.model.Student;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 
 /**
  *
  * @author User
  */
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+    maxFileSize = 1024 * 1024 * 10,      // 10MB
+    maxRequestSize = 1024 * 1024 * 50   // 50MB
+)
 public class AddApplicationServlet extends HttpServlet {
 
     /**
@@ -76,63 +85,105 @@ public class AddApplicationServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Retrieve form data
-        int stud_id = (Integer)request.getAttribute("stud_id");
-        int deadline_id = 1;//kena ubah logik.. ni untuk testing
-        String apply_session = "Sesi"+" "+LocalDate.now().getYear();
-        String apply_foodIncentive = request.getParameter("apply_foodIncentive");
-        String apply_otherSupport = request.getParameter("apply_otherSupport");
-        String apply_otherSupportName = request.getParameter("apply_otherSupportName") != null ? request.getParameter("apply_otherSupportName") : "";
-        String apply_otherSupportAmount = request.getParameter("apply_otherSupportAmount") != null ? request.getParameter("apply_otherSupportAmount") : "0";
-        String apply_part = request.getParameter("apply_part");
-        double apply_gpa = Double.parseDouble(request.getParameter("apply_gpa")) ;
-        double apply_cgpa = Double.parseDouble(request.getParameter("apply_cgpa"));
-        String apply_purpose = request.getParameter("apply_purpose");
-        //set apply date now
-        LocalDate apply_date = LocalDate.now();
-        
-        String applyQuery = "INSERT INTO application (stud_id, deadline_id, apply_session, apply_part, apply_cgpa, apply_gpa, apply_foodIncentive, apply_otherSupport, apply_otherSupportName, apply_otherSupportAmount, apply_purpose, apply_date) "
-                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    boolean insertApplication = false;
+    boolean insertDocument = false;
 
-        try{
-            Connection conn = dbconn.getConnection();
-            conn.setAutoCommit(false);
-            PreparedStatement ps = conn.prepareStatement(applyQuery);
-            
-            ps.setInt(1, stud_id);
-            ps.setInt(2, deadline_id);
-            ps.setString(3, apply_session); // Replace with the actual session value if needed
-            ps.setString(4, apply_part);
-            ps.setDouble(5, apply_cgpa);
-            ps.setDouble(6, apply_gpa);
-            ps.setString(7, apply_foodIncentive);
-            ps.setString(8, apply_otherSupport);
-            ps.setString(9, apply_otherSupportName);
-            ps.setString(10, apply_otherSupportAmount);
-            ps.setString(11, apply_purpose);
-            ps.setDate(12, java.sql.Date.valueOf(apply_date));
-            
-            int rowsInserted = ps.executeUpdate();
+    Student st = (Student) request.getSession().getAttribute("student_data");
+
+    // Retrieve application data
+    int stud_id = st.getStudID();
+    int deadline_id = 1; // Example value for testing; replace with actual logic
+    String apply_session = "Sesi " + LocalDate.now().getYear();
+    String apply_foodIncentive = request.getParameter("apply_foodIncentive");
+    String apply_otherSupport = request.getParameter("apply_otherSupport");
+    String apply_otherSupportName = request.getParameter("apply_otherSupportName") != null ? request.getParameter("apply_otherSupportName") : "TIADA";
+    String apply_otherSupportAmountParam = request.getParameter("apply_otherSupportAmount");
+    double apply_otherSupportAmount = 0.0;
+
+    if (apply_otherSupportAmountParam != null && !apply_otherSupportAmountParam.trim().isEmpty()) {
+        try {
+            apply_otherSupportAmount = Double.parseDouble(apply_otherSupportAmountParam);
+        } catch (NumberFormatException e) {
+            apply_otherSupportAmount = 0.0; // Default if parsing fails
+        }
+    }
+
+    String apply_part = request.getParameter("apply_part");
+    double apply_gpa = Double.parseDouble(request.getParameter("apply_gpa"));
+    double apply_cgpa = Double.parseDouble(request.getParameter("apply_cgpa"));
+    String apply_purpose = request.getParameter("apply_purpose");
+    LocalDate apply_date = LocalDate.now();
+
+    // Retrieve file parts
+    List<Part> fileParts = (List<Part>) request.getParts();
+
+    String applyQuery = "INSERT INTO application (stud_id, deadline_id, apply_session, apply_part, apply_cgpa, apply_gpa, apply_foodIncentive, apply_otherSupport, apply_otherSupportName, apply_otherSupportAmount, apply_purpose, apply_date) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    String documentQuery = "INSERT INTO documents (apply_id, doc_type) VALUES (?, ?)";
+
+    try (Connection conn = dbconn.getConnection()) {
+        conn.setAutoCommit(false);
+
+        // Insert application
+        try (PreparedStatement psApplication = conn.prepareStatement(applyQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            psApplication.setInt(1, stud_id);
+            psApplication.setInt(2, deadline_id);
+            psApplication.setString(3, apply_session);
+            psApplication.setString(4, apply_part);
+            psApplication.setDouble(5, apply_cgpa);
+            psApplication.setDouble(6, apply_gpa);
+            psApplication.setString(7, apply_foodIncentive);
+            psApplication.setString(8, apply_otherSupport);
+            psApplication.setString(9, apply_otherSupportName);
+            psApplication.setDouble(10, apply_otherSupportAmount);
+            psApplication.setString(11, apply_purpose);
+            psApplication.setDate(12, java.sql.Date.valueOf(apply_date));
+
+            int rowsInserted = psApplication.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("Application inserted successfully!");
+                insertApplication = true;
+
+                // Retrieve generated application ID
+                try (ResultSet generatedKeys = psApplication.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int apply_id = generatedKeys.getInt(1);
+
+                        // Insert document data
+                        try (PreparedStatement psDocument = conn.prepareStatement(documentQuery)) {
+                            for (Part filePart : fileParts) {
+                                String fieldName = filePart.getName();
+                                String fileType = filePart.getSubmittedFileName();
+
+                                if (fileType != null && !fileType.isEmpty()) {
+                                    psDocument.setInt(1, apply_id);
+                                    psDocument.setString(2, fieldName);
+                                    psDocument.addBatch();
+                                }
+                            }
+                            int[] documentResults = psDocument.executeBatch();
+                            insertDocument = documentResults.length > 0;
+                        }
+                    }
+                }
             }
+        }
+
+        // Commit or rollback based on the results
+        if (insertApplication && insertDocument) {
             conn.commit();
-            ps.close();
-            conn.close();
-            
-            // Redirect or forward to a success page
-            response.sendRedirect("success.jsp");
-        }catch(SQLException e){
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "An error occurred while processing your application. Please try again later.");
+            response.sendRedirect("success.jsp");//nas sambung
+        } else {
+            conn.rollback();
+            request.setAttribute("errorMessage", "Failed to insert application or document data.");
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        // Process the data (e.g., save to database)
-        // Example: Application application = new Application(bantuanMakanan, bantuanLain, ...);
-        // applicationService.save(application);
-
-
+    } catch (SQLException e) {
+        e.printStackTrace();
+        request.setAttribute("errorMessage", "An error occurred while processing your application. Please try again later.");
+        request.getRequestDispatcher("error.jsp").forward(request, response);
     }
+}
 
     /**
      * Returns a short description of the servlet.
