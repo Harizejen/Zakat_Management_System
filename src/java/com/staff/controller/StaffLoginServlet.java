@@ -150,7 +150,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             
         // Retrieve application counts
         int totalCount = dbconn.getAppCount();
-        int pendingCount = dbconn.getAppCountByStatus("MENUNGGU");
+        int pendingCount = dbconn.getAppCountByStatus("DIPROSES");
         int approvedCount = dbconn.getAppCountByStatus("DISAHKAN");
         int rejectedCount = dbconn.getAppCountByStatus("DITOLAK");
 
