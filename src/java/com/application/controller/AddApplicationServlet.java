@@ -14,14 +14,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
 
 /**
  *
@@ -33,6 +31,8 @@ import javax.servlet.http.Part;
     maxRequestSize = 1024 * 1024 * 50   // 50MB
 )
 public class AddApplicationServlet extends HttpServlet {
+    
+    private static final String UPLOAD_DIR = "uploads";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -85,105 +85,112 @@ public class AddApplicationServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    boolean insertApplication = false;
-    boolean insertDocument = false;
+        boolean insertApplication = false;
+        boolean insertDocument = false;
 
-    Student st = (Student) request.getSession().getAttribute("student_data");
+        Student st = (Student) request.getSession().getAttribute("student_data");
 
-    // Retrieve application data
-    int stud_id = st.getStudID();
-    int deadline_id = 1; // Example value for testing; replace with actual logic
-    String apply_session = "Sesi " + LocalDate.now().getYear();
-    String apply_foodIncentive = request.getParameter("apply_foodIncentive");
-    String apply_otherSupport = request.getParameter("apply_otherSupport");
-    String apply_otherSupportName = request.getParameter("apply_otherSupportName") != null ? request.getParameter("apply_otherSupportName") : "TIADA";
-    String apply_otherSupportAmountParam = request.getParameter("apply_otherSupportAmount");
-    double apply_otherSupportAmount = 0.0;
+        // Retrieve application data
+        int stud_id = st.getStudID();
+        int deadline_id = 1; // Example value for testing; replace with actual logic
+        String apply_session = "Sesi " + LocalDate.now().getYear();
+        String apply_foodIncentive = request.getParameter("apply_foodIncentive");
+        String apply_otherSupport = request.getParameter("apply_otherSupport");
+        String apply_otherSupportName = request.getParameter("apply_otherSupportName") != null ? request.getParameter("apply_otherSupportName") : "TIADA";
+        String apply_otherSupportAmountParam = request.getParameter("apply_otherSupportAmount");
+        double apply_otherSupportAmount = 0.0;
 
-    if (apply_otherSupportAmountParam != null && !apply_otherSupportAmountParam.trim().isEmpty()) {
-        try {
-            apply_otherSupportAmount = Double.parseDouble(apply_otherSupportAmountParam);
-        } catch (NumberFormatException e) {
-            apply_otherSupportAmount = 0.0; // Default if parsing fails
+        if (apply_otherSupportAmountParam != null && !apply_otherSupportAmountParam.trim().isEmpty()) {
+            try {
+                apply_otherSupportAmount = Double.parseDouble(apply_otherSupportAmountParam);
+            } catch (NumberFormatException e) {
+                apply_otherSupportAmount = 0.0; // Default if parsing fails
+            }
         }
-    }
 
-    String apply_part = request.getParameter("apply_part");
-    double apply_gpa = Double.parseDouble(request.getParameter("apply_gpa"));
-    double apply_cgpa = Double.parseDouble(request.getParameter("apply_cgpa"));
-    String apply_purpose = request.getParameter("apply_purpose");
-    LocalDate apply_date = LocalDate.now();
+        String apply_part = request.getParameter("apply_part");
+        double apply_gpa = Double.parseDouble(request.getParameter("apply_gpa"));
+        double apply_cgpa = Double.parseDouble(request.getParameter("apply_cgpa"));
+        String apply_purpose = request.getParameter("apply_purpose");
+        LocalDate apply_date = LocalDate.now();
 
-    // Retrieve file parts
-    List<Part> fileParts = (List<Part>) request.getParts();
+        // Create directory to save uploaded files
+        String uploadPath = File.separator + UPLOAD_DIR;
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs(); // Create directory if it does not exist
+        }
 
-    String applyQuery = "INSERT INTO application (stud_id, deadline_id, apply_session, apply_part, apply_cgpa, apply_gpa, apply_foodIncentive, apply_otherSupport, apply_otherSupportName, apply_otherSupportAmount, apply_purpose, apply_date) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String applyQuery = "INSERT INTO application (stud_id, deadline_id, apply_session, apply_part, apply_cgpa, apply_gpa, apply_foodIncentive, apply_otherSupport, apply_otherSupportName, apply_otherSupportAmount, apply_purpose, apply_date) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    String documentQuery = "INSERT INTO documents (apply_id, doc_type) VALUES (?, ?)";
+        String documentQuery = "INSERT INTO documents (apply_id, doc_name) VALUES (?, ?)";
 
-    try (Connection conn = dbconn.getConnection()) {
-        conn.setAutoCommit(false);
+        try (Connection conn = dbconn.getConnection()) {
+            conn.setAutoCommit(false);
 
-        // Insert application
-        try (PreparedStatement psApplication = conn.prepareStatement(applyQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            psApplication.setInt(1, stud_id);
-            psApplication.setInt(2, deadline_id);
-            psApplication.setString(3, apply_session);
-            psApplication.setString(4, apply_part);
-            psApplication.setDouble(5, apply_cgpa);
-            psApplication.setDouble(6, apply_gpa);
-            psApplication.setString(7, apply_foodIncentive);
-            psApplication.setString(8, apply_otherSupport);
-            psApplication.setString(9, apply_otherSupportName);
-            psApplication.setDouble(10, apply_otherSupportAmount);
-            psApplication.setString(11, apply_purpose);
-            psApplication.setDate(12, java.sql.Date.valueOf(apply_date));
+            // Insert application
+            try (PreparedStatement psApplication = conn.prepareStatement(applyQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                psApplication.setInt(1, stud_id);
+                psApplication.setInt(2, deadline_id);
+                psApplication.setString(3, apply_session);
+                psApplication.setString(4, apply_part);
+                psApplication.setDouble(5, apply_cgpa);
+                psApplication.setDouble(6, apply_gpa);
+                psApplication.setString(7, apply_foodIncentive);
+                psApplication.setString(8, apply_otherSupport);
+                psApplication.setString(9, apply_otherSupportName);
+                psApplication.setDouble(10, apply_otherSupportAmount);
+                psApplication.setString(11, apply_purpose);
+                psApplication.setDate(12, java.sql.Date.valueOf(apply_date));
 
-            int rowsInserted = psApplication.executeUpdate();
-            if (rowsInserted > 0) {
-                insertApplication = true;
+                int rowsInserted = psApplication.executeUpdate();
+                if (rowsInserted > 0) {
+                    insertApplication = true;
 
-                // Retrieve generated application ID
-                try (ResultSet generatedKeys = psApplication.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        int apply_id = generatedKeys.getInt(1);
+                    // Retrieve generated application ID
+                    try (ResultSet generatedKeys = psApplication.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            int apply_id = generatedKeys.getInt(1);
 
-                        // Insert document data
-                        try (PreparedStatement psDocument = conn.prepareStatement(documentQuery)) {
-                            for (Part filePart : fileParts) {
-                                String fieldName = filePart.getName();
-                                String fileType = filePart.getSubmittedFileName();
+                            // Save uploaded files and insert document data
+                            try (PreparedStatement psDocument = conn.prepareStatement(documentQuery)) {
+                                for (Part filePart : request.getParts()) {
+                                    String fileName = filePart.getSubmittedFileName();
+                                    if (fileName != null && !fileName.isEmpty()) {
+                                        // Save file to local directory
+                                        File fileToSave = new File(uploadDir,fileName);
+                                        filePart.write(fileToSave.getPath());
 
-                                if (fileType != null && !fileType.isEmpty()) {
-                                    psDocument.setInt(1, apply_id);
-                                    psDocument.setString(2, fieldName);
-                                    psDocument.addBatch();
+                                        // Save file name to database
+                                        psDocument.setInt(1, apply_id);
+                                        psDocument.setString(2, fileName);
+                                        psDocument.addBatch();
+                                    }
                                 }
+                                int[] documentResults = psDocument.executeBatch();
+                                insertDocument = documentResults.length > 0;
                             }
-                            int[] documentResults = psDocument.executeBatch();
-                            insertDocument = documentResults.length > 0;
                         }
                     }
                 }
             }
-        }
 
-        // Commit or rollback based on the results
-        if (insertApplication && insertDocument) {
-            conn.commit();
-            response.sendRedirect("success.jsp");//nas sambung
-        } else {
-            conn.rollback();
-            request.setAttribute("errorMessage", "Failed to insert application or document data.");
+            // Commit or rollback based on the results
+            if (insertApplication && insertDocument) {
+                conn.commit();
+                response.sendRedirect("success.jsp");
+            } else {
+                conn.rollback();
+                request.setAttribute("errorMessage", "Failed to insert application or document data.");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "An error occurred while processing your application. Please try again later.");
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        request.setAttribute("errorMessage", "An error occurred while processing your application. Please try again later.");
-        request.getRequestDispatcher("error.jsp").forward(request, response);
     }
-}
 
     /**
      * Returns a short description of the servlet.
