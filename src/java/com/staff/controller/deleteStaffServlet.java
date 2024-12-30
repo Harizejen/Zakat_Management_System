@@ -6,6 +6,7 @@
 package com.staff.controller;
 
 import com.database.dbconn;
+import com.staff.model.staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -77,6 +78,9 @@ public class deleteStaffServlet extends HttpServlet {
         // Retrieve staff ID from the request
         int staffId = Integer.parseInt(request.getParameter("staffId")); // Assuming you have a hidden input for staffId
 
+        staff st = new staff();
+        staff st1 = st.findStaff(staffId);
+
         // SQL Delete Query
         String deleteQuery = "DELETE FROM staff WHERE staff_id = ?";
 
@@ -88,7 +92,28 @@ public class deleteStaffServlet extends HttpServlet {
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
                 // Successfully deleted
-                response.sendRedirect("adminServlet?action=viewHEAStaff"); // Redirect to the appropriate page
+                if (st1 != null) { // Check if st1 is not null
+                    switch (st1.getStaffrole()) {
+                        case "HEA":
+                            response.sendRedirect("adminServlet?action=viewHEAStaff");
+                            break;
+                        case "HEP":
+                            response.sendRedirect("adminServlet?action=viewHEPStaff");
+                            break;
+                        case "UZSW":
+                            response.sendRedirect("adminServlet?action=viewUZSWStaff");
+                            break;
+                        default:
+                            // Handle unexpected roles if necessary
+                            request.setAttribute("error", "Staff role is not recognized.");
+                            request.getRequestDispatcher("/WEB-INF/view/adminDashboard .jsp").forward(request, response);
+                            break;
+                    }
+                } else {
+                    // Handle case where staff is not found
+                    request.setAttribute("error", "Staff not found.");
+                    request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
+                }
             } else {
                 // Handle failure
                 request.setAttribute("error", "Failed to delete staff.");
