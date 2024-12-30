@@ -179,7 +179,7 @@ public class AddApplicationServlet extends HttpServlet {
             // Commit or rollback based on the results
             if (insertApplication && insertDocument) {
                 conn.commit();
-                response.sendRedirect("/WEB-INF/view/applicationPage.jsp");
+                request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
             } else {
                 conn.rollback();
                 request.setAttribute("errorMessage", "Failed to insert application or document data.");
