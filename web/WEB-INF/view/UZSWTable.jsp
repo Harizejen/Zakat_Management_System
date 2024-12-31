@@ -19,6 +19,11 @@
     </head>
     <body>
         <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="javascript:window.history.back();" class="btn btn-link">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
             <% 
                 List<staff> staffList = (List<staff>) request.getAttribute("UZSWstaffList");
                 int staffCount = (staffList != null) ? staffList.size() : 0; // Get the size safely
@@ -53,10 +58,10 @@
                             </form>
                             <!-- Form for updating staff -->
                             <form action="updateStaffServlet" method="post" style="display:inline;">
-                                <input type="hidden" id="staffId" name="staffId" value="<%= staff.getStaffid() %>"/> <!-- Hidden input for staffId -->
-                                <button type="submit" class="btn btn-link" title="Edit">
+                                <!-- Link for updating staff -->
+                                <a href="updateStaffServlet?staffId=<%= staff.getStaffid()%>" class="btn btn-link" title="Edit">
                                     <i class="fas fa-edit"></i>
-                                </button>
+                                </a>
                             </form>
                         </td>
                     </tr>

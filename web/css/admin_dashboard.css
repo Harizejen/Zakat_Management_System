@@ -1,8 +1,21 @@
 /* General body styling */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa; /* Light background color */
-    color: #343a40; /* Dark text color */
+    display: flex;
+    flex-direction: column;
+}
+
+.container-fluid {
+    flex: 1; /* This allows the container to grow and fill the available space */
+}
+
+footer {
+    background-color: #f8f9fa; /* Optional: Add a background color to the footer */
+    padding: 10px 0; /* Optional: Add some padding */
 }
 
 .btn-primary {
@@ -40,6 +53,16 @@ body {
     font-size: 3rem; /* Larger font size for counts */
     color: #007bff; /* Bootstrap primary color */
     font-weight: bold; /* Bold counts */
+}
+
+.card-gradient {
+    background: linear-gradient(135deg, #6a0dad, #a45ee5); /* Adjust the colors as needed */
+    color: white; /* Change text color to white for better contrast */
+    border: none; /* Remove border if you want a cleaner look */
+}
+
+.card-gradient .card-body {
+    background: transparent; /* Make sure the card body is transparent to show the gradient */
 }
 
 /* Footer styling */
