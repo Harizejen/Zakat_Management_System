@@ -199,7 +199,7 @@
             <!-- Modal Body -->
             <div class="modal-body">
                 <div class="d-flex justify-content-center">
-                    <input type="number" class="form-control text-center w-75 fs-5" placeholder="RM ------">
+                    <input type="text" name="amaunZakat" class="form-control text-center w-75 fs-5" placeholder="RM ------">
                 </div>
             </div>
 
@@ -211,7 +211,7 @@
             
             <div class="modal-body">
                 <div class="d-flex justify-content-center">
-                    <input type="date" class="form-control" id="tarikhZakat" required>
+                    <input type="date" name="tarikhKred" class="form-control" required>
                 </div>
             </div>
 

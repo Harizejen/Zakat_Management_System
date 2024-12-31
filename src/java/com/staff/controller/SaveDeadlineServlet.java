@@ -30,7 +30,7 @@ public class SaveDeadlineServlet extends HttpServlet {
         
         if (st == null) {
             request.setAttribute("error", "Session expired. Please log in again.");
-            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/staff_login.jsp").forward(request, response);
             return;
         }
 
@@ -71,7 +71,7 @@ public class SaveDeadlineServlet extends HttpServlet {
             applicationDurStart = "DIBUKA";
         }
 
-        String insertQuery = "INSERT INTO deadline (staff_id, application_open_date, application_deadline, application_dur_start) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO deadline (staff_id, application_open_date, application_deadline, application_start) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = dbconn.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
