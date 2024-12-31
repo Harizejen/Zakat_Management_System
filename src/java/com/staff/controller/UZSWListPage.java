@@ -67,15 +67,8 @@ public class UZSWListPage extends HttpServlet {
      @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-
-        if ("viewApplications".equals(action)) {
-            listApplications(request, response);
-        } else if ("logout".equals(action)) {
-            logout(request, response);
-        } else {
-            request.getRequestDispatcher("/WEB-INF/view/uzswDashboard.jsp").forward(request, response);
-        }
+              request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
+        
     }
 
     /**
@@ -124,7 +117,7 @@ public class UZSWListPage extends HttpServlet {
             }
 
             request.setAttribute("applications", applications);
-            request.getRequestDispatcher("/WEB-INF/view/uzswDashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/UZSWDashboard.jsp").forward(request, response);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,7 +156,8 @@ public class UZSWListPage extends HttpServlet {
        private void logout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getSession().invalidate();
-        response.sendRedirect("staffLogin.jsp");
+       response.sendRedirect("USZWlist");
+
     }
 
     /**
