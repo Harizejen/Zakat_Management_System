@@ -283,24 +283,30 @@ public class Student implements Serializable {
         }
         return st; // Return the Student object or null if not found
     }
+    
+    public boolean isInformationComplete(Student st){
+       
+       // Check if the student object is null
+        if (st == null) {
+            return false; // No student found, information is incomplete
+        }
 
-    public boolean isInformationComplete() {
-        return (null != this.stud_name && !this.stud_name.isEmpty()) &&
-                (this.stud_id > 0) && // Assuming stud_id should be a positive integer
-                (this.stud_ic != null && !this.stud_ic.isEmpty()) &&
-                (this.stud_password != null && !this.stud_password.isEmpty()) &&
-                (this.stud_email != null && !this.stud_email.isEmpty()) &&
-                (this.stud_state != null && !this.stud_state.isEmpty()) &&
-                (this.stud_zipcode != null && !this.stud_zipcode.isEmpty()) &&
-                (this.stud_course != null && !this.stud_course.isEmpty()) &&
-                (this.stud_faculty != null && !this.stud_faculty.isEmpty()) &&
-                (this.stud_campus != null && !this.stud_campus.isEmpty()) &&
-                (this.stud_phoneNum != null && !this.stud_phoneNum.isEmpty()) &&
-                (this.stud_bankNum != null && !this.stud_bankNum.isEmpty()) &&
-                (this.stud_bankName != null && !this.stud_bankName.isEmpty()) &&
-                (this.stud_marriage !='\0') && 
-                (this.stud_gender !='\0') && 
-                (this.stud_address != null && !this.stud_address.isEmpty());
+        // Check if all necessary fields are filled
+        return st.getStudName() != null && !st.getStudName().isEmpty()
+                && st.getStudIC() != null && !st.getStudIC().isEmpty()
+                && st.getStudEmail() != null && !st.getStudEmail().isEmpty()
+                && st.getStudPass() != null && !st.getStudPass().isEmpty()
+                && st.getStudState() != null && !st.getStudState().isEmpty()
+                && st.getStudZipCode() != null && !st.getStudZipCode().isEmpty()
+                && st.getStudCourse() != null && !st.getStudCourse().isEmpty()
+                && st.getStudFaculty() != null && !st.getStudFaculty().isEmpty()
+                && st.getStudCampus() != null && !st.getStudCampus().isEmpty()
+                && st.getStudMarriage() != 'U' // Assuming 'U' indicates incomplete marriage status
+                && st.getStudGender() != 'U'   // Assuming 'U' indicates incomplete gender status
+                && st.getStudPhoneNum() != null && !st.getStudPhoneNum().isEmpty()
+                && st.getStudBankNum() != null && !st.getStudBankNum().isEmpty()
+                && st.getStudBankName() != null && !st.getStudBankName().isEmpty()
+                && st.getStudAddress() != null && !st.getStudAddress().isEmpty();
     }
 }
   

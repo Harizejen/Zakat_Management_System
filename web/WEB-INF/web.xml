@@ -64,6 +64,14 @@
         <servlet-name>addDocumentServlet</servlet-name>
         <servlet-class>com.documents.controller.GetDocumentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>userLogOutServlet</servlet-name>
+        <servlet-class>com.user.controller.userLogOutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>eligibleCheckServlet</servlet-name>
+        <servlet-class>com.application.controller.eligibleCheckServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/staff_login.do</url-pattern>
@@ -127,6 +135,14 @@
     <servlet-mapping>
         <servlet-name>addDocumentServlet</servlet-name>
         <url-pattern>/addDocumentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>userLogOutServlet</servlet-name>
+        <url-pattern>/user_logout.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>eligibleCheckServlet</servlet-name>
+        <url-pattern>/eligible_check.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

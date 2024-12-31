@@ -18,6 +18,12 @@ public class updateStaffServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Set cache control headers
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+        response.setDateHeader("Expires", 0); // Proxies
+
+
         // Retrieve staffId from the request
         int staffId = Integer.parseInt(request.getParameter("staffId"));
 
@@ -99,8 +105,7 @@ public class updateStaffServlet extends HttpServlet {
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
-                // Optionally set a success message
-                request.setAttribute("success", "Staff updated successfully.");
+
                 switch (staffRole) {
                     case "HEA":
                         response.sendRedirect("adminServlet?action=viewHEAStaff");
@@ -112,6 +117,7 @@ public class updateStaffServlet extends HttpServlet {
                         response.sendRedirect("adminServlet?action=viewUZSWStaff");
                         break;
                     default:
+                        // Handle unexpected roles if necessary
                         request.setAttribute("error", "Staff role is not recognized.");
                         request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
                         break;

@@ -199,7 +199,7 @@ public class Application implements Serializable {
                 int deadline_id = rs.getInt("deadline_id");
                 String apply_session = rs.getString("apply_session");
                 int apply_part = rs.getInt("apply_part");
-                double apply_cgpa = rs.getDouble("apply_cgps");
+                double apply_cgpa = rs.getDouble("apply_cgpa");
                 double apply_gpa = rs.getDouble("apply_gpa");
                 String apply_foodIncentiveParams = rs.getString("apply_foodIncentive");
                 String apply_otherSupportParams = rs.getString("apply_otherSupport");
