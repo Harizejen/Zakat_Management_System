@@ -144,9 +144,8 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     
     if (st.isValid()) {
         
-        HttpSession session = request.getSession();
-
-        String userRole = (String) session.getAttribute("role");
+        staff ss = (staff) request.getSession().getAttribute("staff_data"); 
+        String userRole = (String) ss.getStaffrole();
             
         // Retrieve application counts
         int totalCount = dbconn.getAppCount();
