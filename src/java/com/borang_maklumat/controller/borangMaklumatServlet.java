@@ -5,6 +5,8 @@
 package com.borang_maklumat.controller;
 
 import com.database.dbconn;
+import com.user.model.Student;
+import com.guard.model.guardian;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -59,9 +61,51 @@ public class borangMaklumatServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+        throws ServletException, IOException {
+    // Retrieve student ID from the session
+    int studId = (Integer) request.getSession().getAttribute("studentID");
+
+    // SQL to retrieve student details
+    String selectStudentQuery = "SELECT * FROM student WHERE stud_id = ?";
+    try (Connection connection = dbconn.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(selectStudentQuery)) {
+
+        preparedStatement.setInt(1, studId);
+        ResultSet studentResultSet = preparedStatement.executeQuery();
+
+        if (studentResultSet.next()) {
+            // Create a Student object and populate it with retrieved details
+            Student student = new Student();
+            student.setStudID(studentResultSet.getInt("stud_id"));
+            student.setStudName(studentResultSet.getString("stud_name"));
+            student.setStudIC(studentResultSet.getString("stud_ic"));
+            student.setStudAddress(studentResultSet.getString("stud_address"));
+            student.setStudZipCode(studentResultSet.getString("stud_zipcode"));
+            student.setStudState(studentResultSet.getString("stud_state"));
+            student.setStudPhoneNum(studentResultSet.getString("stud_phoneNum"));
+            student.setStudGender(studentResultSet.getString("stud_gender").charAt(0));
+            student.setStudMarriage(studentResultSet.getString("stud_marriage").charAt(0));
+            student.setStudCourse(studentResultSet.getString("stud_course"));
+            student.setStudFaculty(studentResultSet.getString("stud_faculty"));
+            student.setStudCampus(studentResultSet.getString("stud_campus"));
+            student.setStudBankNum(studentResultSet.getString("stud_bankNum"));
+            student.setStudBankName(studentResultSet.getString("stud_bankName"));
+
+            // Set the student object as a request attribute
+            request.setAttribute("student", student);
+
+            request.getRequestDispatcher("/WEB-INF/view/borangMaklumat.jsp").forward(request, response);
+        } else {
+            // Handle case where student is not found
+            request.setAttribute("error", "Student not found.");
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        request.setAttribute("error", "Database error: " + e.getMessage());
+        request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
     }
+}
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -219,7 +263,7 @@ public class borangMaklumatServlet extends HttpServlet {
             if (upStud && upGuard) {
                 conn.commit(); // Commit transaction
                 request.setAttribute("stud_id", stud_id);
-                request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
             } else {
                 conn.rollback(); // Rollback transaction
             }
