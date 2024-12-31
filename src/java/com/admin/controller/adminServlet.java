@@ -68,14 +68,18 @@ public class adminServlet extends HttpServlet {
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
      String action = request.getParameter("action");
+     HttpSession session = request.getSession();
+     
 
     if ("login".equals(action)) {
         List<staff> HEAstaffList = retrieveHEAStaffData();
         List<staff> HEPstaffList = retrieveHEPStaffData();
         List<staff> UZSWstaffList = retrieveUZSWStaffData();
-        request.setAttribute("UZSWstaffList", UZSWstaffList);
-        request.setAttribute("HEPstaffList", HEPstaffList);
-        request.setAttribute("HEAstaffList", HEAstaffList);
+
+        session.setAttribute("HEAstaffList", HEAstaffList);
+        session.setAttribute("HEPstaffList", HEPstaffList);
+        session.setAttribute("UZSWstaffList", UZSWstaffList);
+        
         request.getRequestDispatcher("/adminDashboard.jsp").forward(request, response);
     } else if ("viewHEAStaff".equals(action)) {
         List<staff> HEAstaffList = retrieveHEAStaffData();

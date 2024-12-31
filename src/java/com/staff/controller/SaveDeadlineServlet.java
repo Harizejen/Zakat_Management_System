@@ -1,5 +1,6 @@
 package com.staff.controller;
 
+import com.staff.model.staff;
 import com.database.dbconn; // Replace with your actual database connection import
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,17 +26,26 @@ public class SaveDeadlineServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Integer staffid = (Integer) session.getAttribute("staffid");
-
-        if (staffid == null) {
+        HttpSession session = request.getSession();        
+        staff st = (staff) request.getSession().getAttribute("staff_data"); 
+        
+        if (st == null) {
             request.setAttribute("error", "Session expired. Please log in again.");
             request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
             return;
         }
 
+        int staffid = st.getStaffid();
         String applicationOpenDateStr = request.getParameter("tarikhMula");
         String applicationDeadlineStr = request.getParameter("tarikhAkhir");
+
+        // Validate input parameters
+        if (applicationOpenDateStr == null || applicationOpenDateStr.isEmpty() ||
+            applicationDeadlineStr == null || applicationDeadlineStr.isEmpty()) {
+            request.setAttribute("error", "Both dates are required.");
+            request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
+            return;
+        }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         java.sql.Date applicationOpenDate;
@@ -48,9 +58,10 @@ public class SaveDeadlineServlet extends HttpServlet {
             applicationDeadline = new java.sql.Date(deadlineDateUtil.getTime());
         } catch (ParseException e) {
             request.setAttribute("error", "Invalid date format. Please use yyyy-MM-dd.");
-            request.getRequestDispatcher("/WEB-INF/view/addStaff.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
             return;
         }
+
 
         // Determine application_dur_start
         String applicationDurStart;

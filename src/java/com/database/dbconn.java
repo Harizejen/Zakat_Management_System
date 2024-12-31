@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public class dbconn {
      // Database URL, username, and password
-    private static final String URL = "jdbc:mysql://localhost:3306/zakat_management"; // Modify the URL according to your setup
+    private static final String URL = "jdbc:mysql://localhost:3306/zakat_management";
     private static final String USER = "root";
     private static final String PASSWORD = "";
     private static Connection connection = null;

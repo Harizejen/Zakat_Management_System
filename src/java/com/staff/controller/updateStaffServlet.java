@@ -3,7 +3,6 @@ package com.staff.controller;
 import com.database.dbconn;
 import com.staff.model.staff;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ public class updateStaffServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         // Retrieve staffId from the request
         int staffId = Integer.parseInt(request.getParameter("staffId"));
 
@@ -40,8 +39,9 @@ public class updateStaffServlet extends HttpServlet {
                 staffMember.setStaffrole(resultSet.getString("staff_role"));
                 staffMember.setAdminid(resultSet.getInt("admin_id")); // If needed
 
-                // Set the staff object as a request attribute
-                request.setAttribute("staffMember", staffMember);
+                // Set the staff object as a session attribute
+                HttpSession session = request.getSession();
+                session.setAttribute("staffMember", staffMember);
 
                 // Forward to updateStaff.jsp
                 request.getRequestDispatcher("/WEB-INF/view/updateStaff.jsp").forward(request, response);
@@ -55,37 +55,52 @@ public class updateStaffServlet extends HttpServlet {
             request.setAttribute("error", "Database error: " + e.getMessage());
             request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
         }
-}
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         // Retrieve the adminId from the session
         HttpSession session = request.getSession();
         Integer adminId = (Integer) session.getAttribute("adminId");
 
+        if (adminId == null) {
+            request.setAttribute("error", "Admin not logged in.");
+            request.getRequestDispatcher("/WEB-INF/view/adminLogin.jsp").forward(request, response);
+            return;
+        }
+
         // Retrieve form data
-        int staffId = Integer.parseInt(request.getParameter("staffId")); 
+        int staffId = Integer.parseInt(request.getParameter("staffId"));
         String staffName = request.getParameter("namaStaf");
         String staffEmail = request.getParameter("stafEmail");
         String password = request.getParameter("password");
         String staffRole = request.getParameter("kategoriStaf");
 
         // SQL Update Query
-        String updateQuery = "UPDATE staff SET admin_id = ?, staff_email = ?, staff_password = ?, staff_role = ?, staff_name = ? WHERE staff_id = ?";
-//UPDATE `staff` SET `admin_id` = 1001, `staff_email` = 'hzq@gmail.com', `staff_password` = '12345New', `staff_role` = 'UZSW', `staff_name` = 'Haziq Human Hamilrol' WHERE `staff_id` = 14;
+        String updateQuery = "UPDATE staff SET admin_id = ?, staff_email = ?, staff_role = ?, staff_name = ?"
+                + (password != null && !password.isEmpty() ? ", staff_password = ?" : "") + " WHERE staff_id = ?";
+
         try (Connection connection = dbconn.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setInt(1, adminId); // Set adminId from session
             preparedStatement.setString(2, staffEmail);
-            preparedStatement.setString(3, password);
-            preparedStatement.setString(4, staffRole);
-            preparedStatement.setString(5, staffName);
-            preparedStatement.setInt(6, staffId);
+            preparedStatement.setString(3, staffRole);
+            preparedStatement.setString(4, staffName);
+
+            // Set password only if it's provided
+            if (password != null && !password.isEmpty()) {
+                preparedStatement.setString(5, password);
+                preparedStatement.setInt(6, staffId);
+            } else {
+                preparedStatement.setInt(5, staffId);
+            }
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
+                // Optionally set a success message
+                request.setAttribute("success", "Staff updated successfully.");
                 switch (staffRole) {
                     case "HEA":
                         response.sendRedirect("adminServlet?action=viewHEAStaff");
@@ -97,7 +112,6 @@ public class updateStaffServlet extends HttpServlet {
                         response.sendRedirect("adminServlet?action=viewUZSWStaff");
                         break;
                     default:
-                        // Handle unexpected roles if necessary
                         request.setAttribute("error", "Staff role is not recognized.");
                         request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
                         break;
