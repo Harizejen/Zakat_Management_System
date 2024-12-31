@@ -4,8 +4,6 @@
 <% 
     // Retrieve the student data from the session
     Student st = (Student) request.getSession().getAttribute("student_data"); 
-%>
-<% 
     // Retrieve the student data from the session
     guardian gd = (guardian) request.getSession().getAttribute("guard_info"); 
 %>

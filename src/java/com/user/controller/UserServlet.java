@@ -76,41 +76,39 @@ public class UserServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
         } else if ("records".equals(action)) {
             // Handle the records action, e.g., forward to records.jsp
-            request.getRequestDispatcher("/WEB-INF/view/records.jsp").forward(request, response);
-        } else if ("records".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/rekod.jsp").forward(request, response);
         }
         else {
             processRequest(request, response);
         }
     }
     
-    private void getProfile(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException{
-        
-        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
-        request.setAttribute("stud_id", stud_id);
-        request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
-        
-    }
-    
-    private void getDashboard(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException{
-        
-        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
-        request.setAttribute("stud_id", stud_id);
-        request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
-        
-    }
-    
-    private void getBorang(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException{
-        
-        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
-        request.setAttribute("stud_id", stud_id);
-        request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
-        
-    }
+//    private void getProfile(HttpServletRequest request, HttpServletResponse response)
+//        throws ServletException, IOException{
+//        
+//        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+//        request.setAttribute("stud_id", stud_id);
+//        request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
+//        
+//    }
+//    
+//    private void getDashboard(HttpServletRequest request, HttpServletResponse response)
+//        throws ServletException, IOException{
+//        
+//        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+//        request.setAttribute("stud_id", stud_id);
+//        request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+//        
+//    }
+//    
+//    private void getBorang(HttpServletRequest request, HttpServletResponse response)
+//        throws ServletException, IOException{
+//        
+//        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
+//        request.setAttribute("stud_id", stud_id);
+//        request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+//        
+//    }
 
     /**
      * Handles the HTTP <code>POST</code> method.
