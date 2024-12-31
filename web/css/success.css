@@ -1,0 +1,58 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 31, 2024, 12:45:06 PM
+    Author     : nasru
+*/
+body {
+    background-color: #e9e4d8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.notification-box {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.notification-header h5 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+.notification-header img {
+    height: 24px;
+}
+.notification-body {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+.notification-footer {
+    display: flex;
+    justify-content: space-between;
+}
+.notification-footer button {
+    width: 48%;
+}
+.footer-text {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.75rem;
+}
