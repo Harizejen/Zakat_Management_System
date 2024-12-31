@@ -1,9 +1,3 @@
-<%-- 
-    Document   : updateStaff
-    Created on : Dec 27, 2024, 7:43:34 PM
-    Author     : nasru
---%>
-
 <%@page import="com.staff.model.staff"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page isErrorPage="false" %>
@@ -28,8 +22,13 @@
         <h2 class="text-center">KEMASKINI STAF</h2>
         
         <% 
-            // Retrieve the staff object from the request
-            staff staffMember = (staff) request.getAttribute("staffMember");
+            // Retrieve the staff object from the session
+            staff staffMember = (staff) request.getSession().getAttribute("staffMember");
+            if (staffMember == null) {
+                // Handle case where staffMember is not found
+                out.println("<p class='text-danger'>Staff member not found.</p>");
+                return; // Exit if staff member is not found
+            }
         %>
         
         <form action="${pageContext.request.contextPath}/updateStaffServlet" method="POST">
@@ -37,19 +36,19 @@
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label" for="namaStaf">Nama Staf :</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="namaStaf" name="namaStaf" type="text" value="${staffMember.staffname}" required/> <!-- Pre-fill with staff name -->
+                    <input class="form-control" id="namaStaf" name="namaStaf" type="text" value="<%= staffMember.getStaffname() %>" required/> <!-- Pre-fill with staff name -->
                 </div>
             </div>
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label" for="password">Password :</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="password" name="password" type="password" value="${staffMember.staffpassword}" required/> <!-- Pre-fill with staff password -->
+                    <input class="form-control" id="password" name="password" type="password" required/> <!-- Password field without pre-fill -->
                 </div>
             </div>
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label" for="stafEmail">Staf E-mel :</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="stafEmail" name="stafEmail" type="email" value="${staffMember.staffemail}" required/> <!-- Pre-fill with staff email -->
+                    <input class="form-control" id="stafEmail" name="stafEmail" type="email" value="<%= staffMember.getStaffemail() %>" required/> <!-- Pre-fill with staff email -->
                 </div>
             </div>
             <div class="mb-3 row">
@@ -64,7 +63,7 @@
                 </div>
             </div>
             <div class="text-end">
-                <button class="btn btn-outline-custom me-2" type="button" onclick="window.location.href='adminServlet?action=viewHEAStaff'"> <!-- Redirect to staff list -->
+                <button class="btn btn-outline-custom me-2" type="button" onclick="window.location.href='adminServlet?action=viewHEA Staff'"> <!-- Redirect to staff list -->
                     BATAL
                 </button>
                 <button class="btn btn-custom" type="submit">
@@ -77,4 +76,4 @@
         @copyRight2020
     </div>
 </body>
-</html
+</html>

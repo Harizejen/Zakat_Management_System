@@ -222,7 +222,7 @@ public class guardian {
                 double g_income = Double.parseDouble(rs.getString("guard_income"));
                 double oth_income = Double.parseDouble(rs.getString("other_income"));
                 
-                // Create a new Student object
+                
                 gd = new guardian();
                 gd.setFather_name(f_name);
                 gd.setFather_occupation(f_occupation);
