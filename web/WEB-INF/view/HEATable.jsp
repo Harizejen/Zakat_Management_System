@@ -13,6 +13,11 @@
 </head>
 <body>
     <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="javascript:window.history.back();" class="btn btn-link">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
         <% 
             List<staff> staffList = (List<staff>) request.getAttribute("HEAstaffList");
             int staffCount = (staffList != null) ? staffList.size() : 0; // Get the size safely

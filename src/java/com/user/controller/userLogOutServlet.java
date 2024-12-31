@@ -4,8 +4,6 @@
  */
 package com.user.controller;
 
-import com.guard.model.guardian;
-import com.user.model.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author User
  */
-public class UserLoginServlet extends HttpServlet {
+public class userLogOutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +34,10 @@ public class UserLoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserLoginServlet</title>");            
+            out.println("<title>Servlet userLogOutServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UserLoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet userLogOutServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +55,12 @@ public class UserLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         // Invalidate the current session
+        if (request.getSession(false) != null) { // Check if session exists
+            request.getSession().invalidate();
+        }
+        // Redirect to login page or logout confirmation
+        response.sendRedirect(request.getContextPath() + "/index.html");
     }
 
     /**
@@ -68,36 +71,10 @@ public class UserLoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-
-        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
-        String stud_password = request.getParameter("stud_password");
-        
-        request.getSession().setAttribute("studentID", stud_id);
-        
-        Student st = new Student();
-        guardian gd = new guardian();
-        st.setStudID(stud_id);
-        st.setStudPass(stud_password);
-
-        if (st.isValid()) {
-            Student stl = st.findStudent(stud_id);
-            guardian gd1 = gd.findGuardian(stud_id);
-            request.getSession().setAttribute("guard_info", gd1);
-            // Store the student data in the session
-            request.getSession().setAttribute("student_data", stl);
-
-            // Check if the student's information is complete
-            boolean isComplete = stl.isInformationComplete(stl); // Implement this method in your Student class
-            request.setAttribute("isInformationComplete", isComplete);
-
-            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
-        } else {
-            request.setAttribute("error", "Invalid student ID or password");
-            request.getRequestDispatcher("/user_login.jsp").forward(request, response);
-        }
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

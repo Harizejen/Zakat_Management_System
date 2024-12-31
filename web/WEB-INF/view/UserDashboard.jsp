@@ -9,6 +9,9 @@
 <% 
     // Retrieve the student data from the session
     Student st = (Student) request.getSession().getAttribute("student_data"); 
+    String eligibilityMessage = (String) request.getAttribute("eligibilityMessage");
+    String popupMessage = (String) request.getAttribute("popupMessage");
+    String redirectTo = (String) request.getAttribute("redirectTo");
 %>
 <!DOCTYPE html>
 <html>
@@ -51,7 +54,7 @@
                 <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
                 <!-- Logout Button -->
-                <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
+                <a href="${pageContext.request.contextPath}/user_logout.do" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
             </div>
         </aside>
                 
@@ -110,11 +113,29 @@
                     <div class="button-container">
                         <a href="<%= request.getContextPath() %>/user.do?action=borang" class="button">MOHON</a>
                         <a href="#" class="button">SYARAT</a>
-                        <a href="#" class="button">SENARAI SEMAK</a>
+                        <a href="#" class="button" onclick="submitPostForm()">SEMAK KELAYAKAN</a>
                     </div>
                 </div>
             </div>
         </main>
+                    
+        <!-- Modal for Pop-Up Message -->
+        <div class="modal fade" id="eligibilityModal" tabindex="-1" aria-labelledby="eligibilityModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eligibilityModalLabel">Semakan Kelayakan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><%= eligibilityMessage != null ? eligibilityMessage : "" %></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <footer class="text-center py-3 ">
             <p class="mb-0 text-white">&copy;copyrights<span id="year"></span></p>
@@ -123,6 +144,34 @@
         <script>
             // Set current year dynamically
             document.getElementById("year").textContent = new Date().getFullYear();
+            
+            function submitPostForm() {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '<%= request.getContextPath() %>/eligible_check.do';
+                document.body.appendChild(form);
+                form.submit();
+            };
+            
+            window.onload = function () {
+                var popupMessage = "<%= popupMessage != null ? popupMessage : "" %>";
+                var eligibilityMessage = "<%= eligibilityMessage != null ? eligibilityMessage : "" %>";
+                var redirectTo = "<%= redirectTo != null ? redirectTo : "" %>";
+
+                if (popupMessage) {
+                    // Show alert and redirect
+                    alert(popupMessage);
+                    if (redirectTo) {
+                        window.location.href = redirectTo;
+                    }
+                }
+
+                if (eligibilityMessage) {
+                    // Show eligibility modal
+                    var modal = new bootstrap.Modal(document.getElementById('eligibilityModal'));
+                    modal.show();
+                }
+            };
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>

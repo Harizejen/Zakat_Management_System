@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="header">
-        <a href="adminServlet?action=viewHEAStaff"> <!-- Link back to the staff list -->
+        <a href="javascript:window.history.back();"> <!-- Link back to the staff list -->
             <i class="fas fa-arrow-left fa-2x" style="border: 2px solid white; border-radius: 50%; padding: 5px;"></i>
         </a>
     </div>
