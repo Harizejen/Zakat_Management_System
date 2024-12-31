@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.user.controller;
+package com.application.controller;
 
+import com.application.model.Application;
 import com.guard.model.guardian;
 import com.user.model.Student;
 import java.io.IOException;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author User
  */
-public class UserLoginServlet extends HttpServlet {
+public class eligibleCheckServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +37,10 @@ public class UserLoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserLoginServlet</title>");            
+            out.println("<title>Servlet eligibleCheckServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UserLoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet eligibleCheckServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,36 +69,54 @@ public class UserLoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-
-        int stud_id = Integer.parseInt(request.getParameter("stud_id"));
-        String stud_password = request.getParameter("stud_password");
+            throws ServletException, IOException {
+        // Gaji Abah + Mak < 5000 Layak
+        // CGPA > 3.0 Layak
+        Student st = (Student) request.getSession().getAttribute("student_data");
+        guardian guard = (guardian) request.getSession().getAttribute("guard_info");
+        Application ap = new Application();
+        ap = ap.getApplication(st.getStudID());
         
-        request.getSession().setAttribute("studentID", stud_id);
-        
-        Student st = new Student();
-        guardian gd = new guardian();
-        st.setStudID(stud_id);
-        st.setStudPass(stud_password);
+//        System.out.println(guard.getFather_income());
+//        System.out.println(guard.getMother_income());
+//        System.out.println(ap.getApplyCGPA());
 
-        if (st.isValid()) {
-            Student stl = st.findStudent(stud_id);
-            guardian gd1 = gd.findGuardian(stud_id);
-            request.getSession().setAttribute("guard_info", gd1);
-            // Store the student data in the session
-            request.getSession().setAttribute("student_data", stl);
+        // boolean to check eligibility
+        boolean eligibleIncome = false;
+        boolean eligibleCGPA = false;
 
-            // Check if the student's information is complete
-            boolean isComplete = stl.isInformationComplete(stl); // Implement this method in your Student class
-            request.setAttribute("isInformationComplete", isComplete);
-
+        if (st.isInformationComplete(st) == false) {
+            String eligibilityMessage = "Please complete your information!";
+            request.setAttribute("eligibilityMessage", eligibilityMessage);
+            request.setAttribute("popupMessage", "Maklumat anda tidak lengkap. Sila lengkapkan borang maklumat.");
+            request.setAttribute("redirectTo", "BorangMaklumat.jsp");
             request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
-        } else {
-            request.setAttribute("error", "Invalid student ID or password");
-            request.getRequestDispatcher("/user_login.jsp").forward(request, response);
+            return;
         }
+
+        double incomeParents = guard.getFather_income() + guard.getMother_income();
+
+        if (incomeParents < 5000) {
+            eligibleIncome = true;
+        }
+
+        if (ap.getApplyCGPA() >= 3.0) {
+            eligibleCGPA = true;
+        }
+
+        // Set eligibility messages
+        if (eligibleIncome && eligibleCGPA) {
+            request.setAttribute("eligibilityMessage", "Anda layak memohon!");
+        } else if (!eligibleIncome) {
+            request.setAttribute("eligibilityMessage", "Anda tidak layak kerana pendapatan ibu bapa melebihi RM5000.");
+        } else if (!eligibleCGPA) {
+            request.setAttribute("eligibilityMessage", "Anda tidak layak kerana CGPA kurang daripada 3.0.");
+        }
+
+        request.getSession().setAttribute("guard_info", guard);
+        request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
     }
 
     /**
