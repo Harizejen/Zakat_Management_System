@@ -17,8 +17,8 @@
 </head>
 <body>
     <div class="header">
-        <a href="#">
-            <i class="fas fa-arrow-left fa-2x" style="border: 2px solid white; border-radius: 50%; padding: 5px;"></i>
+        <a href="javascript:window.history.back();" class="btn btn-light d-flex align-items-center" style="border: none; padding: 5px;">
+            <i class="fas fa-arrow-left fa-2x" style="border: 2px solid #007bff; border-radius: 50%; padding: 10px; color: #007bff; transition: background-color 0.3s;"></i>
         </a>
     </div>
     <div class="container">

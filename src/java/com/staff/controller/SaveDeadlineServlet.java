@@ -25,8 +25,7 @@ public class SaveDeadlineServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();        
+            throws ServletException, IOException {     
         staff st = (staff) request.getSession().getAttribute("staff_data"); 
         
         if (st == null) {
@@ -83,6 +82,7 @@ public class SaveDeadlineServlet extends HttpServlet {
             preparedStatement.setString(4, applicationDurStart);
 
             preparedStatement.executeUpdate();
+            request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
 
             
         } catch (SQLException e) {

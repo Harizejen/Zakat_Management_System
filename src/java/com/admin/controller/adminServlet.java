@@ -67,14 +67,13 @@ public class adminServlet extends HttpServlet {
    @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-     String action = request.getParameter("action");
-     HttpSession session = request.getSession();
-     
+    String action = request.getParameter("action");
+    HttpSession session = request.getSession();
 
     if ("login".equals(action)) {
-        List<staff> HEAstaffList = retrieveHEAStaffData();
-        List<staff> HEPstaffList = retrieveHEPStaffData();
-        List<staff> UZSWstaffList = retrieveUZSWStaffData();
+        List<staff> HEAstaffList = retrieveStaffData("HEA");
+        List<staff> HEPstaffList = retrieveStaffData("HEP");
+        List<staff> UZSWstaffList = retrieveStaffData("UZSW");
 
         session.setAttribute("HEAstaffList", HEAstaffList);
         session.setAttribute("HEPstaffList", HEPstaffList);
@@ -82,20 +81,20 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         
         request.getRequestDispatcher("/adminDashboard.jsp").forward(request, response);
     } else if ("viewHEAStaff".equals(action)) {
-        List<staff> HEAstaffList = retrieveHEAStaffData();
+        List<staff> HEAstaffList = retrieveStaffData("HEA");
         request.setAttribute("HEAstaffList", HEAstaffList);
         request.getRequestDispatcher("/WEB-INF/view/HEATable.jsp").forward(request, response);
     } else if ("viewHEPStaff".equals(action)) {
-        List<staff> HEPstaffList = retrieveHEPStaffData();
+        List<staff> HEPstaffList = retrieveStaffData("HEP");
         request.setAttribute("HEPstaffList", HEPstaffList);
         request.getRequestDispatcher("/WEB-INF/view/HEPTable.jsp").forward(request, response);
     } else if ("viewUZSWStaff".equals(action)) {
-        List<staff> UZSWstaffList = retrieveUZSWStaffData();
+        List<staff> UZSWstaffList = retrieveStaffData("UZSW");
         request.setAttribute("UZSWstaffList", UZSWstaffList);
         request.getRequestDispatcher("/WEB-INF/view/UZSWTable.jsp").forward(request, response);
-    } else if("addStaff".equals(action)) {
+    } else if ("addStaff".equals(action)) {
         request.getRequestDispatcher("/WEB-INF/view/addStaff.jsp").forward(request, response);
-    } else if("updateStaff".equals(action)) {
+    } else if ("updateStaff".equals(action)) {
         request.getRequestDispatcher("/WEB-INF/view/updateStaff.jsp").forward(request, response);
     } else {
         request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
@@ -156,10 +155,9 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         session.setAttribute("adminId", admin_id);
 
 
-        // Retrieve all staff data for the dashboard
-        List<staff> HEAstaffList = retrieveHEAStaffData();
-        List<staff> HEPstaffList = retrieveHEPStaffData();
-        List<staff> UZSWstaffList = retrieveUZSWStaffData();
+        List<staff> HEAstaffList = retrieveStaffData("HEA");
+        List<staff> HEPstaffList = retrieveStaffData("HEP");
+        List<staff> UZSWstaffList = retrieveStaffData("UZSW");
 
         // Set the staff lists as attributes
         request.setAttribute("HEAstaffList", HEAstaffList);
@@ -174,73 +172,27 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     }
 }
 
-// Example of retrieving HEA staff data
-private List<staff> retrieveHEAStaffData() {
-    List<staff> HEAstaffList = new ArrayList<>();
-    String query = "SELECT staff_id, staff_name, staff_email FROM staff WHERE staff_role = 'HEA' ";
+private List<staff> retrieveStaffData(String role) {
+    List<staff> staffList = new ArrayList<>();
+    String query = "SELECT staff_id, staff_name, staff_email FROM staff WHERE staff_role = ?";
 
     try (Connection connection = dbconn.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(query);
-         ResultSet resultSet = preparedStatement.executeQuery()) {
-         
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, role);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
         while (resultSet.next()) {
             staff staff = new staff();
             staff.setStaffid(resultSet.getInt("staff_id"));
             staff.setStaffname(resultSet.getString("staff_name"));
             staff.setStaffemail(resultSet.getString("staff_email"));
-            HEAstaffList.add(staff);
+            staffList.add(staff);
         }
     } catch (SQLException e) {
         Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
     }
 
-    return HEAstaffList;
-}
-    
-    // Example of retrieving HEA staff data
-private List<staff> retrieveHEPStaffData() {
-    List<staff> HEPstaffList = new ArrayList<>();
-    String query = "SELECT staff_id, staff_name, staff_email FROM staff WHERE staff_role = 'HEP' ";
-
-    try (Connection connection = dbconn.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(query);
-         ResultSet resultSet = preparedStatement.executeQuery()) {
-         
-        while (resultSet.next()) {
-            staff staff = new staff();
-            staff.setStaffid(resultSet.getInt("staff_id"));
-            staff.setStaffname(resultSet.getString("staff_name"));
-            staff.setStaffemail(resultSet.getString("staff_email"));
-            HEPstaffList.add(staff);
-        }
-    } catch (SQLException e) {
-        Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
-    }
-
-    return HEPstaffList;
-}
-    
-    // Example of retrieving HEA staff data
-private List<staff> retrieveUZSWStaffData() {
-    List<staff> UZSWstaffList = new ArrayList<>();
-    String query = "SELECT staff_id, staff_name, staff_email FROM staff WHERE staff_role = 'UZSW' ";
-
-    try (Connection connection = dbconn.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(query);
-         ResultSet resultSet = preparedStatement.executeQuery()) {
-         
-        while (resultSet.next()) {
-            staff staff = new staff();
-            staff.setStaffid(resultSet.getInt("staff_id"));
-            staff.setStaffname(resultSet.getString("staff_name"));
-            staff.setStaffemail(resultSet.getString("staff_email"));
-            UZSWstaffList.add(staff);
-        }
-    } catch (SQLException e) {
-        Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
-    }
-
-    return UZSWstaffList;
+    return staffList;
 }
     
     /**
