@@ -178,6 +178,66 @@ public class Application implements Serializable {
         return status;
     }
     
+    public Application getApplication(int stud_id){
+        Application ap = new Application();
+        
+        String query = "SELECT a.*, sa.approve_status\n" +
+                       "FROM application a\n" +
+                       "LEFT JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                       "WHERE a.stud_id = ?;";
+        try(Connection conn = dbconn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)){
+            
+            ps.setInt(1,stud_id);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next()){
+                boolean apply_foodIncentive = false;
+                boolean apply_otherSupport = false;
+                int apply_id = rs.getInt("apply_id");
+                int deadline_id = rs.getInt("deadline_id");
+                String apply_session = rs.getString("apply_session");
+                int apply_part = rs.getInt("apply_part");
+                double apply_cgpa = rs.getDouble("apply_cgps");
+                double apply_gpa = rs.getDouble("apply_gpa");
+                String apply_foodIncentiveParams = rs.getString("apply_foodIncentive");
+                String apply_otherSupportParams = rs.getString("apply_otherSupport");
+                double apply_otherSupportAmount = rs.getDouble("apply_otherSupportAmount");
+                String apply_purpose = rs.getString("apply_purpose");
+                Date apply_date = rs.getDate("apply_date");
+                String apply_status = rs.getString("approve_status");
+                
+                if ("YA".equalsIgnoreCase(apply_foodIncentiveParams) && "YA".equalsIgnoreCase(apply_otherSupportParams)) {
+                    apply_foodIncentive = true;
+                    apply_otherSupport = true;
+                }
+                
+                ap.setApplyID(apply_id);
+                ap.setStudID(stud_id);
+                ap.setDeadlineID(deadline_id);
+                ap.setApplySession(apply_session);
+                ap.setApplyPart(apply_part);
+                ap.setApplyCGPA(apply_cgpa);
+                ap.setApplyGPA(apply_gpa);
+                ap.setApplyFoodIncentive(apply_foodIncentive);
+                ap.setApplyOtherSupport(apply_otherSupport);
+                ap.setApplyOtherSupAmount(apply_otherSupportAmount);
+                ap.setApplyPurpose(apply_purpose);
+                ap.setApplyDate(apply_date);
+                ap.setApplyStatus(apply_status);
+                
+                return ap;
+                
+            }
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        return ap;
+    }
+    
     public ArrayList<Application> getApplicationList(){
         ArrayList<Application> applicationList = new ArrayList<>();
         
@@ -231,6 +291,40 @@ public class Application implements Serializable {
         }
         return applicationList;
     }
+    
+    public ArrayList<Application> getApplicationRecords(int stud_id) {
+        ArrayList<Application> appRecord = new ArrayList<>();
+        String query = "SELECT a.apply_session AS zakat_session, "
+                     + "COALESCE(sa.approve_status, 'DIPROSES') AS application_status "
+                     + "FROM application a "
+                     + "JOIN student s ON a.stud_id = s.stud_id "
+                     + "LEFT JOIN status_approval sa ON a.apply_id = sa.apply_id "
+                     + "WHERE s.stud_id = ?";
+
+        try (Connection conn = dbconn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, stud_id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String apply_session = rs.getString("zakat_session");
+                    String apply_status = rs.getString("application_status");
+
+                    Application ap = new Application();
+                    ap.setApplySession(apply_session);
+                    ap.setApplyStatus(apply_status);
+
+                    appRecord.add(ap);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Log the exception with a proper logging framework (e.g., SLF4J)
+        }
+        return appRecord;
+    }
+
 
 }
 

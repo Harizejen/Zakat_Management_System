@@ -4,6 +4,7 @@
  */
 package com.user.controller;
 
+import com.guard.model.guardian;
 import com.user.model.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -77,12 +78,14 @@ public class UserLoginServlet extends HttpServlet {
         request.getSession().setAttribute("studentID", stud_id);
         
         Student st = new Student();
+        guardian gd = new guardian();
         st.setStudID(stud_id);
         st.setStudPass(stud_password);
 
         if (st.isValid()) {
             Student stl = st.findStudent(stud_id);
-
+            guardian gd1 = gd.findGuardian(stud_id);
+            request.getSession().setAttribute("guard_info", gd1);
             // Store the student data in the session
             request.getSession().setAttribute("student_data", stl);
 

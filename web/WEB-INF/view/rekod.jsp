@@ -4,11 +4,14 @@
     Author     : Hariz and Nasrullah
 --%>
 
+<%@page import="com.application.model.Application"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.user.model.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
     // Retrieve the student data from the session
-    Student st = (Student) request.getSession().getAttribute("student_data"); 
+    Student st = (Student) request.getSession().getAttribute("student_data");
+    ArrayList<Application> appRecord = (ArrayList<Application>) request.getSession().getAttribute("app_record");
 %>
 <!DOCTYPE html>
 <html>
@@ -77,16 +80,20 @@
                         </tr>
                     </thead>
                     <tbody>
+                     <% 
+                        if (appRecord != null && !appRecord.isEmpty()) {
+                          for (int i = 0; i < appRecord.size(); i++) {
+                             Application app = appRecord.get(i);
+                    %>
                         <tr>
-                            <td>1</td>
-                            <td>Sesi 2023</td>
-                            <td>Lulus</td>
+                            <td><%= i+1 %></td>
+                            <td><%= app.getApplySession() %></td>
+                            <td><%= app.getApplyStatus() %></td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Sesi 2024</td>
-                            <td>Sedang Diproses</td>
-                        </tr>
+                    <%
+                            }
+                        }
+                    %>
                     </tbody>
                 </table>
             </div>
