@@ -113,6 +113,7 @@ public class AddApplicationServlet extends HttpServlet {
         double apply_cgpa = Double.parseDouble(request.getParameter("apply_cgpa"));
         String apply_purpose = request.getParameter("apply_purpose");
         LocalDate apply_date = LocalDate.now();
+        int donation_id = 1;
 
         // Create directory to save uploaded files
         String uploadPath = File.separator + UPLOAD_DIR;
@@ -121,8 +122,8 @@ public class AddApplicationServlet extends HttpServlet {
             uploadDir.mkdirs(); // Create directory if it does not exist
         }
 
-        String applyQuery = "INSERT INTO application (stud_id, deadline_id, apply_session, apply_part, apply_cgpa, apply_gpa, apply_foodIncentive, apply_otherSupport, apply_otherSupportName, apply_otherSupportAmount, apply_purpose, apply_date) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String applyQuery = "INSERT INTO application (stud_id, deadline_id, apply_session, apply_part, apply_cgpa, apply_gpa, apply_foodIncentive, apply_otherSupport, apply_otherSupportName, apply_otherSupportAmount, apply_purpose, apply_date, donation_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         String documentQuery = "INSERT INTO documents (apply_id, doc_name) VALUES (?, ?)";
 
@@ -143,6 +144,7 @@ public class AddApplicationServlet extends HttpServlet {
                 psApplication.setDouble(10, apply_otherSupportAmount);
                 psApplication.setString(11, apply_purpose);
                 psApplication.setDate(12, java.sql.Date.valueOf(apply_date));
+                psApplication.setInt(13, donation_id);
 
                 int rowsInserted = psApplication.executeUpdate();
                 if (rowsInserted > 0) {
