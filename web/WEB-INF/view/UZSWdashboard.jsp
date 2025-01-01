@@ -124,7 +124,8 @@
                         <h2><%= totalCount %></h2>
                         <!-- Center the button -->
                         <div class="d-flex justify-content-center">
-                            <a href="UZSWListPage" class="btn btn-danger" >Lihat ></a>
+                            <a href="UZSWServlet" class="btn btn-danger">Lihat ></a>
+
                         </div>
                     </div>
                 </div>

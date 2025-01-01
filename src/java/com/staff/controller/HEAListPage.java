@@ -49,16 +49,8 @@ public class HEAListPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-
-        if ("dashboard".equals(action)) {
-            showDashboard(request, response);
-        } else if ("viewApplications".equals(action)) {
-            retrieveHEAApplications(request, response);
-        } else {
-            request.getRequestDispatcher("/HEAdashboard.jsp").forward(request, response);
-        }
-    }
+        request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
+            }
 
     /**
      *
@@ -80,15 +72,15 @@ public class HEAListPage extends HttpServlet {
             throws ServletException, IOException {
         int pendingCount = 0, approvedCount = 0, rejectedCount = 0;
 
-        String query = "SELECT application_status, COUNT(*) AS status_count FROM applications WHERE assigned_role = 'HEA' GROUP BY application_status";
+        String query = "SELECT status_approval, COUNT(*) AS status_count FROM applications WHERE staff_role = 'HEA' GROUP BY status_approval";
 
         try (Connection connection = dbconn.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
-                String status = resultSet.getString("application_status");
-                int count = resultSet.getInt("status_count");
+                String status = resultSet.getString("status_approval");
+                int count = resultSet.getInt("status_approval");
 
                 switch (status.toLowerCase()) {
                     case "pending":

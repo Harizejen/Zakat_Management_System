@@ -63,6 +63,7 @@ public class HEPListPage extends HttpServlet {
      @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
         String action = request.getParameter("action");
 
         if ("dashboard".equals(action)) {
@@ -96,10 +97,10 @@ public class HEPListPage extends HttpServlet {
         int pendingCount = 0, approvedCount = 0, rejectedCount = 0;
 
         // Query to fetch application statuses assigned to HEP after HEA processing
-        String query = "SELECT application_status, COUNT(*) AS status_count " +
-                       "FROM applications " +
-                       "WHERE assigned_role = 'HEP' AND hea_status = 'checked' " +
-                       "GROUP BY application_status";
+        String query = "SELECT status_approval, COUNT(*) AS status_count " +
+                       "FROM application " +
+                       "WHERE staff_role = 'HEP' AND hea_status = 'checked' " +
+                       "GROUP BY approve_status";
 
         try (Connection connection = dbconn.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);

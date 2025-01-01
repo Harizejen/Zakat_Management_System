@@ -44,7 +44,7 @@
                 <th>Disemak</th>
                 <th>Nama</th>
                 <th>No. Pelajar</th>
-                <th>Gaji (RM)</th> <!-- Gaji added from HEP content -->
+                <th>Gaji (RM)</th> 
                 <th>Tarikh Mohon</th>
                 <th>Borang</th>
                 <th>Status</th>
