@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -26,9 +27,10 @@ import javax.servlet.http.Part;
  * @author User
  */
 @MultipartConfig(
+    location = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads",
     fileSizeThreshold = 1024 * 1024 * 2, // 2MB
     maxFileSize = 1024 * 1024 * 10,      // 10MB
-    maxRequestSize = 1024 * 1024 * 50   // 50MB
+    maxRequestSize = 1024 * 1024 * 61   // 61MB
 )
 public class AddApplicationServlet extends HttpServlet {
     
@@ -113,7 +115,7 @@ public class AddApplicationServlet extends HttpServlet {
         double apply_cgpa = Double.parseDouble(request.getParameter("apply_cgpa"));
         String apply_purpose = request.getParameter("apply_purpose");
         LocalDate apply_date = LocalDate.now();
-        int donation_id = 1;
+        int donation_id = 1;//default value
 
         // Create directory to save uploaded files
         String uploadPath = File.separator + UPLOAD_DIR;
@@ -157,12 +159,11 @@ public class AddApplicationServlet extends HttpServlet {
 
                             // Save uploaded files and insert document data
                             try (PreparedStatement psDocument = conn.prepareStatement(documentQuery)) {
-                                for (Part filePart : request.getParts()) {
-                                    String fileName = filePart.getSubmittedFileName();
+                                Collection<Part> parts = request.getParts();
+                                for (Part filePart : parts) {
+                                    String fileName = getFileName(filePart);
                                     if (fileName != null && !fileName.isEmpty()) {
-                                        // Save file to local directory
-                                        File fileToSave = new File(uploadDir,fileName);
-                                        filePart.write(fileToSave.getPath());
+                                          filePart.write(fileName);
 
                                         // Save file name to database
                                         psDocument.setInt(1, apply_id);
@@ -192,6 +193,19 @@ public class AddApplicationServlet extends HttpServlet {
             request.setAttribute("errorMessage", "An error occurred while processing your application. Please try again later.");
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+    }
+    
+    private String getFileName(Part part){
+        String contentDisposition = part.getHeader("content-disposition");
+        
+        if(!contentDisposition.contains("filename=")){
+            return null;
+        }
+        
+        int beginIndex = contentDisposition.indexOf("filename=")+10;
+        int endIndex = contentDisposition.length() - 1;
+        
+        return contentDisposition.substring(beginIndex,endIndex);
     }
 
     /**
