@@ -26,7 +26,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="ms-auto">
-                        <a class="btn btn-primary" href="logoutServlet" role="button">Logout</a>
+                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/adminLogOutServlet" role="button">Logout</a>
                     </div>
                 </div>
             </div>
