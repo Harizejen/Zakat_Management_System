@@ -55,7 +55,6 @@
             <!-- Sample Rows -->
             <tr>
                 <td>1</td>
-                <td><input type="checkbox"></td>
                 <td>Aris Aidil Bin Baharuddin</td>
                 <td>2023******</td>
                 <td>3,500</td> <!-- Gaji -->
@@ -73,7 +72,7 @@
                 <td>
                     <!-- Dropdown Tindakan -->
                     <div class="d-flex align-items-center gap-2">
-                        <div class="dropdown">
+                            <div class="dropdown">
                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Tindakan
                             </button>
@@ -83,8 +82,10 @@
                                 <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Tolak</a></li>
                             </ul>
                         </div>
+                        <td><input type="checkbox"></td>
                         <!-- Serah Button -->
                         <button class="btn btn-danger btn-sm">Serah</button>
+                        F
                     </div>
                 </td>
             </tr>
