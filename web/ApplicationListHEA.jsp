@@ -38,7 +38,7 @@
     <div class="jumlah-section mb-4">
         <span>Jumlah Permohonan: <span class="jumlah-count">1200</span></span>
     </div>
-
+z
     <!-- Table Section -->
     <table class="table table-hover align-middle">
         <thead class="table-light">
