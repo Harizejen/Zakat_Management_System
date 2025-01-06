@@ -1,4 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="com.ApplicationStatus.model.ApplicationStatus"%>
+<%@page import="java.util.List"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +33,10 @@
 
 <!-- Main Container -->
 <div class="container">
+    <% 
+        List<ApplicationStatus> appList = (List<ApplicationStatus>) request.getAttribute("HEPstaffList");
+        int appCount = (appList != null) ? appList.size() : 0; // Get the size safely
+    %>
     <!-- Jumlah Permohonan Section -->
     <div class="jumlah-section mb-4">
         <span>Jumlah Permohonan: <span class="jumlah-count">1200</span></span>

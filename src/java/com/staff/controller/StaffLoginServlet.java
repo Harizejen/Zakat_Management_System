@@ -152,11 +152,18 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         staff ss = (staff) request.getSession().getAttribute("staff_data"); 
         String userRole = (String) ss.getStaffrole();
             
-        // Retrieve all staff data for the dashboard
+        // Retrieve all data for the dashboard
         List<ApplicationStatus> totalList = retrieveAllApplicationsByRole(userRole);
+        List<ApplicationStatus> pendingList = retrievePendingApplicationsByRole(userRole);
+        List<ApplicationStatus> approvedList = retrieveApprovedApplicationsByRole(userRole);
+        List<ApplicationStatus> rejectedList = retrieveRejectedApplicationsByRole(userRole);
         
-        // Set the staff lists as attributes
+        // Set the lists as attributes
         request.setAttribute("totalList", totalList);
+        request.setAttribute("pendingList", pendingList);
+        request.setAttribute("approvedList", approvedList);
+        request.setAttribute("rejectedList", rejectedList);
+        
 
         // Decide which JSP to forward based on the user role
         if ("UZSW".equals(userRole)) {
@@ -215,6 +222,152 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
         return applicationList;
     }
+    private List<ApplicationStatus> retrievePendingApplicationsByRole(String staffRole) {
+    List<ApplicationStatus> pendingApplications = new ArrayList<>();
+    String query = null;
+
+    if ("HEA".equals(staffRole)) {
+        // HEA receives all unreviewed applications
+        query = "SELECT a.* FROM application a LEFT JOIN status_approval sa ON a.apply_id = sa.apply_id " +
+                "WHERE sa.apply_id IS NULL OR sa.reviewed_by_hea IS NULL";
+    } else if ("HEP".equals(staffRole)) {
+        // HEP receives applications approved by HEA but not yet reviewed by HEP
+        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id " +
+                "WHERE sa.reviewed_by_hea = 'TRUE' AND sa.app_stat_hea = 'TRUE' AND sa.reviewed_by_hep IS NULL";
+    } else if ("UZSW".equals(staffRole)) {
+        // UZSW receives applications approved by both HEA and HEP but not yet reviewed by UZSW
+        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id " +
+                "WHERE sa.reviewed_by_hea = 'TRUE' AND sa.reviewed_by_hep = 'TRUE' " +
+                "AND sa.app_stat_hea = 'TRUE' AND sa.app_stat_hep = 'TRUE' AND sa.reviewed_by_uzsw IS NULL";
+    }
+
+    try (Connection connection = dbconn.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        while (resultSet.next()) {
+            ApplicationStatus appStatus = new ApplicationStatus();
+            appStatus.setApply_id(resultSet.getInt("apply_id"));
+            appStatus.setStud_id(resultSet.getInt("stud_id"));
+            appStatus.setDeadline_id(resultSet.getInt("deadline_id"));
+            appStatus.setApply_session(resultSet.getString("apply_session"));
+            appStatus.setApply_part(resultSet.getInt("apply_part"));
+            appStatus.setApply_cgpa(resultSet.getDouble("apply_cgpa"));
+            appStatus.setApply_gpa(resultSet.getDouble("apply_gpa"));
+            appStatus.setApply_foodIncentive(resultSet.getString("apply_foodincentive"));
+            appStatus.setApply_otherSupport(resultSet.getString("apply_otherSupport"));
+            appStatus.setApply_otherSupportName(resultSet.getString("apply_otherSupportName"));
+            appStatus.setApply_otherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+            appStatus.setApply_purpose(resultSet.getString("apply_purpose"));
+            appStatus.setApply_date(resultSet.getDate("apply_date"));
+            appStatus.setDonation_id(resultSet.getInt("donation_id"));
+            pendingApplications.add(appStatus);
+        }
+    } catch (SQLException e) {
+        Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
+    }
+
+    return pendingApplications;
+}
+private List<ApplicationStatus> retrieveApprovedApplicationsByRole(String staffRole) {
+    List<ApplicationStatus> approvedApplications = new ArrayList<>();
+    String query = null;
+
+    if ("HEA".equals(staffRole)) {
+        // HEA retrieves applications they approved
+        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id " +
+                "WHERE sa.reviewed_by_hea = 'TRUE' AND sa.app_stat_hea = 'TRUE'";
+    } else if ("HEP".equals(staffRole)) {
+        // HEP retrieves applications approved by both HEA and HEP
+        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id " +
+                "WHERE sa.reviewed_by_hea = 'TRUE' AND sa.app_stat_hea = 'TRUE' " +
+                "AND sa.reviewed_by_hep = 'TRUE' AND sa.app_stat_hep = 'TRUE'";
+    } else if ("UZSW".equals(staffRole)) {
+        // UZSW retrieves applications fully approved by HEA, HEP, and UZSW
+        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id " +
+                "WHERE sa.reviewed_by_hea = 'TRUE' AND sa.app_stat_hea = 'TRUE' " +
+                "AND sa.reviewed_by_hep = 'TRUE' AND sa.app_stat_hep = 'TRUE' " +
+                "AND sa.reviewed_by_uzsw = 'TRUE' AND sa.app_stat_uzsw = 'TRUE'";
+    }
+
+    try (Connection connection = dbconn.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        while (resultSet.next()) {
+            ApplicationStatus appStatus = new ApplicationStatus();
+            appStatus.setApply_id(resultSet.getInt("apply_id"));
+            appStatus.setStud_id(resultSet.getInt("stud_id"));
+            appStatus.setDeadline_id(resultSet.getInt("deadline_id"));
+            appStatus.setApply_session(resultSet.getString("apply_session"));
+            appStatus.setApply_part(resultSet.getInt("apply_part"));
+            appStatus.setApply_cgpa(resultSet.getDouble("apply_cgpa"));
+            appStatus.setApply_gpa(resultSet.getDouble("apply_gpa"));
+            appStatus.setApply_foodIncentive(resultSet.getString("apply_foodincentive"));
+            appStatus.setApply_otherSupport(resultSet.getString("apply_otherSupport"));
+            appStatus.setApply_otherSupportName(resultSet.getString("apply_otherSupportName"));
+            appStatus.setApply_otherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+            appStatus.setApply_purpose(resultSet.getString("apply_purpose"));
+            appStatus.setApply_date(resultSet.getDate("apply_date"));
+            appStatus.setDonation_id(resultSet.getInt("donation_id"));
+            approvedApplications.add(appStatus);
+        }
+    } catch (SQLException e) {
+        Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
+    }
+
+    return approvedApplications;
+}
+private List<ApplicationStatus> retrieveRejectedApplicationsByRole(String staffRole) {
+    List<ApplicationStatus> rejectedApplications = new ArrayList<>();
+    String query = null;
+
+    if ("HEA".equals(staffRole)) {
+        // HEA retrieves applications they rejected
+        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id " +
+                "WHERE sa.reviewed_by_hea = 'TRUE' AND sa.app_stat_hea = 'FALSE'";
+    } else if ("HEP".equals(staffRole)) {
+        // HEP retrieves applications rejected at their stage
+        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id " +
+                "WHERE sa.reviewed_by_hea = 'TRUE' AND sa.app_stat_hea = 'TRUE' " +
+                "AND sa.reviewed_by_hep = 'TRUE' AND sa.app_stat_hep = 'FALSE'";
+    } else if ("UZSW".equals(staffRole)) {
+        // UZSW retrieves applications rejected at their stage
+        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id " +
+                "WHERE sa.reviewed_by_hea = 'TRUE' AND sa.app_stat_hea = 'TRUE' " +
+                "AND sa.reviewed_by_hep = 'TRUE' AND sa.app_stat_hep = 'TRUE' " +
+                "AND sa.reviewed_by_uzsw = 'TRUE' AND sa.app_stat_uzsw = 'FALSE'";
+    }
+
+    try (Connection connection = dbconn.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        while (resultSet.next()) {
+            ApplicationStatus appStatus = new ApplicationStatus();
+            appStatus.setApply_id(resultSet.getInt("apply_id"));
+            appStatus.setStud_id(resultSet.getInt("stud_id"));
+            appStatus.setDeadline_id(resultSet.getInt("deadline_id"));
+            appStatus.setApply_session(resultSet.getString("apply_session"));
+            appStatus.setApply_part(resultSet.getInt("apply_part"));
+            appStatus.setApply_cgpa(resultSet.getDouble("apply_cgpa"));
+            appStatus.setApply_gpa(resultSet.getDouble("apply_gpa"));
+            appStatus.setApply_foodIncentive(resultSet.getString("apply_foodincentive"));
+            appStatus.setApply_otherSupport(resultSet.getString("apply_otherSupport"));
+            appStatus.setApply_otherSupportName(resultSet.getString("apply_otherSupportName"));
+            appStatus.setApply_otherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+            appStatus.setApply_purpose(resultSet.getString("apply_purpose"));
+            appStatus.setApply_date(resultSet.getDate("apply_date"));
+            appStatus.setDonation_id(resultSet.getInt("donation_id"));
+            rejectedApplications.add(appStatus);
+        }
+    } catch (SQLException e) {
+        Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
+    }
+
+    return rejectedApplications;
+}
+
     
 
 
