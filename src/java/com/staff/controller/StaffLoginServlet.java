@@ -89,6 +89,7 @@ public class StaffLoginServlet extends HttpServlet {
     @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+    
     String staffIdParam = request.getParameter("staffId");
     String password = request.getParameter("password");
     String role = request.getParameter("role");
@@ -171,48 +172,50 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             
     } else {
         request.setAttribute("error", "Invalid credentials");
-        request.getRequestDispatcher("/staffLogin.jsp").forward(request, response);
+        request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
     }
-}private List<ApplicationStatus> retrieveAllApplicationsByRole(String staffRole) {
-    List<ApplicationStatus> applicationList = new ArrayList<>();
-    String query = null;
-
-    if ("HEA".equals(staffRole)) {
-        query = "SELECT * FROM application";
-    } else if ("HEP".equals(staffRole)) {
-        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id WHERE sa.reviewed_by_hea = 'TRUE' AND sa.app_stat_hea = 'TRUE'";
-    } else if ("UZSW".equals(staffRole)) {
-        query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id WHERE sa.reviewed_by_hea = 'TRUE' AND sa.reviewed_by_hep = 'TRUE' AND sa.app_stat_hea = 'TRUE' AND sa.app_stat_hep = 'TRUE'";
-    }
-
-    try (Connection connection = dbconn.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(query);
-         ResultSet resultSet = preparedStatement.executeQuery()) {
-
-        while (resultSet.next()) {
-            ApplicationStatus appStatus = new ApplicationStatus();
-            appStatus.setApply_id(resultSet.getInt("apply_id"));
-            appStatus.setStud_id(resultSet.getInt("stud_id"));
-            appStatus.setDeadline_id(resultSet.getInt("deadline_id"));
-            appStatus.setApply_session(resultSet.getString("apply_session"));
-            appStatus.setApply_part(resultSet.getInt("apply_part"));
-            appStatus.setApply_cgpa(resultSet.getDouble("apply_cgpa"));
-            appStatus.setApply_gpa(resultSet.getDouble("apply_gpa"));
-            appStatus.setApply_foodIncentive(resultSet.getString("apply_foodincentive"));
-            appStatus.setApply_otherSupport(resultSet.getString("apply_otherSupport"));
-            appStatus.setApply_otherSupportName(resultSet.getString("apply_otherSupportName"));
-            appStatus.setApply_otherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
-            appStatus.setApply_purpose(resultSet.getString("apply_purpose"));
-            appStatus.setApply_date(resultSet.getDate("apply_date"));
-            appStatus.setDonation_id(resultSet.getInt("donation_id"));
-            applicationList.add(appStatus);
-        }
-    } catch (SQLException e) {
-        Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
-    }
-
-    return applicationList;
 }
+    private List<ApplicationStatus> retrieveAllApplicationsByRole(String staffRole) {
+        List<ApplicationStatus> applicationList = new ArrayList<>();
+        String query = null;
+
+        if ("HEA".equals(staffRole)) {
+            query = "SELECT * FROM application";
+        } else if ("HEP".equals(staffRole)) {
+            query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id WHERE sa.reviewed_by_hea = 'TRUE' AND sa.app_stat_hea = 'TRUE'";
+        } else if ("UZSW".equals(staffRole)) {
+            query = "SELECT a.* FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id WHERE sa.reviewed_by_hea = 'TRUE' AND sa.reviewed_by_hep = 'TRUE' AND sa.app_stat_hea = 'TRUE' AND sa.app_stat_hep = 'TRUE'";
+        }
+
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                ApplicationStatus appStatus = new ApplicationStatus();
+                appStatus.setApply_id(resultSet.getInt("apply_id"));
+                appStatus.setStud_id(resultSet.getInt("stud_id"));
+                appStatus.setDeadline_id(resultSet.getInt("deadline_id"));
+                appStatus.setApply_session(resultSet.getString("apply_session"));
+                appStatus.setApply_part(resultSet.getInt("apply_part"));
+                appStatus.setApply_cgpa(resultSet.getDouble("apply_cgpa"));
+                appStatus.setApply_gpa(resultSet.getDouble("apply_gpa"));
+                appStatus.setApply_foodIncentive(resultSet.getString("apply_foodincentive"));
+                appStatus.setApply_otherSupport(resultSet.getString("apply_otherSupport"));
+                appStatus.setApply_otherSupportName(resultSet.getString("apply_otherSupportName"));
+                appStatus.setApply_otherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+                appStatus.setApply_purpose(resultSet.getString("apply_purpose"));
+                appStatus.setApply_date(resultSet.getDate("apply_date"));
+                appStatus.setDonation_id(resultSet.getInt("donation_id"));
+                applicationList.add(appStatus);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        return applicationList;
+    }
+    
 
 
    
