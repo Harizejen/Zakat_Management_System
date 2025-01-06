@@ -1,3 +1,7 @@
+<%@page import="java.sql.*"%>
+<%@page import="com.staff.model.staff"%>
+<%@page import="java.util.List"%>
+<%@page import="com.database.dbconn"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -5,13 +9,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hal Ehwal Akademik</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
-    
     <link rel="stylesheet" href="css/stf.css">
     <link rel="stylesheet" href="css/staffDashboard.css"> 
 <body>
+</head>
 
 <!-- Navigation Bar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
@@ -41,13 +44,14 @@
         <thead class="table-light">
             <tr>
                 <th>Bil</th>
-                <th>Disemak</th>
                 <th>Nama</th>
                 <th>No. Pelajar</th>
                 <th>CGPA</th> 
                 <th>Tarikh Mohon</th>
                 <th>Borang</th>
                 <th>Status</th>
+                <th>Aksi</th>
+                <th>Disemak</th>
                 <th>Tindakan</th>
             </tr>
         </thead>
@@ -55,7 +59,7 @@
             <!-- Sample Rows -->
             <tr>
                 <td>1</td>
-                <td><input type="checkbox"></td>
+                
                 <td>Aris Aidil Bin Baharuddin</td>
                 <td>2023******</td>
                 <td>3.85</td> 
@@ -65,48 +69,66 @@
                         2023******_MAC25OGOS25.pdf
                         <i class="bi bi-download download-icon"></i>
                     </a>
-                </td>
-                <td>
+               <td>
                     <span class="circle-status status-green"></span>
-                    <span class="status-text">Diluluskan</span>
+                    <span class="status-text">Lulus</span>
                 </td>
                 <td>
-                    <!-- Dropdown Tindakan -->
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Tindakan
-                            </button>
+            <!-- Aksi Form -->
+            <form action="aksiAction.do" method="post" style="display: inline;">
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Aksi
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Semak</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Sahkan</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Tolak</a></li>
-                            </ul>
-                        </div>
-                        <!-- Serah Button -->
-                        <button class="btn btn-danger btn-sm">Serah</button>
-                    </div>
+                             </ul>
+                        </li>
+                        <li>
+                            <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Lulus</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Gagal</a></li>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </td>
+                  
+                    
                 </td>
+                
+                <td>
+            <!-- Disemak Form -->
+            <form action="disemakAction.do" method="post" style="display: inline;">
+                <input type="checkbox" name="disemak" value="checked" >
+            </form>
+        </td>
+         <td>
+            <!-- Tindakan Form -->
+            <form action="tindakanAction.do" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger btn-sm" name="tindakan" value="serah">Serah</button>
+            </form>
+        </td>
+        
             </tr>
-            <!-- Repeat rows as necessary -->
-        </tbody>
+            </tbody>
     </table>
 
-    <!-- Pagination -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Sebelumnya</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Seterusnya</a>
-            </li>
-        </ul>
-    </nav>
-</div>
+  <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+             </nav>
+
+
 
 <!-- Logout Confirmation Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">

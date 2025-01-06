@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/stf.css">
-    <link rel="stylesheet" href="css/staffDashboard.css">
 </head>
 <body>
     
@@ -57,7 +56,7 @@
                 <td>1</td>
                 <td>Aris Aidil Bin Baharuddin</td>
                 <td>2023******</td>
-                <td>3,500</td> <!-- Gaji -->
+                <td>3,500</td> 
                 <td>01/01/2025</td>
                 <td>
                     <a href="#" class="text-decoration-none">
