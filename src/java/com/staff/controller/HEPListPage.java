@@ -64,15 +64,6 @@ public class HEPListPage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
          request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
-        String action = request.getParameter("action");
-
-        if ("dashboard".equals(action)) {
-            showDashboard(request, response);
-        } else if ("viewApplications".equals(action)) {
-            retrieveHEPApplications(request, response);
-        } else {
-            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
-        }
     }
 
     /**
@@ -92,76 +83,7 @@ public class HEPListPage extends HttpServlet {
      /**
      * Fetches and forwards application status counts to the HEP dashboard view.
      */
-    private void showDashboard(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int pendingCount = 0, approvedCount = 0, rejectedCount = 0;
-
-        // Query to fetch application statuses assigned to HEP after HEA processing
-        String query = "SELECT status_approval, COUNT(*) AS status_count " +
-                       "FROM application " +
-                       "WHERE staff_role = 'HEP' AND hea_status = 'checked' " +
-                       "GROUP BY approve_status";
-
-        try (Connection connection = dbconn.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            while (resultSet.next()) {
-                String status = resultSet.getString("application_status");
-                int count = resultSet.getInt("status_count");
-
-                switch (status.toLowerCase()) {
-                    case "pending":
-                        pendingCount = count;
-                        break;
-                    case "approved":
-                        approvedCount = count;
-                        break;
-                    case "rejected":
-                        rejectedCount = count;
-                        break;
-                }
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(HEPListPage.class.getName()).log(Level.SEVERE, null, e);
-            request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
-            return;
-        }
-
-        // Set attributes for the JSP
-        request.setAttribute("pendingCount", pendingCount);
-        request.setAttribute("approvedCount", approvedCount);
-        request.setAttribute("rejectedCount", rejectedCount);
-
-        // Forward to HEP dashboard JSP
-        request.getRequestDispatcher("/WEB-INF/view/DashboardHEP.jsp").forward(request, response);
-    }
-
-     /**
-     * Retrieves HEP-specific application data and forwards it to the view.
-     */
-    private void retrieveHEPApplications(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String query = "SELECT * FROM applications WHERE assigned_role = 'HEP' AND hea_status = 'checked'";
-
-        try (Connection connection = dbconn.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            // Add application data to the request
-            request.setAttribute("applications", resultSet);
-
-        } catch (SQLException e) {
-            Logger.getLogger(HEPListPage.class.getName()).log(Level.SEVERE, null, e);
-            request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
-            return;
-        }
-
-        // Forward to the HEP-specific application list JSP
-        request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
-    }
+    
 
     /**
      * Returns a short description of the servlet.

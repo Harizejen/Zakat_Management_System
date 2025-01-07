@@ -5,7 +5,6 @@
 --%>
 <%@page import="java.util.List"%>
 <%@page import="com.application.model.Application"%>
-<%@page import="com.ApplicationStatus.model.ApplicationStatus"%>
 <%@page import="com.staff.model.staff"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
@@ -119,7 +118,7 @@
                     <div class="card-body card-body-lg text-white" style="background-color: #112C55">
                         <h5>JUMLAH PERMOHONAN:</h5>
                         <% 
-                        List<ApplicationStatus> totalList = (List<ApplicationStatus>) request.getAttribute("totalList");
+                        List<Application> totalList = (List<Application>) request.getAttribute("totalList");
                         int totalCount = (totalList != null) ? totalList.size() : 0; // Get the size safely
                         %>
                         <h2><%= totalCount %></h2>
@@ -148,7 +147,7 @@
                     <div class="card-body text-white" style="background-color: #B74A4C">
                         <h5>PEMOHONAN MENUNGGU:</h5>
                         <% 
-                        List<ApplicationStatus> pendingList = (List<ApplicationStatus>) request.getAttribute("pendingList");
+                        List<Application> pendingList = (List<Application>) request.getAttribute("pendingList");
                         int pendingCount = (pendingList != null) ? pendingList.size() : 0; // Get the size safely
                         %>
                         <h3><%= pendingCount %></h3>
@@ -161,7 +160,7 @@
                     <div class="card-body text-white" style="background-color: #8A2565">
                         <h5>PEMOHONAN DISAHKAN:</h5>
                         <% 
-                        List<ApplicationStatus> approvedList = (List<ApplicationStatus>) request.getAttribute("approvedList");
+                        List<Application> approvedList = (List<Application>) request.getAttribute("approvedList");
                         int approvedCount = (approvedList != null) ? approvedList.size() : 0; // Get the size safely
                         %>
                         <h3><%= approvedCount %></h3>
@@ -174,7 +173,7 @@
                     <div class="card-body text-white" style="background-color: #7B577D">
                         <h5>PEMOHONAN DITOLAK:</h5>
                         <% 
-                        List<ApplicationStatus> rejectedList = (List<ApplicationStatus>) request.getAttribute("rejectedList");
+                        List<Application> rejectedList = (List<Application>) request.getAttribute("rejectedList");
                         int rejectedCount = (rejectedList != null) ? rejectedList.size() : 0; // Get the size safely
                         %>
                         <h3><%= rejectedCount %></h3>

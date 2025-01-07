@@ -62,58 +62,13 @@ public class HEAListPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+       
     }
 
     /**
      * Fetches and forwards application status counts to the dashboard view.
      */
-    private void showDashboard(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int pendingCount = 0, approvedCount = 0, rejectedCount = 0;
-
-        String query = "SELECT status_approval, COUNT(*) AS status_count FROM applications WHERE staff_role = 'HEA' GROUP BY status_approval";
-
-        try (Connection connection = dbconn.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            while (resultSet.next()) {
-                String status = resultSet.getString("status_approval");
-                int count = resultSet.getInt("status_approval");
-
-                switch (status.toLowerCase()) {
-                    case "pending":
-                        pendingCount = count;
-                        break;
-                    case "approved":
-                        approvedCount = count;
-                        break;
-                    case "rejected":
-                        rejectedCount = count;
-                        break;
-                }
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(HEAListPage.class.getName()).log(Level.SEVERE, null, e);
-            request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
-            return;
-        }
-
-        request.setAttribute("pendingCount", pendingCount);
-        request.setAttribute("approvedCount", approvedCount);
-        request.setAttribute("rejectedCount", rejectedCount);
-        request.getRequestDispatcher("/WEB-INF/view/DashboardHEA.jsp").forward(request, response);
-    }
-
-    /**
-     * Retrieves HEA-specific application data and forwards it to the view.
-     */
-    private void retrieveHEAApplications(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Similar implementation to retrieve HEA-specific applications.
-    }
+    
 
     @Override
     public String getServletInfo() {
