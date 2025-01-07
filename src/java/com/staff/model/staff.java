@@ -96,21 +96,25 @@ public class staff {
     }
     
    public boolean isValid() {
+    if (staffid <= 0 || staffpassword == null || staffpassword.isEmpty()) {
+        System.out.println("Invalid staff ID or password.");
+        return false; // Invalid input
+    }
+
     boolean isValid = false;
-    // Updated query with correct column names
     String query = "SELECT * FROM staff WHERE staff_id = ? AND staff_password = ?";
 
     try (Connection connection = dbconn.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-        preparedStatement.setInt(1, staffid);  // Assuming staffid is passed to the method
-        preparedStatement.setString(2, staffpassword);  // Assuming staffpassword is passed to the method
+        preparedStatement.setInt(1, staffid);
+        preparedStatement.setString(2, staffpassword);
 
         ResultSet resultSet = preparedStatement.executeQuery();
-        isValid = resultSet.next();  // If a record is found, the staff is valid
+        isValid = resultSet.next();
 
     } catch (SQLException e) {
-        e.printStackTrace();
+        e.printStackTrace(); // Consider logging this instead
     }
     return isValid;
 }

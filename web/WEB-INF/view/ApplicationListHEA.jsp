@@ -1,6 +1,4 @@
 <%@page import="java.sql.*"%>
-<%@page import="com.staff.model.staff"%>
-<%@page import="java.util.List"%>
 <%@page import="com.database.dbconn"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,9 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/stf.css">
     <link rel="stylesheet" href="css/staffDashboard.css"> 
-<body>
 </head>
-
+<body>
 <!-- Navigation Bar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
     <div class="container-fluid d-flex align-items-center">
@@ -88,7 +85,7 @@ z
                         <li>
                             <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Lulus</a></li>
                             <li><a class="dropdown-item" href="#" onclick="updateDropdown(this)">Gagal</a></li>
-                        </li>
+                    </li>
                     </ul>
                 </div>
             </form>

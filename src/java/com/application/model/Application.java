@@ -27,16 +27,19 @@ public class Application implements Serializable {
     private double apply_gpa;
     private boolean apply_foodIncentive;
     private boolean apply_otherSupport;
+    private String apply_otherSupportName;
     private double apply_otherSupportAmount;
     private String apply_purpose;
-    private String apply_status;
     private Date apply_date;
+    private int donation_id;
+    private String apply_status;
 
     // Constructor
     public Application() {}
-    
-    // Normal Constructor
-    public Application(int apply_id,int stud_id,int deadline_id,String apply_session,int apply_part, double apply_cgpa,double apply_gpa,boolean apply_foodIncentive, boolean apply_otherSupport, double apply_otherSupportAmount, String apply_purpose,String apply_status,Date apply_date){
+
+    public Application(int apply_id, int stud_id, int deadline_id, String apply_session, int apply_part, double apply_cgpa, 
+                       double apply_gpa, boolean apply_foodIncentive, boolean apply_otherSupport, String apply_otherSupportName,
+                       double apply_otherSupportAmount, String apply_purpose, Date apply_date, int donation_id, String apply_status) {
         this.apply_id = apply_id;
         this.stud_id = stud_id;
         this.deadline_id = deadline_id;
@@ -46,116 +49,133 @@ public class Application implements Serializable {
         this.apply_gpa = apply_gpa;
         this.apply_foodIncentive = apply_foodIncentive;
         this.apply_otherSupport = apply_otherSupport;
+        this.apply_otherSupportName = apply_otherSupportName;
         this.apply_otherSupportAmount = apply_otherSupportAmount;
         this.apply_purpose = apply_purpose;
-        this.apply_status = apply_status;
         this.apply_date = apply_date;
+        this.donation_id = donation_id;
+        this.apply_status = apply_status;
     }
 
-    // Getters
+    // Getters and Setters for All Attributes
     public int getApplyID() {
         return apply_id;
+    }
+
+    public void setApplyID(int apply_id) {
+        this.apply_id = apply_id;
     }
 
     public int getStudID() {
         return stud_id;
     }
-    
-    public int getDeadlineID(){
+
+    public void setStudID(int stud_id) {
+        this.stud_id = stud_id;
+    }
+
+    public int getDeadlineID() {
         return deadline_id;
+    }
+
+    public void setDeadlineID(int deadline_id) {
+        this.deadline_id = deadline_id;
     }
 
     public String getApplySession() {
         return apply_session;
     }
 
-    public int getApplyPart() {
-        return apply_part;
-    }
-
-    public double getApplyCGPA() {
-        return apply_cgpa;
-    }
-    
-    public double getApplyGPA(){
-        return apply_gpa;
-    }
-
-    public boolean getApplyFoodIncentive() {
-        return apply_foodIncentive;
-    }
-
-    public boolean getApplyOtherSupport() {
-        return apply_otherSupport;
-    }
-
-    public double getApplyOtherSupAmount() {
-        return apply_otherSupportAmount;
-    }
-
-    public String getApplyPurpose() {
-        return apply_purpose;
-    }
-
-    public String getApplyStatus() {
-        return apply_status;
-    }
-
-    public Date getApplyDate() {
-        return apply_date;
-    }
-
-    // Setters
-    public void setApplyID(int apply_id) {
-        this.apply_id = apply_id;
-    }
-
-    public void setStudID(int stud_id) {
-        this.stud_id = stud_id;
-    }
-    
-    public void setDeadlineID(int deadline_id){
-        this.deadline_id = deadline_id;
-    }
-
     public void setApplySession(String apply_session) {
         this.apply_session = apply_session;
+    }
+
+    public int getApplyPart() {
+        return apply_part;
     }
 
     public void setApplyPart(int apply_part) {
         this.apply_part = apply_part;
     }
 
+    public double getApplyCGPA() {
+        return apply_cgpa;
+    }
+
     public void setApplyCGPA(double apply_cgpa) {
         this.apply_cgpa = apply_cgpa;
     }
-    
-    public void setApplyGPA(double apply_gpa){
+
+    public double getApplyGPA() {
+        return apply_gpa;
+    }
+
+    public void setApplyGPA(double apply_gpa) {
         this.apply_gpa = apply_gpa;
+    }
+
+    public boolean getApplyFoodIncentive() {
+        return apply_foodIncentive;
     }
 
     public void setApplyFoodIncentive(boolean apply_foodIncentive) {
         this.apply_foodIncentive = apply_foodIncentive;
     }
 
+    public boolean getApplyOtherSupport() {
+        return apply_otherSupport;
+    }
+
     public void setApplyOtherSupport(boolean apply_otherSupport) {
         this.apply_otherSupport = apply_otherSupport;
     }
 
-    public void setApplyOtherSupAmount(double apply_otherSupportAmount) {
+    public String getApplyOtherSupportName() {
+        return apply_otherSupportName;
+    }
+
+    public void setApplyOtherSupportName(String apply_otherSupportName) {
+        this.apply_otherSupportName = apply_otherSupportName;
+    }
+
+    public double getApplyOtherSupportAmount() {
+        return apply_otherSupportAmount;
+    }
+
+    public void setApplyOtherSupportAmount(double apply_otherSupportAmount) {
         this.apply_otherSupportAmount = apply_otherSupportAmount;
+    }
+
+    public String getApplyPurpose() {
+        return apply_purpose;
     }
 
     public void setApplyPurpose(String apply_purpose) {
         this.apply_purpose = apply_purpose;
     }
 
-    public void setApplyStatus(String apply_status) {
-        this.apply_status = apply_status;
+    public Date getApplyDate() {
+        return apply_date;
     }
 
     public void setApplyDate(Date apply_date) {
         this.apply_date = apply_date;
+    }
+
+    public int getDonationID() {
+        return donation_id;
+    }
+
+    public void setDonationID(int donation_id) {
+        this.donation_id = donation_id;
+    }
+
+    public String getApplyStatus() {
+        return apply_status;
+    }
+
+    public void setApplyStatus(String apply_status) {
+        this.apply_status = apply_status;
     }
 
     // Additional Methods
@@ -222,7 +242,7 @@ public class Application implements Serializable {
                 ap.setApplyGPA(apply_gpa);
                 ap.setApplyFoodIncentive(apply_foodIncentive);
                 ap.setApplyOtherSupport(apply_otherSupport);
-                ap.setApplyOtherSupAmount(apply_otherSupportAmount);
+                ap.setApplyOtherSupportAmount(apply_otherSupportAmount);
                 ap.setApplyPurpose(apply_purpose);
                 ap.setApplyDate(apply_date);
                 ap.setApplyStatus(apply_status);
@@ -279,7 +299,7 @@ public class Application implements Serializable {
                 ap.setApplyGPA(apply_gpa);
                 ap.setApplyFoodIncentive(apply_foodIncentive);
                 ap.setApplyOtherSupport(apply_otherSupport);
-                ap.setApplyOtherSupAmount(apply_otherSupportAmount);
+                ap.setApplyOtherSupportAmount(apply_otherSupportAmount);
                 ap.setApplyPurpose(apply_purpose);
                 ap.setApplyDate(apply_date);
                 
