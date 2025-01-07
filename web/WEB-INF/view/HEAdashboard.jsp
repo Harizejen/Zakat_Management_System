@@ -3,7 +3,8 @@
     Created on : Dec 15, 2024, 8:02:45 AM
     Author     : User
 --%>
-
+<%@page import="java.util.List"%>
+<%@page import="com.application.model.Application"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,31 +23,13 @@
     <div class="container-fluid d-flex align-items-center">
         <!-- Right-aligned Section -->
         <div class="d-flex align-items-center ms-auto">
-            <!-- Notification Bell -->
-                <div class="notification me-3 position-relative" id="notificationBell" style="cursor: pointer;">
-                    <i class="bi bi-bell-fill fs-4 text-white"></i>
-                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle d-flex align-items-center justify-content-center" style="width: 20px; height: 20px; font-size: 12px; top: 20%; left: 80%;">1</span>
-                </div>
             <!-- Log Out -->
             <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
         </div>
     </div>
 </nav>
 
-    <!-- Notification Box -->
-    <div id="notificationBox">
-        <div class="notification-header">
-            <span><i class="bi bi-bell me-2"></i> Notifikasi Sistem</span>
-            <small class="text-muted" id="currentDayTime"></small>
-        </div>
-        <div class="notification-body">
-            <div class="alert alert-primary m-0 py-2">
-                <small>Terdapat 1 permohonan baru.</small>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Container -->
+        <!-- Main Container -->
     <div class="container main-container">
         <!-- Top Section -->
         <div class="row mb-3">
@@ -60,7 +43,11 @@
                 <div class="card text-center border-0 shadow-sm">
                     <div class="card-body card-body-lg text-white" style="background-color: #112C55">
                         <h5>JUMLAH PERMOHONAN:</h5>
-                        <h2>1,200</h2>
+                        <% 
+                        List<Application> totalList = (List<Application>) request.getAttribute("totalList");
+                        int totalCount = (totalList != null) ? totalList.size() : 0; // Get the size safely
+                        %>
+                        <h2><%= totalCount %></h2>
                         <!-- Center the button -->
                         <div class="d-flex justify-content-center">
                             <a href="HEAListPage" class="btn btn-danger" >Lihat ></a>
@@ -84,7 +71,11 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #B74A4C">
                         <h5>PEMOHONAN MENUNGGU:</h5>
-                        <h3>425</h3>
+                        <% 
+                        List<Application> pendingList = (List<Application>) request.getAttribute("pendingList");
+                        int pendingCount = (pendingList != null) ? pendingList.size() : 0; // Get the size safely
+                        %>
+                        <h3><%= pendingCount %></h3>
                     </div>
                 </div>
             </div>
@@ -93,7 +84,11 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #8A2565">
                         <h5>PEMOHONAN DISAHKAN:</h5>
-                        <h3><%= request.getAttribute("countApproved") != null ? request.getAttribute("countApproved") : 0 %></h3>
+                        <% 
+                        List<Application> approvedList = (List<Application>) request.getAttribute("approvedList");
+                        int approvedCount = (approvedList != null) ? approvedList.size() : 0; // Get the size safely
+                        %>
+                        <h3><%= approvedCount %></h3>
                     </div>
                 </div>
             </div>
@@ -102,7 +97,11 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #7B577D">
                         <h5>PEMOHONAN DITOLAK:</h5>
-                        <h3>75</h3>
+                        <% 
+                        List<Application> rejectedList = (List<Application>) request.getAttribute("rejectedList");
+                        int rejectedCount = (rejectedList != null) ? rejectedList.size() : 0; // Get the size safely
+                        %>
+                        <h3><%= rejectedCount %></h3>
                     </div>
                 </div>
             </div>
@@ -124,7 +123,31 @@
         </div>
     </div>
 </div>
-
+<script>
+    const pendingCount = <%= pendingCount %>;
+    const approvedCount = <%= approvedCount %>;
+    const rejectedCount = <%= rejectedCount %>;
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+    const myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Menunggu', 'Disahkan', 'Ditolak'],  // Status Labels
+            datasets: [{
+                data: [pendingCount, approvedCount, rejectedCount],  // Use the dynamic values
+                backgroundColor: ['#B74A4C', '#8A2565', '#7B577D'],  // Colors for each status
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,  // Display the legend
+                }
+            }
+        }
+    });
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/Zakat_Management_System/js/staffDashboard.js"></script>
 

@@ -78,30 +78,13 @@
     <div class="container-fluid d-flex align-items-center">
         <!-- Right-aligned Section -->
         <div class="d-flex align-items-center ms-auto">
-            <!-- Notification Bell -->
-                <div class="notification me-3 position-relative" id="notificationBell" style="cursor: pointer;">
-                    <i class="bi bi-bell-fill fs-4 text-white"></i>
-                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle d-flex align-items-center justify-content-center" style="width: 20px; height: 20px; font-size: 12px; top: 20%; left: 80%;">1</span>
-                </div>
             <!-- Log Out -->
             <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
         </div>
     </div>
 </nav>
 
-    <!-- Notification Box -->
-    <div id="notificationBox">
-        <div class="notification-header">
-            <span><i class="bi bi-bell me-2"></i> Notifikasi Sistem</span>
-            <small class="text-muted" id="currentDayTime"></small>
-        </div>
-        <div class="notification-body">
-            <div class="alert alert-primary m-0 py-2">
-                <small>Terdapat 1 permohonan baru.</small>
-            </div>
-        </div>
-    </div>
-    
+      
     <!-- Main Container -->
     <div id="content">
     <div class="container main-container" >
@@ -279,10 +262,33 @@
     </div>
 </div>
 
-    
+    <script>
+    const pendingCount = <%= pendingCount %>;
+    const approvedCount = <%= approvedCount %>;
+    const rejectedCount = <%= rejectedCount %>;
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+    const myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Menunggu', 'Disahkan', 'Ditolak'],  // Status Labels
+            datasets: [{
+                data: [pendingCount, approvedCount, rejectedCount],  // Use the dynamic values
+                backgroundColor: ['#B74A4C', '#8A2565', '#7B577D'],  // Colors for each status
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,  // Display the legend
+                }
+            }
+        }
+    });
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/Zakat_Management_System/js/staffDashboard.js"></script>
-
 
 </body>
 </html>

@@ -3,22 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/adminLogin.jsp</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/ApplicationListHEA.jsp</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UZSWTable.jsp</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UZSWdashboard.jsp</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/admin/controller/adminServlet.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/StaffLoginServlet.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/ApplicationListHEP.jsp</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/status_approval/model/status_approval.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/guard/model/guardian.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEPTable.jsp</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/model/staff.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/HEAListPage.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/ApplicationStatus/model/ApplicationStatus.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/application/model/Application.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/application/controller/eligibleCheckServlet.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/nbproject/build-impl.xml</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/database/dbconn.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/model/staff.java</file>
         </group>
     </open-files>
 </project-private>
