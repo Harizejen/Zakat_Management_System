@@ -59,7 +59,7 @@
         </aside>
                 
         <main class="dashboard-container" id="main-content">
-            <h1 class="text-center mb-4">SELAMAT DATANG</h1>
+            <h1 class="text-center mb-0">SELAMAT DATANG</h1>
             
             <div class="container">
                 <!-- Left Column with Two Rows -->
