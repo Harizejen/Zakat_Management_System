@@ -1,83 +1,63 @@
-/* General body styling */
-html, body {
-    height: 100%;
-    margin: 0;
-}
 
 body {
-    display: flex;
-    flex-direction: column;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; 
+    margin: 0;
+    padding: 0;
 }
-
-.container-fluid {
-    flex: 1; /* This allows the container to grow and fill the available space */
+.navbar {
+    background-color: #780afd; 
+    padding: 1rem; 
 }
-
-footer {
-    background-color: #f8f9fa; /* Optional: Add a background color to the footer */
-    padding: 10px 0; /* Optional: Add some padding */
+.navbar-brand {
+    font-size: 1.5rem; /* Bigger font for brand name */
 }
-
-.btn-primary {
-    background-color: #007bff; /* Bootstrap primary color */
-    border-color: #007bff;
-    transition: background-color 0.3s, border-color 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3; /* Darker shade on hover */
-    border-color: #0056b3;
-}
-
 .card {
-    border: none; /* Remove default border */
-    border-radius: 0.5rem; /* Rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    transition: transform 0.2s; /* Smooth transition for hover effect */
+    border: none; 
+    border-radius: 0.5rem; 
+        
+}
+.card-gradient {
+    background: linear-gradient(135deg, rgba(106, 0, 255, 0.84), rgba(255,255,255,0.1)); /* Gradient background */
+}
+.card-title {
+    font-size: 1.25rem; 
+    color: #343a40; 
+}
+.card-text {
+    font-size: 2rem; 
+    font-weight: bold; 
 }
 
 .card-body {
-    padding: 2rem; /* Increased padding for a more spacious feel */
+    align-content: center;
+    min-height: 350px;
+
 }
 
-.card:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
-}
-
-.card-title {
-    font-size: 1.5rem; /* Larger font size for card titles */
-    font-weight: 600; /* Semi-bold titles */
-}
-
-.card-text {
-    font-size: 3rem; /* Larger font size for counts */
-    color: #007bff; /* Bootstrap primary color */
-    font-weight: bold; /* Bold counts */
-}
-
-.card-gradient {
-    background: linear-gradient(135deg, #6a0dad, #a45ee5); /* Adjust the colors as needed */
-    color: white; /* Change text color to white for better contrast */
-    border: none; /* Remove border if you want a cleaner look */
-}
-
-.card-gradient .card-body {
-    background: transparent; /* Make sure the card body is transparent to show the gradient */
-}
-
-/* Footer styling */
-footer {
-    background-color: #343a40; /* Dark footer background */
-    color: white; /* White text color */
-    padding: 15px 0; /* Padding for footer */
-    position: relative; /* Positioning for footer */
-    bottom: 0; /* Stick to the bottom */
-    width: 100%; /* Full width */
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
+    .container-fluid {
+        padding: 1rem;
+    }
     .card {
-        margin-bottom: 20px; /* Space between cards on smaller screens */
+        margin-bottom: 2rem; /* Space between cards */
     }
 }
+
+.footer {
+    background-color: #007bff; 
+    color: white;
+    padding: 1rem 0; 
+    position: relative;
+}
+footer p {
+    margin: 0; /* Remove default margin */
+}
+.btn-primary {
+    background-color: #0056b3; 
+    border: none; 
+}
+.btn-primary:hover {
+    background-color: #004494; /* Darker shade on hover */
+}
+

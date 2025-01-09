@@ -8,6 +8,7 @@ package com.staff.controller;
 import com.database.dbconn;
 import com.staff.model.staff;
 import com.application.model.Application;
+import com.status_approval.model.status_approval;
 import javax.servlet.ServletException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -25,6 +26,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 /**
  *
  * @author User
@@ -71,7 +74,23 @@ public class StaffLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        staff ss = (staff) request.getSession().getAttribute("staff_data"); 
+        String userRole = (String) ss.getStaffrole();
+            
+        // Retrieve all data for the dashboard
+        List<Application> totalList = retrieveAllApplicationsByRole(userRole);
+        List<Application> pendingList = retrievePendingApplicationsByRole(userRole);
+        List<Application> approvedList = retrieveApprovedApplicationsByRole(userRole);
+        List<Application> rejectedList = retrieveRejectedApplicationsByRole(userRole);
+        
+        // Set the lists as attributes
+        request.setAttribute("totalList", totalList);
+        request.setAttribute("pendingList", pendingList);
+        request.setAttribute("approvedList", approvedList);
+        request.setAttribute("rejectedList", rejectedList);
+        
+        request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
+
     }
 
     /**
@@ -85,6 +104,7 @@ public class StaffLoginServlet extends HttpServlet {
     @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+    
     String staffIdParam = request.getParameter("staffId");
     String password = request.getParameter("password");
     String role = request.getParameter("role");
@@ -117,22 +137,37 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             HttpSession session = request.getSession();
             session.setAttribute("staff_data", stl);
 
-            // Redirect to the appropriate dashboard based on staff role
+            // Retrieve all data for the dashboard
+            String userRole = stl.getStaffrole();
+            List<Application> totalList = retrieveAllApplicationsByRole(userRole);
+            List<Application> pendingList = retrievePendingApplicationsByRole(userRole);
+            List<Application> approvedList = retrieveApprovedApplicationsByRole(userRole);
+            List<Application> rejectedList = retrieveRejectedApplicationsByRole(userRole);
+            
+            // Set the lists as attributes
+            request.setAttribute("totalList", totalList);
+            request.setAttribute("pendingList", pendingList);
+            request.setAttribute("approvedList", approvedList);
+            request.setAttribute("rejectedList", rejectedList);
+
+            // Decide which JSP to forward based on the user role
+            String dashboardPage;
             switch (role) {
                 case "HEA":
-                    request.getRequestDispatcher("/WEB-INF/view/HEAdashboard.jsp").forward(request, response);
+                    dashboardPage = "/WEB-INF/view/HEAdashboard.jsp";
                     break;
                 case "HEP":
-                    request.getRequestDispatcher("/WEB-INF/view/HEPdashboard.jsp").forward(request, response);
+                    dashboardPage = "/WEB-INF/view/HEPdashboard.jsp";
                     break;
                 case "UZSW":
-                    request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
+                    dashboardPage = "/WEB-INF/view/UZSWdashboard.jsp";
                     break;
                 default:
                     request.setAttribute("error", "Invalid role.");
-                    request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
+                    dashboardPage = "/staff_login.jsp";
                     break;
             }
+            request.getRequestDispatcher(dashboardPage).forward(request, response);
         } else {
             request.setAttribute("error", "Invalid credentials or role.");
             request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
@@ -141,133 +176,242 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         request.setAttribute("error", "Invalid credentials.");
         request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
     }
-    
-    if (st.isValid()) {
-        
-        staff ss = (staff) request.getSession().getAttribute("staff_data"); 
-        String userRole = (String) ss.getStaffrole();
-            
-        // Retrieve application counts
-        int totalCount = dbconn.getAppCount();
-        int pendingCount = dbconn.getAppCountByStatus("DIPROSES");
-        int approvedCount = dbconn.getAppCountByStatus("DISAHKAN");
-        int rejectedCount = dbconn.getAppCountByStatus("DITOLAK");
-
-        // Set the counts as attributes
-        request.setAttribute("totalCount", totalCount);
-        request.setAttribute("pendingCount", pendingCount);
-        request.setAttribute("approvedCount", approvedCount);
-        request.setAttribute("rejectedCount", rejectedCount);
-
-        // Retrieve all staff data for the dashboard
-        List<Application> totalList = retrieveTotalApp();
-        List<Application> pendingList = retrievePendingApp();
-        List<Application> approvedList = retrieveApprovedApp();
-        List<Application> rejectedList = retrieveRejectedApp();
-
-        // Set the staff lists as attributes
-        request.setAttribute("totalList", totalList);
-        request.setAttribute("pendingList", pendingList);
-        request.setAttribute("approvedList", approvedList);
-        request.setAttribute("rejectedList", rejectedList);
-
-        // Decide which JSP to forward based on the user role
-        if ("UZSW".equals(userRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
-        } else if ("HEA".equals(userRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/HEAdashboard.jsp").forward(request, response);
-        } else if ("HEP".equals(userRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/HEPdashboard.jsp").forward(request, response);
-        } else {
-            // Default fallback if no role is set
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to view this page.");
-        }
-            
-    } else {
-        request.setAttribute("error", "Invalid credentials");
-        request.getRequestDispatcher("/staffLogin.jsp").forward(request, response);
-    }
 }
+    private List<Application> retrieveAllApplicationsByRole(String staffRole) {
+        List<Application> applicationList = new ArrayList<>();
+        String query = null;
 
-private List<Application> retrievePendingApp() {
-    List<Application> pendingList = new ArrayList<>();
-    String query = "SELECT * FROM application WHERE apply_status = 'MENUNGGU' ";
+        if ("HEA".equals(staffRole)) {
+            query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id";
+        } else if ("HEP".equals(staffRole)) {
+            query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id WHERE sa.hea_review = 'TRUE' AND sa.app_stat_hea = 'TRUE'";
+        } else if ("UZSW".equals(staffRole)) {
+            query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id WHERE sa.hea_review = 'TRUE' AND sa.hep_review = 'TRUE' AND sa.app_stat_hea = 'TRUE' AND sa.app_stat_hep = 'TRUE'";
+        }
+
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Application appStatus = new Application();
+                appStatus.setApplyID(resultSet.getInt("apply_id"));
+                appStatus.setStudID(resultSet.getInt("stud_id"));
+                appStatus.setDeadlineID(resultSet.getInt("deadline_id"));
+                appStatus.setApplySession(resultSet.getString("apply_session"));
+                appStatus.setApplyPart(resultSet.getInt("apply_part"));
+                appStatus.setApplyCGPA(resultSet.getDouble("apply_cgpa"));
+                appStatus.setApplyGPA(resultSet.getDouble("apply_gpa"));
+
+                // Convert string values to boolean for food incentive and other support
+                String foodIncentive = resultSet.getString("apply_foodincentive");
+                appStatus.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
+
+                String otherSupport = resultSet.getString("apply_otherSupport");
+                appStatus.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
+
+                // Remove the `apply_otherSupportName` field, as it doesn't exist in the Application class
+                // appStatus.setApply_otherSupportName(resultSet.getString("apply_otherSupportName")); // Remove this line
+
+                appStatus.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+                appStatus.setApplyPurpose(resultSet.getString("apply_purpose"));
+
+                // Set the status as a string (not Date)
+                appStatus.setApplyStatus(resultSet.getString("approve_status"));
+
+                appStatus.setApplyDate(resultSet.getDate("apply_date"));
+                appStatus.setDonationID(resultSet.getInt("donation_id"));
+
+                applicationList.add(appStatus);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        return applicationList;
+    }
+    private List<Application> retrievePendingApplicationsByRole(String staffRole) {
+    List<Application> pendingApplications = new ArrayList<>();
+    String query = null;
+
+    if ("HEA".equals(staffRole)) {
+        // HEA receives all unreviewed applications
+        query = "SELECT a.*, approve_status FROM application a LEFT JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                "WHERE sa.apply_id IS NULL OR sa.hea_review = 'FALSE'";
+    } else if ("HEP".equals(staffRole)) {
+        // HEP receives applications approved by HEA but not yet reviewed by HEP
+        query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                "WHERE sa.hea_review = 'TRUE' AND sa.app_stat_hea = 'TRUE' AND sa.hep_review  = 'FALSE'";
+    } else if ("UZSW".equals(staffRole)) {
+        // UZSW receives applications approved by both HEA and HEP but not yet reviewed by UZSW
+        query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                "WHERE sa.hea_review = 'TRUE' AND sa.hep_review = 'TRUE'\n" +
+                "AND sa.app_stat_hea = 'TRUE' AND sa.app_stat_hep = 'TRUE' AND sa.uzsw_review  = 'FALSE'";
+    }
 
     try (Connection connection = dbconn.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(query);
          ResultSet resultSet = preparedStatement.executeQuery()) {
-         
+
         while (resultSet.next()) {
-            Application app = new Application();
-            app.setApplyID(resultSet.getInt("apply_id"));
-            pendingList.add(app);
+            Application appStatus = new Application();
+                appStatus.setApplyID(resultSet.getInt("apply_id"));
+                appStatus.setStudID(resultSet.getInt("stud_id"));
+                appStatus.setDeadlineID(resultSet.getInt("deadline_id"));
+                appStatus.setApplySession(resultSet.getString("apply_session"));
+                appStatus.setApplyPart(resultSet.getInt("apply_part"));
+                appStatus.setApplyCGPA(resultSet.getDouble("apply_cgpa"));
+                appStatus.setApplyGPA(resultSet.getDouble("apply_gpa"));
+
+                // Convert string values to boolean for food incentive and other support
+                String foodIncentive = resultSet.getString("apply_foodincentive");
+                appStatus.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
+
+                String otherSupport = resultSet.getString("apply_otherSupport");
+                appStatus.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
+
+                // Remove the `apply_otherSupportName` field, as it doesn't exist in the Application class
+                // appStatus.setApply_otherSupportName(resultSet.getString("apply_otherSupportName")); // Remove this line
+
+                appStatus.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+                appStatus.setApplyPurpose(resultSet.getString("apply_purpose"));
+
+                // Set the status as a string (not Date)
+                appStatus.setApplyStatus(resultSet.getString("approve_status"));
+
+                appStatus.setApplyDate(resultSet.getDate("apply_date"));
+                appStatus.setDonationID(resultSet.getInt("donation_id"));
+            pendingApplications.add(appStatus);
         }
     } catch (SQLException e) {
         Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
     }
 
-    return pendingList;
-}    
-    
-private List<Application> retrieveApprovedApp() {
-    List<Application> approvedList = new ArrayList<>();
-    String query = "SELECT * FROM application WHERE apply_status = 'DISAHKAN' ";
+    return pendingApplications;
+}
+private List<Application> retrieveApprovedApplicationsByRole(String staffRole) {
+    List<Application> approvedApplications = new ArrayList<>();
+    String query = null;
+
+    if ("HEA".equals(staffRole)) {
+        // HEA retrieves applications they approved
+        query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                "WHERE sa.hea_review = 'TRUE' AND sa.app_stat_hea = 'TRUE'";
+    } else if ("HEP".equals(staffRole)) {
+        // HEP retrieves applications approved by both HEA and HEP
+        query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                "WHERE sa.hea_review = 'TRUE' AND sa.app_stat_hea = 'TRUE'\n" +
+                "AND sa.hep_review = 'TRUE' AND sa.app_stat_hep = 'TRUE'";
+    } else if ("UZSW".equals(staffRole)) {
+        // UZSW retrieves applications fully approved by HEA, HEP, and UZSW
+        query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                "WHERE sa.hea_review = 'TRUE' AND sa.app_stat_hea = 'TRUE'\n" +
+                "AND sa.hep_review = 'TRUE' AND sa.app_stat_hep = 'TRUE'\n" +
+                "AND sa.uzsw_review = 'TRUE' AND sa.app_stat_uzsw = 'TRUE'";
+    }
 
     try (Connection connection = dbconn.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(query);
          ResultSet resultSet = preparedStatement.executeQuery()) {
-         
+
         while (resultSet.next()) {
-            Application app = new Application();
-            app.setApplyID(resultSet.getInt("apply_id"));
-            approvedList.add(app);
+            Application appStatus = new Application();
+                appStatus.setApplyID(resultSet.getInt("apply_id"));
+                appStatus.setStudID(resultSet.getInt("stud_id"));
+                appStatus.setDeadlineID(resultSet.getInt("deadline_id"));
+                appStatus.setApplySession(resultSet.getString("apply_session"));
+                appStatus.setApplyPart(resultSet.getInt("apply_part"));
+                appStatus.setApplyCGPA(resultSet.getDouble("apply_cgpa"));
+                appStatus.setApplyGPA(resultSet.getDouble("apply_gpa"));
+
+                // Convert string values to boolean for food incentive and other support
+                String foodIncentive = resultSet.getString("apply_foodincentive");
+                appStatus.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
+
+                String otherSupport = resultSet.getString("apply_otherSupport");
+                appStatus.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
+
+                // Remove the `apply_otherSupportName` field, as it doesn't exist in the Application class
+                // appStatus.setApply_otherSupportName(resultSet.getString("apply_otherSupportName")); // Remove this line
+
+                appStatus.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+                appStatus.setApplyPurpose(resultSet.getString("apply_purpose"));
+
+                // Set the status as a string (not Date)
+                appStatus.setApplyStatus(resultSet.getString("approve_status"));
+
+                appStatus.setApplyDate(resultSet.getDate("apply_date"));
+                appStatus.setDonationID(resultSet.getInt("donation_id"));
+            approvedApplications.add(appStatus);
         }
     } catch (SQLException e) {
         Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
     }
 
-    return approvedList;
-} 
+    return approvedApplications;
+}
+private List<Application> retrieveRejectedApplicationsByRole(String staffRole) {
+    List<Application> rejectedApplications = new ArrayList<>();
+    String query = null;
 
-private List<Application> retrieveRejectedApp() {
-    List<Application> rejectedList = new ArrayList<>();
-    String query = "SELECT * FROM application WHERE apply_status = 'DITOLAK' ";
+    if ("HEA".equals(staffRole)) {
+        // HEA retrieves applications they rejected
+        query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                "WHERE sa.hea_review = 'TRUE' AND sa.app_stat_hea = 'FALSE'";
+    } else if ("HEP".equals(staffRole)) {
+        // HEP retrieves applications rejected at their stage
+        query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                "WHERE sa.hea_review = 'TRUE' AND sa.app_stat_hea = 'TRUE'\n" +
+                "AND sa.hep_review = 'TRUE' AND sa.app_stat_hep = 'FALSE'";
+    } else if ("UZSW".equals(staffRole)) {
+        // UZSW retrieves applications rejected at their stage
+        query = "SELECT a.*, approve_status FROM application a JOIN status_approval sa ON a.apply_id = sa.apply_id\n" +
+                "WHERE sa.hea_review = 'TRUE' AND sa.app_stat_hea = 'TRUE'\n" +
+                "AND sa.hep_review = 'TRUE' AND sa.app_stat_hep = 'TRUE'\n" +
+                "AND sa.uzsw_review = 'TRUE' AND sa.app_stat_uzsw = 'FALSE'";
+    }
 
     try (Connection connection = dbconn.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(query);
          ResultSet resultSet = preparedStatement.executeQuery()) {
-         
+
         while (resultSet.next()) {
-            Application app = new Application();
-            app.setApplyID(resultSet.getInt("apply_id"));
-            rejectedList.add(app);
+            Application appStatus = new Application();
+                appStatus.setApplyID(resultSet.getInt("apply_id"));
+                appStatus.setStudID(resultSet.getInt("stud_id"));
+                appStatus.setDeadlineID(resultSet.getInt("deadline_id"));
+                appStatus.setApplySession(resultSet.getString("apply_session"));
+                appStatus.setApplyPart(resultSet.getInt("apply_part"));
+                appStatus.setApplyCGPA(resultSet.getDouble("apply_cgpa"));
+                appStatus.setApplyGPA(resultSet.getDouble("apply_gpa"));
+
+                // Convert string values to boolean for food incentive and other support
+                String foodIncentive = resultSet.getString("apply_foodincentive");
+                appStatus.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
+
+                String otherSupport = resultSet.getString("apply_otherSupport");
+                appStatus.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
+
+                // Remove the `apply_otherSupportName` field, as it doesn't exist in the Application class
+                // appStatus.setApply_otherSupportName(resultSet.getString("apply_otherSupportName")); // Remove this line
+
+                appStatus.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+                appStatus.setApplyPurpose(resultSet.getString("apply_purpose"));
+
+                // Set the status as a string (not Date)
+                appStatus.setApplyStatus(resultSet.getString("approve_status"));
+
+                appStatus.setApplyDate(resultSet.getDate("apply_date"));
+                appStatus.setDonationID(resultSet.getInt("donation_id"));
+            rejectedApplications.add(appStatus);
         }
     } catch (SQLException e) {
         Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
     }
 
-    return rejectedList;
-} 
-
-private List<Application> retrieveTotalApp() {
-    List<Application> totalList = new ArrayList<>();
-    String query = "SELECT * FROM application";
-
-    try (Connection connection = dbconn.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(query);
-         ResultSet resultSet = preparedStatement.executeQuery()) {
-         
-        while (resultSet.next()) {
-            Application app = new Application();
-            app.setApplyID(resultSet.getInt("apply_id"));
-            totalList.add(app);
-        }
-    } catch (SQLException e) {
-        Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
-    }
-
-    return totalList;
-} 
+    return rejectedApplications;
+}
+   
 
     /**
      * Returns a short description of the servlet.

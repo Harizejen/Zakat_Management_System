@@ -1,16 +1,29 @@
+body {
+    overflow: hidden;
+}
+
 /* Dashboard Container */
 .dashboard-container {
-    padding: 20px;
+    padding: 10px;
     background-color: #f9f6f1;
-    height: 638px;
+    height: 83vh;
+    overflow-y: auto;
 }
+
+h1  {
+    font-size: 30px;
+}
+
+h2 {
+    font-size: 20px;
+} 
 
 /* General Container Layout */
 .container {
     display: grid;
     grid-template-columns: 2fr 1fr; /* Two columns: left wider, right narrower */
     gap: 20px; /* Space between columns */
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
 }
 
@@ -111,7 +124,7 @@ footer {
     background-color: #013220;
     color: white;
     text-align: center;
-    padding: 10px 0;
+/*    padding: 10px 0;*/
 }
 
 /* Responsive Layout */

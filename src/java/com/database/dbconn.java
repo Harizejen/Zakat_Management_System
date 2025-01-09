@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class dbconn {
      // Database URL, username, and password
     //private static final String URL = "jdbc:mysql://localhost:3306/zakat_management"; //original
-    private static final String URL = "jdbc:mysql://localhost:3306/zktManage2";
+    private static final String URL = "jdbc:mysql://localhost:3306/zakat_management";
     private static final String USER = "root";
     private static final String PASSWORD = "";
     private static Connection connection = null;
@@ -57,45 +57,6 @@ public class dbconn {
             
         } catch (SQLException e) {
             System.out.println("Error retrieving staff count: " + e.getMessage());
-        }
-
-        return count;
-    }
-     
-    //Method to get count of application by status
-    public static int getAppCountByStatus(String status) {
-        int count = 0;
-        String query = "SELECT COUNT(*) FROM application WHERE apply_status = '?'"; // Adjust the table and column names as necessary
-
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-             
-            pstmt.setString(1, status);
-            ResultSet rs = pstmt.executeQuery();
-            
-            count = rs.getInt(1); // Get the count from the result set
-            
-        } catch (SQLException e) {
-            System.out.println("Error retrieving application count: " + e.getMessage());
-        }
-
-        return count;
-    }
-    
-    public static int getAppCount() {
-        int count = 0;
-        String query = "SELECT COUNT(*) FROM application"; // Adjust the table and column names as necessary
-
-        try (Connection conn = getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(query)) {
-             
-            
-            ResultSet rs = pstmt.executeQuery();
-            
-            count = rs.getInt(1); // Get the count from the result set
-            
-        } catch (SQLException e) {
-            System.out.println("Error retrieving application count: " + e.getMessage());
         }
 
         return count;

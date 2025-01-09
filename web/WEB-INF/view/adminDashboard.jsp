@@ -1,9 +1,3 @@
-<%-- 
-    Document   : adminDashboard
-    Created on : Dec 16, 2024, 8:42:11 AM
-    Author     : nasru
---%>
-
 <%@page import="java.util.List"%>
 <%@page import="com.staff.model.staff"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,25 +7,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin_dashboard.css">
+    <link rel="stylesheet" href="css/admin_dashboard.css">
     <title>Admin Dashboard</title>
 </head>
 <body>
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Admin Dashboard</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="ms-auto">
-                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/adminLogOutServlet" role="button">Logout</a>
-                    </div>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="adminServlet?action=login">Admin Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="ms-auto">
+                    <a class="btn btn-light" href="${pageContext.request.contextPath}/adminLogOutServlet" role="button">Logout</a>
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
+                
+                
 
+    <div class="container-fluid mt-4">
         <div class="row mt-4">
             <div class="col-md-4">
                 <% 
@@ -67,7 +64,7 @@
                 <div class="card text-center shadow-sm card-gradient">
                     <div class="card-body">
                         <h5 class="card-title">Total UZSW Staff</h5>
-                        <p class="card-text display-4" id="UZSW Count"><%= UZSWstaffCount %></p>
+                        <p class="card-text display-4" id="UZSWCount"><%= UZSWstaffCount %></p>
                         <a href="adminServlet?action=viewUZSWStaff" class="btn btn-primary">View Staff</a>
                     </div>
                 </div>
