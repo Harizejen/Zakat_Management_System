@@ -7,7 +7,8 @@
             <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/user/controller/UserServlet.java</file>
             <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/web/WEB-INF/view/applicationPage.jsp</file>
             <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/application/controller/AddApplicationServlet.java</file>
-            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/database/dbconn.java</file>
+            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/documents/model/document.java</file>
+            <file>file:/D:/Degree%20UiTM/SEM%204/CSC584/Group%20Project/Zakat%20System/Zakat_Management_System/src/java/com/documents/controller/GetDocumentServlet.java</file>
         </group>
     </open-files>
 </project-private>
