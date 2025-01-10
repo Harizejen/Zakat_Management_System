@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/staffDashboard.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
+<!-- Navigation Bar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
     <div class="container-fluid d-flex align-items-center">
         <!-- Right-aligned Section -->
