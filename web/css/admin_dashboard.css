@@ -6,7 +6,7 @@ body {
     padding: 0;
 }
 .navbar {
-    background-color: #007bff; 
+    background-color: #780afd; 
     padding: 1rem; 
 }
 .navbar-brand {
@@ -15,9 +15,10 @@ body {
 .card {
     border: none; 
     border-radius: 0.5rem; 
+        
 }
 .card-gradient {
-    background: linear-gradient(135deg, rgba(0,123,255,0.7), rgba(255,255,255,0.1)); /* Gradient background */
+    background: linear-gradient(135deg, rgba(106, 0, 255, 0.84), rgba(255,255,255,0.1)); /* Gradient background */
 }
 .card-title {
     font-size: 1.25rem; 
@@ -26,6 +27,12 @@ body {
 .card-text {
     font-size: 2rem; 
     font-weight: bold; 
+}
+
+.card-body {
+    align-content: center;
+    min-height: 350px;
+
 }
 
 @media (max-width: 768px) {

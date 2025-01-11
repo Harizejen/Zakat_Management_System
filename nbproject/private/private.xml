@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/ApplicationListHEA.jsp</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UZSWTable.jsp</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UZSWdashboard.jsp</file>
@@ -17,6 +18,23 @@
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/application/model/Application.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/HEPListPage.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/adminDashboard.jsp</file>
+=======
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/successBP.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/css/dashboard.css</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/application/controller/AddApplicationServlet.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/css/success.css</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/user/controller/UserServlet.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UserDashboard.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/borang_maklumat/controller/borangMaklumatServlet.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/printForm.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/user/controller/UserLoginServlet.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/user/model/Student.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/staff/controller/addStaffServlet.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UserProfile.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/BorangMaklumat.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/guard/model/guardian.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/css/form.css</file>
+>>>>>>> f0f00e487f4a68460d70e40970992ba42b11e6fa
         </group>
     </open-files>
 </project-private>

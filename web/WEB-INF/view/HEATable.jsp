@@ -12,6 +12,20 @@
     <link rel="stylesheet" href="css/adminTable.css">
 </head>
 <body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg" style="background-color: #780afd">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="adminServlet?action=login">Admin Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="ms-auto">
+                    <a class="btn btn-light" href="${pageContext.request.contextPath}/adminLogOutServlet" role="button">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <a href="javascript:window.history.back();" class="btn btn-link">

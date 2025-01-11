@@ -59,7 +59,7 @@
         </aside>
                 
         <main class="dashboard-container" id="main-content">
-            <h1 class="text-center mb-4">SELAMAT DATANG</h1>
+            <h1 class="text-center mb-0">SELAMAT DATANG</h1>
             
             <div class="container">
                 <!-- Left Column with Two Rows -->
@@ -74,7 +74,7 @@
                             <span class="label">NO. PELAJAR</span> <span class="value">: <%= st.getStudID() %></span>
                         </div>
                         <div class="info-row">
-                            <% if(st.getStudIC() == "") { %>
+                            <% if(st.getStudIC() == "" || st.getStudIC() == null) { %>
                                 <span class="label">NO. KP</span> <span class="value" style="color: red">: TIADA MAKLUMAT </span>
                             <% } else { %>
                                 <span class="label">NO. KP</span> <span class="value">: <%= st.getStudIC() %></span>

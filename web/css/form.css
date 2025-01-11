@@ -1,15 +1,15 @@
-.body {
-    background-color: #f5f5dc;
-    display: flex;
+body {
+    background-color: whitesmoke;
+/*    display: flex;*/
     flex-direction: column;
     height: 100vh; /* Full height of the viewport */
     margin: 0;
     overflow: hidden;
 }
 .container {
-    margin-top: 20px;
+    margin-top: 15px;
     flex: 1; /* Allow the container to grow and fill the available space */
-    overflow-y: auto;
+    overflow-y: hidden;
     font-size: 16px; /* Set the desired font size */
 }
 .card {
@@ -23,6 +23,10 @@
 }
 .card-body {
     background-color: #fff;
+    height: auto;
+    padding-left: 10px;
+    padding-top: 4px;
+    padding-bottom: 1px;
 }
 .form-control {
     background-color: #f5f5dc;
@@ -134,16 +138,24 @@ h5 {
 }
 
 .label {
-    font-size: clamp(8px, 1vw + 1rem, 12px);
+    font-size: clamp(8px, 1vw + 1rem, 9px);
 }
 
 .form-label {
     font-weight: 500;
-    font-size: clamp(8px, 1vw + 1rem, 12px);
+    font-size: clamp(8px, 1vw + 1rem, 9px);
 }
 
 .form-control {
-    
+    font-size: clamp(8px, 1vw + 1rem, 9px);
+}
+
+.form-select {
+    font-size: clamp(8px, 1vw + 1rem, 9px);
+}
+
+.form-check-label {
+    font-size: clamp(8px, 1vw + 1rem, 9px);
 }
 
 .btn {
@@ -151,5 +163,7 @@ h5 {
     font-size: 1rem;
 }
 
-
+li {
+    font-size: 8px;
+}
 
