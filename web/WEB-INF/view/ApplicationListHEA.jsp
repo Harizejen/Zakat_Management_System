@@ -77,7 +77,6 @@
             <div class="jumlah-section mb-4">
                 <span>Jumlah Permohonan: <span class="jumlah-count"><%= totalCount %></span></span>
             </div>
-            
             <div class="form-group">
                 <input type="text" id="searchInput" class="form-control" placeholder="Search application..." onkeyup="searchTable()">
             </div>
