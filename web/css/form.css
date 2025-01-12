@@ -125,6 +125,10 @@ h2 {
     font-size: clamp(12px, 2vw + 1rem, 16px);
 }
 
+h3 {
+    font-size: clamp(10px, 2vw + 1rem, 13px);
+}
+
 h5 {
     font-size: clamp(8px, 1vw + 1rem, 12px);
 }

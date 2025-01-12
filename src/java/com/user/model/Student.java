@@ -80,7 +80,7 @@ public class Student implements Serializable {
     }
 
     public String getStudState() {
-        return stud_state;
+        return stud_state.toUpperCase();
     }
     
     public String getStudZipCode(){
@@ -208,6 +208,19 @@ public class Student implements Serializable {
                 return "LELAKI";
             case 'P':
                 return "PEREMPUAN";
+            default:
+                return "UNKNOWN"; // Handle unexpected values
+        }
+    }
+    
+    public String getMarriageDisplay() {
+        switch (stud_marriage) {
+            case 'S':
+                return "BUJANG";
+            case 'M':
+                return "BERKAHWIN";
+            case 'D':
+                return "BERCERAI";
             default:
                 return "UNKNOWN"; // Handle unexpected values
         }
