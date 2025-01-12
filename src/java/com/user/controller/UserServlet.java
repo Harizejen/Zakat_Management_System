@@ -61,7 +61,12 @@ public class UserServlet extends HttpServlet {
          String action = request.getParameter("action");
 
         if ("profile".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/userProfile.jsp").forward(request, response);
+            int stud_id = (Integer) request.getSession().getAttribute("studentID");
+            //guardian gd = new guardian();
+            guardian gd1 = (guardian)request.getSession().getAttribute("guard_info");
+            
+            System.out.print(gd1.getFather_name() != null ? gd1.getFather_name(): "tiada");
+            request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
         } else if ("dashboard".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/view/userDashboard.jsp").forward(request, response);
         } else if ("borang".equals(action)) {

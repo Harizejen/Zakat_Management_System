@@ -4,7 +4,7 @@
     Author     : User
 --%>
 <%@page import="java.util.List"%>
-<%@page import="com.application.model.Application"%>
+<%@page import="com.ApplicationDetails.model.ApplicationDetails"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/staffDashboard.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
+<!-- Navigation Bar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
     <div class="container-fluid d-flex align-items-center">
         <!-- Right-aligned Section -->
@@ -44,7 +44,7 @@
                     <div class="card-body card-body-lg text-white" style="background-color: #112C55">
                         <h5>JUMLAH PERMOHONAN:</h5>
                         <% 
-                        List<Application> totalList = (List<Application>) request.getAttribute("totalList");
+                        List<ApplicationDetails> totalList = (List<ApplicationDetails>) session.getAttribute("totalList");
                         int totalCount = (totalList != null) ? totalList.size() : 0; // Get the size safely
                         %>
                         <h2><%= totalCount %></h2>
@@ -72,7 +72,7 @@
                     <div class="card-body text-white" style="background-color: #B74A4C">
                         <h5>PEMOHONAN MENUNGGU:</h5>
                         <% 
-                        List<Application> pendingList = (List<Application>) request.getAttribute("pendingList");
+                        List<ApplicationDetails> pendingList = (List<ApplicationDetails>) session.getAttribute("pendingList");
                         int pendingCount = (pendingList != null) ? pendingList.size() : 0; // Get the size safely
                         %>
                         <h3><%= pendingCount %></h3>
@@ -85,7 +85,7 @@
                     <div class="card-body text-white" style="background-color: #8A2565">
                         <h5>PEMOHONAN DISAHKAN:</h5>
                         <% 
-                        List<Application> approvedList = (List<Application>) request.getAttribute("approvedList");
+                        List<ApplicationDetails> approvedList = (List<ApplicationDetails>) session.getAttribute("approvedList");
                         int approvedCount = (approvedList != null) ? approvedList.size() : 0; // Get the size safely
                         %>
                         <h3><%= approvedCount %></h3>
@@ -98,7 +98,7 @@
                     <div class="card-body text-white" style="background-color: #7B577D">
                         <h5>PEMOHONAN DITOLAK:</h5>
                         <% 
-                        List<Application> rejectedList = (List<Application>) request.getAttribute("rejectedList");
+                        List<ApplicationDetails> rejectedList = (List<ApplicationDetails>) session.getAttribute("rejectedList");
                         int rejectedCount = (rejectedList != null) ? rejectedList.size() : 0; // Get the size safely
                         %>
                         <h3><%= rejectedCount %></h3>

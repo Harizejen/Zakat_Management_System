@@ -85,10 +85,31 @@ public class UserLoginServlet extends HttpServlet {
         if (st.isValid()) {
             Student stl = st.findStudent(stud_id);
             guardian gd1 = gd.findGuardian(stud_id);
-            request.getSession().setAttribute("guard_info", gd1);
-            // Store the student data in the session
             request.getSession().setAttribute("student_data", stl);
-
+            //System.out.print(gd1.toString());
+            // Check if guardian information is available
+//            if (stl != null && (stl.getStudIC() != null && !stl.getStudIC().isEmpty())) {
+//                // If guardian information is available, set it in the session
+//                request.getSession().setAttribute("student_data", stl);
+//            } else {
+//                // Handle the case where guardian info is not available
+//                request.getSession().setAttribute("student_data", null);
+//            }
+            // Check if guardian information is available
+            if (gd1 != null && (gd1.getFather_name() != null && !gd1.getFather_name().isEmpty())) {
+                // If guardian information is available, set it in the session
+                request.getSession().setAttribute("guard_info", gd1);
+            } else {
+                // Handle the case where guardian info is not available
+                if(gd1 == null){
+                    guardian gd2 = new guardian();
+                    gd2.setFather_name("TIADA");
+                    request.getSession().setAttribute("guard_info", gd2);
+                }
+                
+            }
+            
+            
             // Check if the student's information is complete
             boolean isComplete = stl.isInformationComplete(stl); // Implement this method in your Student class
             request.setAttribute("isInformationComplete", isComplete);
