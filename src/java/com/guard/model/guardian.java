@@ -44,7 +44,7 @@ public class guardian {
     }
 
     public String getFather_occupation() {
-        return father_occupation;
+        return father_occupation.toUpperCase();
     }
 
     public String getFather_phoneNum() {
@@ -52,7 +52,7 @@ public class guardian {
     }
     
     public String getFather_Address(){
-        return father_address;
+        return father_address.toUpperCase();
     }
 
     public double getFather_income() {
@@ -88,7 +88,7 @@ public class guardian {
     }
 
     public String getGuard_occupation() {
-        return guard_occupation;
+        return guard_occupation.toUpperCase();
     }
 
     public String getGuard_phoneNum() {
@@ -96,7 +96,7 @@ public class guardian {
     }
 
     public String getGuard_address() {
-        return guard_address;
+        return guard_address.toUpperCase();
     }
 
     public String getGuard_postcode() {
@@ -160,7 +160,7 @@ public class guardian {
     }
 
     public void setGuard_relation(String guard_relation) {
-        this.guard_relation = guard_relation;
+        this.guard_relation = guard_relation.toUpperCase();
     }
 
     public void setGuard_occupation(String guard_occupation) {
@@ -181,6 +181,17 @@ public class guardian {
 
     public void setGuard_residence(String guard_residence) {
         this.guard_residence = guard_residence;
+    }
+    
+    public String getResidenceDisplay() {
+        switch (guard_residence) {
+            case "R":
+                return "WARGANEGARA";
+            case "N":
+                return "BUKAN WARGANEGARA";
+            default:
+                return "UNKNOWN"; // Handle unexpected values
+        }
     }
 
     public void setGuard_income(double guard_income) {
