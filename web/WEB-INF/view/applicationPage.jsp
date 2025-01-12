@@ -43,18 +43,18 @@
             </div>
         </aside>
 
-        <div class="container form-steps">
-            <form action="add_application.do" method="post" enctype="multipart/form-data">
-                <h2 class="text-center my-4">PERMOHONAN</h2>
+    <div class="container form-steps">
+        <form id="file-upload-form" action="add_application.do" method="post" enctype="multipart/form-data">
+            <h2 class="text-center my-4">PERMOHONAN</h2>
 
-                <!-- Step 1 -->
-                <div class="card mb-4 form-step">
-                    <div class="card-header">Borang Permohonan Zakat</div>
-                    <div class="card-body">
-                        <p><strong>SESI ZAKAT: MAC2025/OGOS2025</strong></p>
-                        <p><strong>NAMA:</strong> <%= st.getStudName()%></p>
-                        <p><strong>NO. PELAJAR:</strong> <%= st.getStudID()%></p>
-                        <p><strong>NO. KP:</strong> <%= st.getStudIC()%></p>
+            <!-- Step 1 -->
+            <div class="card mb-4 form-step">
+                <div class="card-header">Borang Permohonan Zakat</div>
+                <div class="card-body">
+                    <p><strong>SESI ZAKAT: MAC2025/OGOS2025</strong></p>
+                    <p><strong>NAMA:</strong> <span id="student-name"><%= st.getStudName() %></span></p>
+                    <p><strong>NO. PELAJAR:</strong> <%= st.getStudID() %></p>
+                    <p><strong>NO. KP:</strong> <%= st.getStudIC() %></p>
 
                         <div class="mb-3">
                             <label>Adakah anda menerima bantuan makanan?</label><br>
@@ -123,58 +123,58 @@
                     </div>
                 </div>
 
-                <!-- Step 2 -->
-                <div class="card mb-4 form-step d-none">
-                    <div class="card-header">Dokumen Sokongan</div>
-                    <div class="card-body">
-                        <p>Hanya fail PDF sahaja yang diterima.</p>
-                        <p><strong>Dokumen wajib:</strong></p>
-                        <table class="invisible-table">
-                            <tr>
-                                <td>1. Salinan Kad Pengenalan Ibu dan Bapa / Penjaga.</td>
-                                <td><input type="file" name="kadPengenalan" accept=".pdf" required></td>
-                            </tr>
-                            <tr>
-                                <td>2. Pengesahan Pendapatan / Slip gaji.</td>
-                                <td><input type="file" name="slipGaji" accept=".pdf" required></td>
-                            </tr>
-                            <tr>
-                                <td>3. Salinan Kad Matrik Pelajar.</td>
-                                <td><input type="file" name="kadMatrik" accept=".pdf" required></td>
-                            </tr>
-                        </table>
-                        <p><strong>Sertakan jika perlu:</strong></p>
-                        <table class="invisible-table">
-                            <tr>
-                                <td>1. Sijil Kematian 1.</td>
-                                <td><input type="file" name="sijilKematian1" accept=".pdf"></td>
-                            </tr>
-                            <tr>
-                                <td>2. Sijil Kematian 2.</td>
-                                <td><input type="file" name="sijilKematian2" accept=".pdf"></td>
-                            </tr>
-                            <tr>
-                                <td>3. Sijil Doktor.</td>
-                                <td><input type="file" name="sijilDoktor" accept=".pdf"></td>
-                            </tr>
-                        </table>
-                        <div class="form-check mt-3">
-                            <input class="form-check-input" type="checkbox" id="maklumatBenar" name="maklumatBenar" required>
-                            <label class="form-check-label" for="maklumatBenar">
-                                Saya akui maklumat yang diberi adalah benar.
-                            </label>
-                        </div>
+            <!-- Step 2 -->
+            <div class="card mb-4 form-step d-none">
+                <div class="card-header">Dokumen Sokongan</div>
+                <div class="card-body">
+                    <p>Hanya fail PDF sahaja yang diterima.</p>
+                    <p><strong>Dokumen wajib:</strong></p>
+                    <table class="invisible-table">
+                        <tr>
+                            <td><label for="kadPengenalan">1. Salinan Kad Pengenalan Ibu dan Bapa / Penjaga.</label></td>
+                            <td><input type="file" id="kadPengenalan" name="kadPengenalan" accept=".pdf" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="slipGaji">2. Pengesahan Pendapatan / Slip gaji.</label></td>
+                            <td><input type="file" id="slipGaji" name="slipGaji" accept=".pdf" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="kadMatrik">3. Salinan Kad Matrik Pelajar.</label></td>
+                            <td><input type="file" id="kadMatrik" name="kadMatrik" accept=".pdf" required></td>
+                        </tr>
+                    </table>
+                    <p><strong>Sertakan jika perlu:</strong></p>
+                    <table class="invisible-table">
+                        <tr>
+                            <td>1. Sijil Kematian 1.</td>
+                            <td><input type="file" name="sijilKematian1" accept=".pdf"></td>
+                        </tr>
+                        <tr>
+                            <td>2. Sijil Kematian 2.</td>
+                            <td><input type="file" name="sijilKematian2" accept=".pdf"></td>
+                        </tr>
+                        <tr>
+                            <td>3. Sijil Doktor.</td>
+                            <td><input type="file" name="sijilDoktor" accept=".pdf"></td>
+                        </tr>
+                    </table>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="maklumatBenar" name="maklumatBenar" required>
+                        <label class="form-check-label" for="maklumatBenar">
+                            Saya akui maklumat yang diberi adalah benar.
+                        </label>
                     </div>
                 </div>
+            </div>
 
-                <!-- Navigation buttons -->
-                <div class="d-flex justify-content-between mb-4">
-                    <button class="btn btn-secondary" id="prevBtn" type="button">Kembali</button>
-                    <button class="btn btn-primary" id="nextBtn" type="button">Seterusnya</button>
-                    <button class="btn btn-danger d-none" id="submitBtn" type="submit">HANTAR PERMOHONAN</button>
-                </div>
-            </form>
-        </div>
+            <!-- Navigation buttons -->
+            <div class="d-flex justify-content-between mb-4">
+                <button class="btn btn-secondary" id="prevBtn" type="button">Kembali</button>
+                <button class="btn btn-primary" id="nextBtn" type="button">Seterusnya</button>
+                <button class="btn btn-danger d-none" id="submitBtn" type="submit" disabled>HANTAR PERMOHONAN</button>
+            </div>
+        </form>
+    </div>
 
         <footer class="footer">
             @copyRight2020
@@ -312,11 +312,117 @@
                     radio.addEventListener('change', toggleLainLainInput);
                 });
 
-                // Initialize form
-                updateFormSteps();
-                toggleBantuanLainDetails();
-                toggleLainLainInput();
-            });
-        </script>
-    </body>
+            // Initialize form
+            updateFormSteps();
+            toggleBantuanLainDetails();
+            toggleLainLainInput();
+        });
+    </script>
+    <script>
+        const inputKadPengenalan = document.querySelector('#kadPengenalan');
+        const inputSlipGaji = document.querySelector('#slipGaji');
+        const inputKadMatrik = document.querySelector('#kadMatrik');
+        const studentName = document.querySelector('#student-name').textContent.trim();
+        const submitButton = document.querySelector('#submitBtn');
+        
+        // Validation flags
+        let isKadPengenalanValid = false;
+        let isSlipGajiValid = false;
+        let isKadMatrikValid = false;
+
+        // Update submit button state
+        function updateSubmitButtonState() {
+            submitButton.disabled = !(isKadPengenalanValid && isSlipGajiValid && isKadMatrikValid);
+        }
+
+        inputKadPengenalan.addEventListener('change',()=>{
+                validateFileKadPengenalan();
+            }
+        );
+        //Validate file Kad Pengenalan
+        function validateFileKadPengenalan(){
+            const file = inputKadPengenalan.files[0];
+            if(!file){
+                alert("No file selected");
+                isKadPengenalanValid = false;
+            }
+            
+            const expectedFileName = studentName + "_Salinan Kad Pengenalan Ibu dan Bapa_Penjaga.pdf";
+            const uploadedFileName = file.name;
+            if(uploadedFileName !== expectedFileName){
+                console.log(studentName);
+                console.log(uploadedFileName);
+                console.log(expectedFileName);
+                alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
+                isKadPengenalanValid = false;
+            }else{
+                console.log("Receive " + uploadedFileName);
+                isKadPengenalanValid = true;
+            }
+            updateSubmitButtonState();  
+        };
+        
+        //Validate file Slip Gaji
+        inputSlipGaji.addEventListener('change', ()=>{
+            validateFileSlipGaji();
+        });
+        
+        function validateFileSlipGaji(){
+            const file = inputSlipGaji.files[0];
+            if(!file){
+                alert("No file selected");
+                isSlipGajiValid = false;
+            }
+            
+            const expectedFileName = studentName + "_Pengesahan Pendapatan.pdf";
+            const uploadedFileName = file.name;
+            if(uploadedFileName !== expectedFileName){
+                console.log(studentName);
+                console.log(uploadedFileName);
+                console.log(expectedFileName);
+                alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
+                isSlipGajiValid = false;
+            }else{
+                console.log("Receive " + uploadedFileName);
+                isSlipGajiValid = true;
+            }
+            updateSubmitButtonState();
+        };
+        
+        inputKadMatrik.addEventListener('change', ()=>{
+             validateFileKadMatrik();
+        });
+        
+        function validateFileKadMatrik(){
+            const file = inputKadMatrik.files[0];
+            if(!file){
+                alert("No file selected");
+                isKadMatrikValid = false;
+            }
+            
+            const expectedFileName = studentName + "_KadMatrik_Student.pdf";
+            const uploadedFileName = file.name;
+            if(uploadedFileName !== expectedFileName){
+                console.log(studentName);
+                console.log(uploadedFileName);
+                console.log(expectedFileName);
+                alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
+                isKadMatrikValid = false;
+            }else{
+                console.log("Receive " + uploadedFileName);
+                isKadMatrikValid = true;
+            }
+            updateSubmitButtonState();
+        };
+        
+        // Form submission handler
+        const form = document.querySelector('#file-upload-form');
+        form.addEventListener('submit', (event) => {
+            if (!(isKadPengenalanValid && isSlipGajiValid && isKadMatrikValid)) {
+                alert("Please upload all required files with the correct filenames before submitting.");
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    </script>
+</body>
 </html>

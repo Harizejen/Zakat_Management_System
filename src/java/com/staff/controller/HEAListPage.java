@@ -32,10 +32,7 @@ public class HEAListPage extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        // Forward to the JSP
-        request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
-    }
+            }
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -49,8 +46,8 @@ public class HEAListPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
-            }
+        request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
+    }
 
     /**
      *

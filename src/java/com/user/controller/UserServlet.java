@@ -72,7 +72,7 @@ public class UserServlet extends HttpServlet {
             }
             
         } else if ("dashboard".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/userDashboard.jsp").forward(request, response);
         } else if ("borang".equals(action)) {
             int stud_id = (Integer) request.getSession().getAttribute("studentID");
             guardian gd = new guardian();
