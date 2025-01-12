@@ -61,11 +61,11 @@ public class UserServlet extends HttpServlet {
          String action = request.getParameter("action");
 
         if ("profile".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/userProfile.jsp").forward(request, response);
         } else if ("dashboard".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/userDashboard.jsp").forward(request, response);
         } else if ("borang".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/borangMaklumat.jsp").forward(request, response);
         } else if ("permohonan".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
         } else if ("records".equals(action)) {

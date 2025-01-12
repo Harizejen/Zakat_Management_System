@@ -27,8 +27,8 @@ import javax.servlet.http.Part;
  * @author User
  */
 @MultipartConfig(
-//    location = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads", //hariz file
-    location = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads",    //Nasrullah file
+    location = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads", //hariz file
+    //location = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads",    //Nasrullah file
     fileSizeThreshold = 1024 * 1024 * 2, // 2MB
     maxFileSize = 1024 * 1024 * 10,      // 10MB
     maxRequestSize = 1024 * 1024 * 61   // 61MB
