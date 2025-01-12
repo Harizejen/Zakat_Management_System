@@ -2,7 +2,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
     // Retrieve the student data from the session
-    Student st = (Student) request.getSession().getAttribute("student_data"); 
+    Student st = (Student) request.getSession().getAttribute("student_data");
+    
+    //Retrive err message
+    String err = (String)request.getAttribute("error");
 %>
 <html lang="en">
 <head>
@@ -32,7 +35,7 @@
         </div>
         <div class="offcanvas-body">
             <div class="profile-section">
-                <img src="https://via.placeholder.com/80" alt="Profile Picture">
+                <img src="${pageContext.request.contextPath}/images/logo_system.png" style="width: 80px; height: auto; border-radius: 50% " alt="Profile Picture">
                 <p class="profile-name"><%= st.getStudName() %></p>
             </div>
             <a href="<%= request.getContextPath() %>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
@@ -175,6 +178,24 @@
             </div>
         </form>
     </div>
+    
+    <!-- Modal structure -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <%= err != null ? err : "" %>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
         @copyRight2020
@@ -288,11 +309,13 @@
             const expectedFileName = studentName + "_Salinan Kad Pengenalan Ibu dan Bapa_Penjaga.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
-                console.log(studentName);
-                console.log(uploadedFileName);
-                console.log(expectedFileName);
+//                console.log(studentName);
+//                console.log(uploadedFileName);
+//                console.log(expectedFileName);
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
                 isKadPengenalanValid = false;
+                // Clear the file input
+                inputKadPengenalan.value = "";
             }else{
                 console.log("Receive " + uploadedFileName);
                 isKadPengenalanValid = true;
@@ -315,11 +338,12 @@
             const expectedFileName = studentName + "_Pengesahan Pendapatan.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
-                console.log(studentName);
-                console.log(uploadedFileName);
-                console.log(expectedFileName);
+//                console.log(studentName);
+//                console.log(uploadedFileName);
+//                console.log(expectedFileName);
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
                 isSlipGajiValid = false;
+                inputSlipGaji.value = "";
             }else{
                 console.log("Receive " + uploadedFileName);
                 isSlipGajiValid = true;
@@ -341,11 +365,12 @@
             const expectedFileName = studentName + "_KadMatrik_Student.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
-                console.log(studentName);
-                console.log(uploadedFileName);
-                console.log(expectedFileName);
+//                console.log(studentName);
+//                console.log(uploadedFileName);
+//                console.log(expectedFileName);
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
                 isKadMatrikValid = false;
+                inputKadMatrik.value = "";
             }else{
                 console.log("Receive " + uploadedFileName);
                 isKadMatrikValid = true;
@@ -359,6 +384,17 @@
             if (!(isKadPengenalanValid && isSlipGajiValid && isKadMatrikValid)) {
                 alert("Please upload all required files with the correct filenames before submitting.");
                 event.preventDefault(); // Prevent form submission
+            }
+        });
+    </script>
+    <!-- JavaScript to trigger modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the error message exists
+            const errorMessage = '<%= err != null ? err : "" %>';
+            if (errorMessage.trim().length > 0) {
+                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
             }
         });
     </script>

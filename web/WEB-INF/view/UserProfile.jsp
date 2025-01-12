@@ -40,7 +40,7 @@
             <div class="offcanvas-body">
                 <!-- Profile Section -->
                 <div class="profile-section">
-                    <img src="https://via.placeholder.com/80" alt="Profile Picture">
+                    <img src="${pageContext.request.contextPath}/images/logo_system.png" style="width: 80px; height: auto; border-radius: 50% " alt="Profile Picture">
                     <p class="profile-name"><%= st.getStudName() %></p>
                 </div>
 
@@ -51,7 +51,7 @@
                 <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
                 <!-- Logout Button -->
-                <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
+                <a href="${pageContext.request.contextPath}/user_logout.do" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
             </div>
         </aside>
 

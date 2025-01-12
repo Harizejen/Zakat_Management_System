@@ -66,7 +66,7 @@ public class UserServlet extends HttpServlet {
             guardian gd1 = (guardian)request.getSession().getAttribute("guard_info");
             
             System.out.print(gd1.getFather_name() != null ? gd1.getFather_name(): "tiada");
-            request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/userProfile.jsp").forward(request, response);
         } else if ("dashboard".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/view/userDashboard.jsp").forward(request, response);
         } else if ("borang".equals(action)) {

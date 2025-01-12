@@ -38,14 +38,14 @@
             </div>
             <div class="offcanvas-body">
                 <div class="profile-section">
-                    <img src="https://via.placeholder.com/80" alt="Profile Picture">
+                    <img src="${pageContext.request.contextPath}/images/logo_system.png" style="width: 80px; height: auto; border-radius: 50% " alt="Profile Picture">
                     <p class="profile-name"><%= st != null ? st.getStudName() : "Unknown"%></p>
                 </div>
                 <a href="<%= request.getContextPath()%>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
                 <a href="<%= request.getContextPath()%>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
                 <a href="<%= request.getContextPath()%>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
                 <a href="<%= request.getContextPath()%>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
-                <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
+                <a href="${pageContext.request.contextPath}/user_logout.do" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
             </div>
         </aside>
 

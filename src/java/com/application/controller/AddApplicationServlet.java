@@ -4,6 +4,7 @@
  */
 package com.application.controller;
 
+import com.application.model.Application;
 import com.database.dbconn;
 import com.user.model.Student;
 import java.io.File;
@@ -123,6 +124,13 @@ public class AddApplicationServlet extends HttpServlet {
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs(); // Create directory if it does not exist
+        }
+        
+        Application ap = new Application();
+        if (ap.existedApplication(stud_id, apply_session)) {
+                request.setAttribute("error", "You have already applied.");
+                request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
+                return;
         }
 
         String applyQuery = "INSERT INTO application (stud_id, deadline_id, apply_session, apply_part, apply_cgpa, apply_gpa, apply_foodIncentive, apply_otherSupport, apply_otherSupportName, apply_otherSupportAmount, apply_purpose, apply_date, donation_id) "
