@@ -142,11 +142,23 @@ public class updateApplicationStatus extends HttpServlet {
             if (rowsUpdated > 0) {
                 // Set a message attribute for success
                 request.setAttribute("message", "Application status updated successfully.");
-                request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
+                if ("HEA".equals(staffRole)) {
+                    request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
+                } else if ("HEP".equals(staffRole)) {
+                    request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
+                } else if ("UZSW".equals(staffRole)) {
+                    request.getRequestDispatcher("/WEB-INF/view/ApplicationListUZSW.jsp").forward(request, response);
+                }
             } else {
                 // Set an error message for failure
                 request.setAttribute("errorMessage", "Failed to update application status.");
-                request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
+                if ("HEA".equals(staffRole)) {
+                    request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
+                } else if ("HEP".equals(staffRole)) {
+                    request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
+                } else if ("UZSW".equals(staffRole)) {
+                    request.getRequestDispatcher("/WEB-INF/view/ApplicationListUZSW.jsp").forward(request, response);
+                }
             }
         }
     } catch (Exception e) {
