@@ -3,45 +3,48 @@
 <%
     // Retrieve the student data from the session
     Student st = (Student) request.getSession().getAttribute("student_data");
+    
+    //Retrive err message
+    String err = (String)request.getAttribute("error");
 %>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Permohonan Zakat</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/navbar.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/applyPage.css">
-    </head>
-    <body>
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-md">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
-                    <i class="bi bi-list" style="color: white;"></i>
-                </button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permohonan Zakat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/applyPage.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+                 <i class="bi bi-list" style="color: white;"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Sidebar (Offcanvas) -->
+    <aside class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
+            <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="profile-section">
+                <img src="${pageContext.request.contextPath}/images/logo_system.png" style="width: 80px; height: auto; border-radius: 50% " alt="Profile Picture">
+                <p class="profile-name"><%= st.getStudName() %></p>
             </div>
-        </nav>
-
-        <!-- Sidebar (Offcanvas) -->
-        <aside class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
-                <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <div class="profile-section">
-                    <img src="https://via.placeholder.com/80" alt="Profile Picture">
-                    <p class="profile-name"><%= st.getStudName()%></p>
-                </div>
-                <a href="<%= request.getContextPath()%>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
-                <a href="<%= request.getContextPath()%>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
-                <a href="<%= request.getContextPath()%>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
-                <a href="<%= request.getContextPath()%>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
-                <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
-            </div>
-        </aside>
+            <a href="<%= request.getContextPath() %>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
+            <a href="<%= request.getContextPath() %>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
+            <a href="<%= request.getContextPath() %>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+            <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+            <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
+        </div>
+    </aside>
 
     <div class="container form-steps">
         <form id="file-upload-form" action="add_application.do" method="post" enctype="multipart/form-data">
@@ -175,10 +178,28 @@
             </div>
         </form>
     </div>
+    
+    <!-- Modal structure -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <%= err != null ? err : "" %>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <footer class="footer">
-            @copyRight2020
-        </footer>
+    <footer class="footer">
+        @copyRight2020
+    </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
@@ -350,11 +371,13 @@
             const expectedFileName = studentName + "_Salinan Kad Pengenalan Ibu dan Bapa_Penjaga.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
-                console.log(studentName);
-                console.log(uploadedFileName);
-                console.log(expectedFileName);
+//                console.log(studentName);
+//                console.log(uploadedFileName);
+//                console.log(expectedFileName);
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
                 isKadPengenalanValid = false;
+                // Clear the file input
+                inputKadPengenalan.value = "";
             }else{
                 console.log("Receive " + uploadedFileName);
                 isKadPengenalanValid = true;
@@ -377,11 +400,12 @@
             const expectedFileName = studentName + "_Pengesahan Pendapatan.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
-                console.log(studentName);
-                console.log(uploadedFileName);
-                console.log(expectedFileName);
+//                console.log(studentName);
+//                console.log(uploadedFileName);
+//                console.log(expectedFileName);
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
                 isSlipGajiValid = false;
+                inputSlipGaji.value = "";
             }else{
                 console.log("Receive " + uploadedFileName);
                 isSlipGajiValid = true;
@@ -403,11 +427,12 @@
             const expectedFileName = studentName + "_KadMatrik_Student.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
-                console.log(studentName);
-                console.log(uploadedFileName);
-                console.log(expectedFileName);
+//                console.log(studentName);
+//                console.log(uploadedFileName);
+//                console.log(expectedFileName);
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
                 isKadMatrikValid = false;
+                inputKadMatrik.value = "";
             }else{
                 console.log("Receive " + uploadedFileName);
                 isKadMatrikValid = true;
@@ -421,6 +446,17 @@
             if (!(isKadPengenalanValid && isSlipGajiValid && isKadMatrikValid)) {
                 alert("Please upload all required files with the correct filenames before submitting.");
                 event.preventDefault(); // Prevent form submission
+            }
+        });
+    </script>
+    <!-- JavaScript to trigger modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the error message exists
+            const errorMessage = '<%= err != null ? err : "" %>';
+            if (errorMessage.trim().length > 0) {
+                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
             }
         });
     </script>
