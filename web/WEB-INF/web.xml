@@ -80,6 +80,10 @@
         <servlet-name>cetakBorangServlet</servlet-name>
         <servlet-class>com.borang_maklumat.controller.cetakBorangServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>documentsRetrievalServlet</servlet-name>
+        <servlet-class>com.documents.controller.documentsRetrievalServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/staff_login.do</url-pattern>
@@ -159,6 +163,10 @@
     <servlet-mapping>
         <servlet-name>cetakBorangServlet</servlet-name>
         <url-pattern>/cetakBorangServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>documentsRetrievalServlet</servlet-name>
+        <url-pattern>/documentsRetrievalServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
