@@ -371,7 +371,7 @@
                         <td><%= rejectedApp.getStudId() %></td>
                         <td><%= rejectedApp.getApplyDate() %></td>
                         <td>
-                            <a href="#" class="text-decoration-none">
+                            <a href="<%= request.getContextPath() %>/documentsRetrievalServlet?fileName=2023******_MAC25OGOS25.pdf&studentId=<%= totalApp.getStudId() %>" class="text-decoration-none">
                                 2023******_MAC25OGOS25.pdf
                                 <i class="bi bi-download download-icon"></i>
                             </a>
