@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/staffDashboard.css">  
 </head>
 <body>
+
 <!-- Navigation Bar -->
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
     <div class="container-fluid d-flex align-items-center">
@@ -106,7 +107,7 @@
                         <td><%= totalApp.getStudId() %></td>
                         <td><%= totalApp.getApplyDate() %></td>
                         <td>
-                            <a href="#" class="text-decoration-none">
+                            <a href="<%= request.getContextPath() %>/cetakBorangServlet?stud_id=<%= totalApp.getStudId()%>" class="text-decoration-none">
                                 2023******_MAC25OGOS25.pdf
                                 <i class="bi bi-download download-icon"></i>
                             </a>
@@ -239,7 +240,7 @@
                         <td><%= pendingApp.getStudId() %></td>
                         <td><%= pendingApp.getApplyDate() %></td>
                         <td>
-                            <a href="#" class="text-decoration-none">
+                            <a href="<%= request.getContextPath() %>/cetakBorangServlet?stud_id=<%= pendingApp.getStudId()%>" class="text-decoration-none">
                                 2023******_MAC25OGOS25.pdf
                                 <i class="bi bi-download download-icon"></i>
                             </a>
@@ -371,7 +372,7 @@
                         <td><%= rejectedApp.getStudId() %></td>
                         <td><%= rejectedApp.getApplyDate() %></td>
                         <td>
-                            <a href="<%= request.getContextPath() %>/documentsRetrievalServlet?fileName=2023******_MAC25OGOS25.pdf&studentId=<%= totalApp.getStudId() %>" class="text-decoration-none">
+                            <a href="<%= request.getContextPath() %>/cetakBorangServlet?stud_id=<%= rejectedApp.getStudId()%>" class="text-decoration-none">
                                 2023******_MAC25OGOS25.pdf
                                 <i class="bi bi-download download-icon"></i>
                             </a>

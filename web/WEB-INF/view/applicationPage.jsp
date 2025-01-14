@@ -368,7 +368,7 @@
                 isKadPengenalanValid = false;
             }
             
-            const expectedFileName = studentName + "_Salinan Kad Pengenalan Ibu dan Bapa_Penjaga.pdf";
+            const expectedFileName = studentName + "_Salinan_Kad_Pengenalan_Ibu_dan_Bapa_Penjaga.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
 //                console.log(studentName);
@@ -397,7 +397,7 @@
                 isSlipGajiValid = false;
             }
             
-            const expectedFileName = studentName + "_Pengesahan Pendapatan.pdf";
+            const expectedFileName = studentName + "_Pengesahan_Pendapatan.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
 //                console.log(studentName);
