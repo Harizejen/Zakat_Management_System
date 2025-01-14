@@ -26,7 +26,7 @@
 <nav class="navbar text-light mb-3" style="background-color: #112C55">
     <div class="container-fluid d-flex align-items-center">
          <!-- Back Arrow -->
-        <a href="javascript:window.history.back();" class="btn btn-outline-light me-3">
+        <a href="goHEADashboard" class="btn btn-outline-light me-3">
             <i class="bi bi-arrow-left"></i> 
         </a>
 

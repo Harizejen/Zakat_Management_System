@@ -95,7 +95,7 @@ public class updateInterviewDate extends HttpServlet {
         // Validate input parameters
         if (applicationIVDateStr == null || applicationIVDateStr.isEmpty()) {
             request.setAttribute("error", "Dates are required.");
-            request.getRequestDispatcher("/WEB-INF/view/ApplicationListUZSW.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/UZSWlist.jsp").forward(request, response);
             return;
         }
 
@@ -107,7 +107,7 @@ public class updateInterviewDate extends HttpServlet {
             applicationIVDate = new java.sql.Date(applicationDateUtil.getTime());
         } catch (ParseException e) {
             request.setAttribute("error", "Invalid date format. Please use yyyy-MM-dd.");
-            request.getRequestDispatcher("/WEB-INF/view/ApplicationListUZSW.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/UZSWlist.jsp").forward(request, response);
             return;
         }
 
@@ -122,11 +122,11 @@ public class updateInterviewDate extends HttpServlet {
             preparedStatement.setDate(3, applicationIVDate);
 
             preparedStatement.executeUpdate();
-            request.getRequestDispatcher("/WEB-INF/view/ApplicationListUZSW.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/UZSWListPage");
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/view/ApplicationListUZSW.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/UZSWlist.jsp").forward(request, response);
         }
     }
 
