@@ -8,15 +8,27 @@ and open the template in the editor.
     Author     : nasru
 */
 
-.body {
-    background-color: #f5f0e1;
-}
 
+body {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    background-color: #F2EBDD; 
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    background-color: #522E5C; 
+    padding: 1rem; 
+}
+.navbar-brand {
+    font-size: 1.5rem; /* Bigger font for brand name */
+}
 .table-container {
-    background-color: white;
+    background-color: #522E5C;
     border-radius: 10px;
     padding: 20px;
     margin: 20px;
+    font-weight: bold;
 }
 
 .table th, .table td {
