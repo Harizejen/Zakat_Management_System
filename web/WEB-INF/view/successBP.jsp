@@ -8,6 +8,9 @@
         <title>Pemohonan Berjaya</title>
     </head>
     <body>
+        <%
+            int studID = (Integer) request.getSession().getAttribute("studentID");
+        %>
         <div class="notification-box">
             <div class="notification-header">
                 <img alt="Logo" height="24" src="${pageContext.request.contextPath}/images/logo_system.png" width="24"/>
@@ -19,7 +22,7 @@
                 <p>TUNGGU ARAHAN SELANJUTNYA SETELAH PERMOHONAN SELESAI DIPROSES!</p>
             </div>
             <div class="notification-footer">
-                <button class="btn btn-outline-danger" onclick="window.location.href='<%= request.getContextPath() %>/cetakBorangServlet'">
+                <button class="btn btn-outline-danger" onclick="window.location.href='<%= request.getContextPath() %>/cetakBorangServlet?stud_id=<%= studID %>'">
                     CETAK PERMOHONAN
                 </button>
                 <button class="btn btn-danger">

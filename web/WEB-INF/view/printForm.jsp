@@ -10,6 +10,10 @@
                 font-family: Arial, sans-serif;
                 font-size: 8px;
             }
+
+            h6 {
+                font-size: 7px;
+            }
             .section-header {
                 background-color: #333;
                 color: white;
@@ -36,10 +40,10 @@
             }
             .form-control {
                 border: none;
-                 white-space: nowrap; /* Prevent text wrapping */
+                white-space: nowrap; /* Prevent text wrapping */
                 overflow: hidden; /* Hide overflow text */
                 text-overflow: ellipsis; /* Show ellipsis for overflow text */
-                
+
             }
             textarea.form-control {
                 height: 30px;
@@ -63,9 +67,22 @@
                 padding-left: 8px;
                 padding-right: 8px;
                 border-radius: 5px;
-                
+
             }
             
+            .custom1 {
+                position: absolute;
+                top: 30px;
+                left: 190px;
+                margin: 20px;
+                padding-bottom: 3px;
+                padding-top: 3px;
+                padding-left: 8px;
+                padding-right: 8px;
+                border-radius: 5px;
+
+            }
+
             @media print {
                 body {
                     width: 100%;
@@ -83,24 +100,43 @@
                     margin-bottom: 0.5px; /* Reduce spacing between elements */
                 }
                 /* Other style overrides as needed */
+                
+                /* Hide elements that should not be printed */
+                .no-print {
+                    display: none;
+                }
+                .custom, .custom1 {
+                    display: none;
+                }
             }
-            
+
 
         </style>
     </head>
     <body>
         <%
-            // Retrieve the student data from the session
-            guardian gd = (guardian) request.getSession().getAttribute("guard_info");
+            // Retrieve the student data from the request
+            guardian gd = (guardian) request.getAttribute("guard");
+            Student student = (Student) request.getAttribute("student");
+
+            // Check if student data is available
+            if (student == null) {
+                out.println("<p>Error: Student information is not available .</p>");
+                return; // Exit if student information is not available
+            }
+
+            // Retrieve the merged PDF path from the request
+            String mergedPdfPath = (String) request.getAttribute("mergedPdfPath");
         %>
         <div class="container">
-            <button class="custom" onclick="window.print()">CETAK</button>
+            <button class="btn btn-secondary custom" onclick="window.print()">CETAK</button>
+            <a href="${pageContext.request.contextPath}/downloadDocServlet?mergedPdfPath=${mergedPdfPath}" class="custom1 btn btn-secondary" target="_blank">CETAK DOKUMEN SOKONGAN</a>
             <div class="text-center my-2">
                 <img alt="Logo" class="mb-2" src="${pageContext.request.contextPath}/images/logo_system.png" style="width : 50px; height : auto"/>
                 <h4 class="fw-bold" style="font-size: 12px;">
                     BORANG PEMOHONAN AGIHAN ZAKAT PENDIDIKAN PELAJAR
                 </h4>
-                
+
             </div>
             <div class="form-section">
                 <h5>
@@ -110,11 +146,11 @@
                     <label class="col-sm-3 col-form-label form-label" for="no-kad-pengenalan">
                         NO. KAD PENGENALAN (BARU) :
                     </label>
-                    
-                        <div class="col-sm-9">
+
+                    <div class="col-sm-9">
                         <input type="text" class="form-control valueText" id="no-kad-pengenalan" name="no-kad-pengenalan" value="${student.studIC}">
-                        </div>
-                    
+                    </div>
+
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label form-label" for="nama-penuh">
@@ -247,7 +283,7 @@
                         </label>
                         <div class="col-sm-3">
                             <div>
-                                <input type="text" class="form-control valueText" id="nama-bapa" name="nama-bapa" value="<%= gd.getFather_name() %>">
+                                <input type="text" class="form-control valueText" id="nama-bapa" name="nama-bapa" value="<%= gd.getFather_name()%>">
                             </div>
                         </div>
                     </div>
@@ -257,7 +293,7 @@
                         </label>
                         <div class="col-sm-3">
                             <div>
-                                <input type="text" class="form-control valueText" id="pekerjaan-bapa" name="pekerjaan-bapa" value="<%= gd.getFather_occupation() %>">
+                                <input type="text" class="form-control valueText" id="pekerjaan-bapa" name="pekerjaan-bapa" value="<%= gd.getFather_occupation()%>">
                             </div>
                         </div>
                         <label class="col-sm-3 col-form-label form-label" for="pendapatan-bapa">
@@ -266,7 +302,7 @@
                         <div class="col-sm-3">
                             <div>
                                 <input type="text" class="form-control valueText" id="pendapatan-bapa" name="pendapatan-bapa" 
-                                       value="RM <%= gd.getFather_income() != 0.0 ? gd.getFather_income() : gd.getFather_income() + " (TIADA)" %>">
+                                       value="RM <%= gd.getFather_income() != 0.0 ? gd.getFather_income() : gd.getFather_income() + " (TIADA)"%>">
                             </div>
                         </div>
                     </div>
@@ -276,7 +312,7 @@
                         </label>
                         <div class="col-sm-9">
                             <div>
-                                <input type="text" class="form-control valueText" id="pendapatan-bapa" name="alamat-bapa" value="<%= gd.getFather_Address() %>">
+                                <input type="text" class="form-control valueText" id="pendapatan-bapa" name="alamat-bapa" value="<%= gd.getFather_Address()%>">
                             </div>
                         </div>
                     </div>
@@ -286,7 +322,7 @@
                         </label>
                         <div class="col-sm-3">
                             <div>
-                                <input type="text" class="form-control valueText" id="telefon-bapa" name="telefon-bapa" value="<%= gd.getFather_phoneNum() %>">
+                                <input type="text" class="form-control valueText" id="telefon-bapa" name="telefon-bapa" value="<%= gd.getFather_phoneNum()%>">
                             </div>
                         </div>
                     </div>
@@ -301,7 +337,7 @@
                         </label>
                         <div class="col-sm-9">
                             <div>
-                                <input type="text" class="form-control valueText" id="nama-ibu" name="nama-ibu" value="<%= gd.getMother_name() %>">
+                                <input type="text" class="form-control valueText" id="nama-ibu" name="nama-ibu" value="<%= gd.getMother_name()%>">
                             </div>
                         </div>
                     </div>
@@ -311,7 +347,7 @@
                         </label>
                         <div class="col-sm-3">
                             <div>
-                                <input type="text" class="form-control valueText" id="pekerjaan-ibu" name="pekerjaan-ibu" value="<%= gd.getMother_occupation() %>">
+                                <input type="text" class="form-control valueText" id="pekerjaan-ibu" name="pekerjaan-ibu" value="<%= gd.getMother_occupation()%>">
                             </div>
                         </div>
                         <label class="col-sm-3 col-form-label form-label" for="pendapatan-ibu">
@@ -320,7 +356,7 @@
                         <div class="col-sm-3">
                             <div>
                                 <input type="text" class="form-control valueText" id="pendapatan-ibu" name="pendapatan-ibu" 
-                                       value="RM <%= gd.getMother_income() != 0.0 ? gd.getMother_income() : gd.getMother_income() + " (TIADA)" %>">
+                                       value="RM <%= gd.getMother_income() != 0.0 ? gd.getMother_income() : gd.getMother_income() + " (TIADA)"%>">
                             </div>
                         </div>
                     </div>
@@ -330,7 +366,7 @@
                         </label>
                         <div class="col-sm-9">
                             <div>
-                                <input type="text" class="form-control valueText" id="alamat-ibu" name="alamat-ibu" value="<%= gd.getMother_Address() %>">
+                                <input type="text" class="form-control valueText" id="alamat-ibu" name="alamat-ibu" value="<%= gd.getMother_Address()%>">
                             </div>
                         </div>
                     </div>
@@ -340,7 +376,7 @@
                         </label>
                         <div class="col-sm-3">
                             <div>
-                                <input type="text" class="form-control valueText" id="telefon-ibu" name="telefon-ibu" value="<%= gd.getMother_phoneNum() %>">
+                                <input type="text" class="form-control valueText" id="telefon-ibu" name="telefon-ibu" value="<%= gd.getMother_phoneNum()%>">
                             </div>
                         </div>
                     </div>
@@ -355,7 +391,7 @@
                         </label>
                         <div class="col-sm-9">
                             <div>
-                                <input type="text" class="form-control valueText" id="nama-penjaga" name="nama-penjaga" value="<%= gd.getGuard_name() %>">
+                                <input type="text" class="form-control valueText" id="nama-penjaga" name="nama-penjaga" value="<%= gd.getGuard_name()%>">
                             </div>
                         </div>
                     </div>
@@ -365,7 +401,7 @@
                         </label>
                         <div class="col-sm-3">
                             <div>
-                                <input type="text" class="form-control valueText" id="pekerjaan-penjaga" name="pekerjaan-penjaga" value="<%= gd.getGuard_occupation() %>">
+                                <input type="text" class="form-control valueText" id="pekerjaan-penjaga" name="pekerjaan-penjaga" value="<%= gd.getGuard_occupation()%>">
                             </div>
                         </div>
                         <label class="col-sm-3 col-form-label form-label" for="pendapatan-penjaga">
@@ -374,7 +410,7 @@
                         <div class="col-sm-3">
                             <div>
                                 <input type="text" class="form-control valueText" id="pendapatan-penjaga" name="pendapatan-penjaga" 
-                                       value="RM <%= gd.getGuard_income() != 0.0 ? gd.getGuard_income() : gd.getGuard_income() + " (TIADA)" %>">
+                                       value="RM <%= gd.getGuard_income() != 0.0 ? gd.getGuard_income() : gd.getGuard_income() + " (TIADA)"%>">
                             </div>
                         </div>
                     </div>
@@ -384,7 +420,7 @@
                         </label>
                         <div class="col-sm-9">
                             <div>
-                                <input type="text" class="form-control valueText" id="alamat-penjaga" name="alamat-penjaga" value="<%= gd.getGuard_address() %>">
+                                <input type="text" class="form-control valueText" id="alamat-penjaga" name="alamat-penjaga" value="<%= gd.getGuard_address()%>">
                             </div>
                         </div>
                     </div>
@@ -394,7 +430,7 @@
                         </label>
                         <div class="col-sm-3">
                             <div>
-                                <input type="text" class="form-control valueText" id="telefon-penjaga" name="telefon-penjaga" value="<%= gd.getGuard_phoneNum() %>">
+                                <input type="text" class="form-control valueText" id="telefon-penjaga" name="telefon-penjaga" value="<%= gd.getGuard_phoneNum()%>">
                             </div>
                         </div>
                         <label class="col-sm-3 col-form-label form-label" for="hubungan">
@@ -402,7 +438,7 @@
                         </label>
                         <div class="col-sm-3">
                             <div>
-                                <input type="text" class="form-control valueText" id="hubungan" name="hubungan" value="<%= gd.getGuard_relation() %>">
+                                <input type="text" class="form-control valueText" id="hubungan" name="hubungan" value="<%= gd.getGuard_relation()%>">
                             </div>
                         </div>
                         <label class="col-sm-3 col-form-label form-label" for="warganegara">
@@ -410,7 +446,7 @@
                         </label>
                         <div class="col-sm-3">
                             <div>
-                                <input type="text" class="form-control valueText" id="warganegara" name="warganegara" value="<%= gd.getResidenceDisplay() %>">
+                                <input type="text" class="form-control valueText" id="warganegara" name="warganegara" value="<%= gd.getResidenceDisplay()%>">
                             </div>
                         </div>
                     </div>
@@ -420,10 +456,10 @@
                         LAIN-LAIN PENDAPATAN :
                     </label>
                     <div class="col-sm-9">
-                            <div>
-                                <input type="text" class="form-control valueText" id="lain-lain-pendapatan" name="lain-lain-pendapatan" 
-                                       value="RM <%= gd.getOther_income() != 0.0 ? gd.getOther_income() : gd.getOther_income() + " (TIADA)" %>">
-                            </div>
+                        <div>
+                            <input type="text" class="form-control valueText" id="lain-lain-pendapatan" name="lain-lain-pendapatan" 
+                                   value="RM <%= gd.getOther_income() != 0.0 ? gd.getOther_income() : gd.getOther_income() + " (TIADA)"%>">
+                        </div>
                     </div>
 
 
