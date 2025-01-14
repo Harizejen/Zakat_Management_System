@@ -13,15 +13,23 @@
 </head>
 <body>
     <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg" style="background-color: #780afd">
+    <nav class="navbar navbar-expand-lg" style="background-color: #522E5C">
         <div class="container-fluid">
-            <a class="navbar-brand text-white" href="adminServlet?action=login">Admin Dashboard</a>
+            <a class="navbar-brand text-white bold-text" href="adminServlet?action=login">Admin Dashboard</a>
+
+            <i class="bi bi-arrow-left"></i> 
+        </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="ms-auto">
-                    <a class="btn btn-light" href="${pageContext.request.contextPath}/adminLogOutServlet" role="button">Logout</a>
+                    <a class="btn btn-light" 
+   data-bs-toggle="modal" data-bs-target="#logoutModal"
+   role="button" 
+   style="background-color: #6E1313; color: white; border: none;">
+   Logout
+</a>
                 </div>
             </div>
         </div>
@@ -88,6 +96,30 @@
             </a>
         </div>
     </div>
+            
+            <!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center" style="background-color: #522E5C; color: white;">
+            <!-- Modal Body -->
+            <div class="modal-body py-4">
+                <h5 id="logoutModalLabel" class="mb-4">Adakah anda ingin keluar?</h5>
+                <!-- Buttons -->
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="${pageContext.request.contextPath}/adminLogOutServlet" class="btn btn-outline-light px-4">KELUAR</a>
+                    <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">BATAL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+             <footer class="mt-5" style="background-color: #522E5C; color: white; padding: 5px 0; position: fixed; bottom: 0; width: 100%;">
+    <div class="text-center">
+        <p style="margin: 0;">Copyright © 2024</p>
+    </div>
+</footer>
+            
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

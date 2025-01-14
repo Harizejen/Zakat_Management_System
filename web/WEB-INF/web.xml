@@ -84,6 +84,22 @@
         <servlet-name>documentsRetrievalServlet</servlet-name>
         <servlet-class>com.documents.controller.documentsRetrievalServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>downloadDocServlet</servlet-name>
+        <servlet-class>com.borang_maklumat.controller.downloadDocServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>goUZSWdashboard</servlet-name>
+        <servlet-class>com.staff.controller.goUZSWdashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>goHEADashboard</servlet-name>
+        <servlet-class>com.staff.controller.goHEADashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>goHEPDashboard</servlet-name>
+        <servlet-class>com.staff.controller.goHEPDashboard</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/staff_login.do</url-pattern>
@@ -167,6 +183,22 @@
     <servlet-mapping>
         <servlet-name>documentsRetrievalServlet</servlet-name>
         <url-pattern>/documentsRetrievalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>downloadDocServlet</servlet-name>
+        <url-pattern>/downloadDocServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>goUZSWdashboard</servlet-name>
+        <url-pattern>/goUZSWdashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>goHEADashboard</servlet-name>
+        <url-pattern>/goHEADashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>goHEPDashboard</servlet-name>
+        <url-pattern>/goHEPDashboard</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
