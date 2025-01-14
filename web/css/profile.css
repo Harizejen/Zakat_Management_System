@@ -1,5 +1,6 @@
 body {
     font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
 /* Main Content Styling */
@@ -12,9 +13,22 @@ h1 {
     color: #000;
 }
 
+h4 {
+    color: #333;
+    font-size: clamp(12px, 2vw + 1rem, 16px);
+}
+
 p {
     margin: 5px 0;
     font-size: 14px;
+}
+
+.boxInfoSize {
+    margin-top: 54px;
+    position: relative;
+    max-width: 400px; /* Adjusted width */
+    margin-left: auto; /* Center the notification box */
+    margin-right: auto; /* Center the notification box */
 }
 
 .text-danger {
@@ -27,9 +41,27 @@ p {
 }
 
 footer {
-    background-color: #013220;
+    position: absolute;
+    min-width: 90rem;
+    top: 90vh;
+    
 }
 
 footer p {
     font-size: 14px;
+}
+
+/* Tab Content Styling */
+.tab-content {
+    max-height: 400px; /* Limit the height of the tab content */
+    overflow-y: auto; /* Allow scrolling if content exceeds max height */
+}
+
+.nav-tabs .nav-link {
+    padding: 10px 15px; /* Adjust padding for tabs */
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #f8f9fa; /* Active tab background */
+    border-color: #dee2e6; /* Border color for active tab */
 }
