@@ -6,6 +6,7 @@
 package com.ApplicationDetails.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +23,7 @@ public class ApplicationDetails implements Serializable {
         
     }
     // Application table attributes
-    public ApplicationDetails(int applyId, int studId, int deadlineId, String applySession, int applyPart, double applyCgpa, double applyGpa, boolean applyFoodIncentive, boolean applyOtherSupport, String applyOtherSupportName, double applyOtherSupportAmount, String applyPurpose, String applyDate, int donationId, String studName, String studIc, String studEmail, String studPassword, String studState, String studZipcode, String studCourse, String studFaculty, String studCampus, String studGender, String studPhoneNum, String studBankName, String studBankNum, String studAddress, String studMarriage, int guardId, String fatherName, String fatherOccupation, String fatherPhoneNum, String fatherAddress, String motherName, String motherOccupation, String motherPhoneNum, String motherAddress, String guardName, String guardRelation, String guardOccupation, String guardPhoneNum, String guardAddress, String guardPostcode, String guardResidence, double guardIncome, double motherIncome, double fatherIncome, double otherIncome, int staffId, String approveStatus, String appStatHEA, String appStatHEP, String appStatUZSW, String heaReview, String hepReview, String uzswReview) {
+    public ApplicationDetails(int applyId, int studId, int deadlineId, String applySession, int applyPart, double applyCgpa, double applyGpa, boolean applyFoodIncentive, boolean applyOtherSupport, String applyOtherSupportName, double applyOtherSupportAmount, String applyPurpose, String applyDate, int donationId, String studName, String studIc, String studEmail, String studPassword, String studState, String studZipcode, String studCourse, String studFaculty, String studCampus, String studGender, String studPhoneNum, String studBankName, String studBankNum, String studAddress, String studMarriage, int guardId, String fatherName, String fatherOccupation, String fatherPhoneNum, String fatherAddress, String motherName, String motherOccupation, String motherPhoneNum, String motherAddress, String guardName, String guardRelation, String guardOccupation, String guardPhoneNum, String guardAddress, String guardPostcode, String guardResidence, double guardIncome, double motherIncome, double fatherIncome, double otherIncome, int staffId, String approveStatus, String appStatHEA, String appStatHEP, String appStatUZSW, String heaReview, String hepReview, String uzswReview, int iv_id, Date iv_date) {
         this.applyId = applyId;
         this.studId = studId;
         this.deadlineId = deadlineId;
@@ -80,8 +81,26 @@ public class ApplicationDetails implements Serializable {
         this.heaReview = heaReview;
         this.hepReview = hepReview;
         this.uzswReview = uzswReview;
+        this.iv_id = iv_id;
+        this.iv_date = iv_date;
     }
 
+     public int getIv_id() {
+        return iv_id;
+    }
+
+    public void setIv_id(int iv_id) {
+        this.iv_id = iv_id;
+    }
+
+    public Date getIv_date() {
+        return iv_date;
+    }
+
+    public void setIv_date(Date iv_date) {
+        this.iv_date = iv_date;
+    }
+    
     public int getApplyId() {
         return applyId;
     }
@@ -600,5 +619,8 @@ public class ApplicationDetails implements Serializable {
     private String heaReview;
     private String hepReview;
     private String uzswReview;
+    
+    private int iv_id;
+    private Date iv_date;
     
 }

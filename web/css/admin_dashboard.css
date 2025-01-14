@@ -1,12 +1,13 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa; 
+    font-weight: bold;
+    background-color: #F2EBDD; 
     margin: 0;
     padding: 0;
 }
 .navbar {
-    background-color: #780afd; 
+    background-color: #522E5C; 
     padding: 1rem; 
 }
 .navbar-brand {
@@ -23,9 +24,10 @@ body {
 .card-title {
     font-size: 1.25rem; 
     color: #343a40; 
+    font-family: 'Arial', sans-serif;
 }
 .card-text {
-    font-size: 2rem; 
+    font-size: 5rem; 
     font-weight: bold; 
 }
 
@@ -45,8 +47,8 @@ body {
 }
 
 .footer {
-    background-color: #007bff; 
-    color: white;
+    background-color: #522E5C; 
+    color: #522E5C;
     padding: 1rem 0; 
     position: relative;
 }
@@ -54,10 +56,10 @@ footer p {
     margin: 0; /* Remove default margin */
 }
 .btn-primary {
-    background-color: #0056b3; 
+    background-color:  #6E1313; 
     border: none; 
 }
 .btn-primary:hover {
-    background-color: #004494; /* Darker shade on hover */
+    background-color: #6E1313; /* Darker shade on hover */
 }
 

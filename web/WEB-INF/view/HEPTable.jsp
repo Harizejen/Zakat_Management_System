@@ -1,9 +1,3 @@
-<%-- 
-    Document   : HEPTable
-    Created on : Dec 18, 2024, 3:18:13 AM
-    Author     : nasru
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.staff.model.staff"%>
 <%@page import="java.util.List"%>
