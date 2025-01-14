@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalDate"%>
 <%@page import="com.user.model.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
@@ -6,6 +7,7 @@
     
     //Retrive err message
     String err = (String)request.getAttribute("error");
+    String apply_session = "Sesi " + LocalDate.now().getYear();
 %>
 <html lang="en">
 <head>
@@ -42,7 +44,7 @@
             <a href="<%= request.getContextPath() %>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
             <a href="<%= request.getContextPath() %>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
             <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
-            <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
+            <a href="${pageContext.request.contextPath}/user_logout.do" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
         </div>
     </aside>
 
@@ -54,7 +56,7 @@
             <div class="card mb-4 form-step">
                 <div class="card-header">Borang Permohonan Zakat</div>
                 <div class="card-body">
-                    <p><strong>SESI ZAKAT: MAC2025/OGOS2025</strong></p>
+                    <p><strong>SESI ZAKAT: <%= apply_session %></strong></p>
                     <p><strong>NAMA:</strong> <span id="student-name"><%= st.getStudName() %></span></p>
                     <p><strong>NO. PELAJAR:</strong> <%= st.getStudID() %></p>
                     <p><strong>NO. KP:</strong> <%= st.getStudIC() %></p>
@@ -368,7 +370,7 @@
                 isKadPengenalanValid = false;
             }
             
-            const expectedFileName = studentName + "_Salinan_Kad_Pengenalan_Ibu_dan_Bapa_Penjaga.pdf";
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Salinan_Kad_Pengenalan_Ibu_dan_Bapa_Penjaga.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
 //                console.log(studentName);
@@ -397,7 +399,7 @@
                 isSlipGajiValid = false;
             }
             
-            const expectedFileName = studentName + "_Pengesahan_Pendapatan.pdf";
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Pengesahan_Pendapatan.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
 //                console.log(studentName);
@@ -424,7 +426,7 @@
                 isKadMatrikValid = false;
             }
             
-            const expectedFileName = studentName + "_KadMatrik_Student.pdf";
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_KadMatrik_Student.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
 //                console.log(studentName);
