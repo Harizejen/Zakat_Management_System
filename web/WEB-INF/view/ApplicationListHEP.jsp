@@ -3,6 +3,12 @@
 <%@page import="java.util.List"%>
 <%@page import="com.ApplicationDetails.model.ApplicationDetails"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    String tab = request.getParameter("tab");
+    if (tab == null) {
+        tab = "total"; // Default tab
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,24 +44,44 @@
 <div class="container">
     <!-- Tabs Navigation -->
     <ul class="nav nav-tabs mb-3" id="applicationTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="total-tab" data-bs-toggle="tab" data-bs-target="#total" type="button" role="tab" aria-controls="total" aria-selected="true">Jumlah</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button" role="tab" aria-controls="approved" aria-selected="false">Disahkan</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="false">Menunggu</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" type="button" role="tab" aria-controls="rejected" aria-selected="false">Ditolak</button>
-        </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link <%= (tab.equals("total")) ? "active" : "" %>" 
+                        id="total-tab" data-bs-toggle="tab" data-bs-target="#total" 
+                        type="button" role="tab" aria-controls="total" 
+                        aria-selected="<%= (tab.equals("total")) ? "true" : "false" %>">
+                    Jumlah
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link <%= (tab.equals("approved")) ? "active" : "" %>" 
+                        id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" 
+                        type="button" role="tab" aria-controls="approved" 
+                        aria-selected="<%= (tab.equals("approved")) ? "true" : "false" %>">
+                    Disahkan
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link <%= (tab.equals("pending")) ? "active" : "" %>" 
+                        id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" 
+                        type="button" role="tab" aria-controls="pending" 
+                        aria-selected="<%= (tab.equals("pending")) ? "true" : "false" %>">
+                    Menunggu
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link <%= (tab.equals("rejected")) ? "active" : "" %>" 
+                        id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" 
+                        type="button" role="tab" aria-controls="rejected" 
+                        aria-selected="<%= (tab.equals("rejected")) ? "true" : "false" %>">
+                    Ditolak
+                </button>
+            </li>
     </ul>
 
     <!-- Tabs Content -->
         <div class="tab-content" id="applicationTabsContent">
             <!-- Total Tab -->
-            <div class="tab-pane fade show active" id="total" role="tabpanel" aria-labelledby="total-tab">
+            <div class="tab-pane fade <%= (tab.equals("total")) ? "show active" : "" %>" id="total" role="tabpanel" aria-labelledby="total-tab">
                 <%
                     int itemsPerPage = 6;
                     int currentPage = 1; // Default to the first page
@@ -110,7 +136,7 @@
                         <td><%= totalApp.getApplyDate() %></td>
                         <td>
                             <a href="#" class="text-decoration-none">
-                                2023******_MAC25OGOS25.pdf
+                                <%=totalApp.getStudId()%>_<%=totalApp.getApplySession()%>.pdf
                                 <i class="bi bi-download download-icon"></i>
                             </a>
                         </td>
@@ -175,22 +201,22 @@
                 </tbody>
                 </table>
                 <ul class="pagination justify-content-end">
-                <li class="page-item <%= (currentPage == 1) ? "disabled" : "" %>">
-                    <a class="page-link" href="?totalPage=<%= currentPage - 1 %>&tab=total" tabindex="-1">Previous</a>
-                </li>
-                <% for (int i = 1; i <= totalPages; i++) { %>
-                    <li class="page-item <%= (i == currentPage) ? "active" : "" %>">
-                        <a class="page-link" href="?totalPage=<%= i %>&tab=total"><%= i %></a>
+                    <li class="page-item <%= (currentPage == 1) ? "disabled" : "" %>">
+                        <a class="page-link" href="?totalPage=<%= currentPage - 1 %>&tab=total" tabindex="-1">Previous</a>
                     </li>
-                <% } %>
-                <li class="page-item <%= (currentPage == totalPages) ? "disabled" : "" %>">
-                    <a class="page-link" href="?totalPage=<%= currentPage + 1 %>&tab=total">Next</a>
-                </li>
-            </ul>
+                    <% for (int i = 1; i <= totalPages; i++) { %>
+                        <li class="page-item <%= (i == currentPage) ? "active" : "" %>">
+                            <a class="page-link" href="?totalPage=<%= i %>&tab=total"><%= i %></a>
+                        </li>
+                    <% } %>
+                    <li class="page-item <%= (currentPage == totalPages) ? "disabled" : "" %>">
+                        <a class="page-link" href="?totalPage=<%= currentPage + 1 %>&tab=total">Next</a>
+                    </li>
+                </ul>
             </div>
             
             <!-- Pending Tab -->
-            <div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+            <div class="tab-pane fade <%= (tab.equals("pending")) ? "show active" : "" %>" id="pending" role="tabpanel" aria-labelledby="pending-tab">
             <%
         int pendingItemsPerPage = 6;
         int pendingCurrentPage = 1; // Default to the first page
@@ -242,7 +268,7 @@
                         <td><%= pendingApp.getApplyDate() %></td>
                         <td>
                             <a href="#" class="text-decoration-none">
-                                2023******_MAC25OGOS25.pdf
+                                <%= pendingApp.getStudId() %>_<%=pendingApp.getApplySession()%>.pdf
                                 <i class="bi bi-download download-icon"></i>
                             </a>
                         </td>
@@ -307,22 +333,22 @@
                 </tbody>
             </table>
             <ul class="pagination justify-content-end">
-        <li class="page-item <%= (pendingCurrentPage == 1) ? "disabled" : "" %>">
-            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1 %>&tab=pending" tabindex="-1">Previous</a>
-        </li>
-        <% for (int i = 1; i <= pendingTotalPages; i++) { %>
-            <li class="page-item <%= (i == pendingCurrentPage) ? "active" : "" %>">
-                <a class="page-link" href="?pendingPage=<%= i %>&tab=pending"><%= i %></a>
-            </li>
-        <% } %>
-        <li class="page-item <%= (pendingCurrentPage == pendingTotalPages) ? "disabled" : "" %>">
-            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1 %>&tab=pending">Next</a>
-        </li>
-    </ul>
+                <li class="page-item <%= (pendingCurrentPage == 1) ? "disabled" : "" %>">
+                    <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1 %>&tab=pending" tabindex="-1">Previous</a>
+                </li>
+                <% for (int i = 1; i <= pendingTotalPages; i++) { %>
+                    <li class="page-item <%= (i == pendingCurrentPage) ? "active" : "" %>">
+                        <a class="page-link" href="?pendingPage=<%= i %>&tab=pending"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= (pendingCurrentPage == pendingTotalPages) ? "disabled" : "" %>">
+                    <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1 %>&tab=pending">Next</a>
+                </li>
+            </ul>
         </div>
             
             <!-- Rejected Tab -->
-            <div class="tab-pane fade" id="rejected" role="tabpanel" aria-labelledby="rejected-tab">
+            <div class="tab-pane fade <%= (tab.equals("rejected")) ? "show active" : "" %>" id="rejected" role="tabpanel" aria-labelledby="rejected-tab">
             <%
         int rejectedItemsPerPage = 6;
         int rejectedCurrentPage = 1; // Default to the first page
@@ -374,7 +400,7 @@
                         <td><%= rejectedApp.getApplyDate() %></td>
                         <td>
                             <a href="#" class="text-decoration-none">
-                                2023******_MAC25OGOS25.pdf
+                                <%= rejectedApp.getStudId() %>_<%=rejectedApp.getApplySession()%>.pdf
                                 <i class="bi bi-download download-icon"></i>
                             </a>
                         </td>
@@ -439,22 +465,22 @@
                 </tbody>
             </table>
             <ul class="pagination justify-content-end">
-        <li class="page-item <%= (rejectedCurrentPage == 1) ? "disabled" : "" %>">
-            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1 %>&tab=rejected" tabindex="-1">Previous</a>
-        </li>
-        <% for (int i = 1; i <= rejectedTotalPages; i++) { %>
-            <li class="page-item <%= (i == rejectedCurrentPage) ? "active" : "" %>">
-                <a class="page-link" href="?rejectedPage=<%= i %>&tab=rejected"><%= i %></a>
-            </li>
-        <% } %>
-        <li class="page-item <%= (rejectedCurrentPage == rejectedTotalPages) ? "disabled" : "" %>">
-            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1 %>&tab=rejected">Next</a>
-        </li>
-    </ul>
+                <li class="page-item <%= (rejectedCurrentPage == 1) ? "disabled" : "" %>">
+                    <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1 %>&tab=rejected" tabindex="-1">Previous</a>
+                </li>
+                <% for (int i = 1; i <= rejectedTotalPages; i++) { %>
+                    <li class="page-item <%= (i == rejectedCurrentPage) ? "active" : "" %>">
+                        <a class="page-link" href="?rejectedPage=<%= i %>&tab=rejected"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= (rejectedCurrentPage == rejectedTotalPages) ? "disabled" : "" %>">
+                    <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1 %>&tab=rejected">Next</a>
+                </li>
+            </ul>
         </div>
             
             <!-- Approved Tab -->
-            <div class="tab-pane fade show" id="approved" role="tabpanel" aria-labelledby="approved-tab">
+            <div class="tab-pane fade <%= (tab.equals("approved")) ? "show active" : "" %>" id="approved" role="tabpanel" aria-labelledby="approved-tab">
             <%
                 int approvedItemsPerPage = 6;
                 int approvedCurrentPage = 1; // Default to the first page
@@ -506,7 +532,7 @@
                         <td><%= approvedApp.getApplyDate() %></td>
                         <td>
                             <a href="#" class="text-decoration-none">
-                                2023******_MAC25OGOS25.pdf
+                                <%= approvedApp.getStudId() %>_<%=approvedApp.getApplySession()%>.pdf
                                 <i class="bi bi-download download-icon"></i>
                             </a>
                         </td>
@@ -570,18 +596,18 @@
                     %>
                 </tbody>
             </table>
-                <ul class="pagination justify-content-end">
+            <ul class="pagination justify-content-end">
                 <li class="page-item <%= (approvedCurrentPage == 1) ? "disabled" : "" %>">
-                    <a class="page-link" href="?approvedTotalPages=<%= approvedCurrentPage - 1 %>&tab=approved" tabindex="-1">Previous</a>
+                    <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1 %>&tab=approved" tabindex="-1">Previous</a>
                 </li>
                 <% for (int i = 1; i <= approvedTotalPages; i++) { %>
                     <li class="page-item <%= (i == approvedCurrentPage) ? "active" : "" %>">
-                        <a class="page-link" href="?approvedTotalPages=<%= i %>&tab=approved"><%= i %></a>
+                        <a class="page-link" href="?approvedPage=<%= i %>&tab=approved"><%= i %></a>
                     </li>
                 <% } %>
                 <li class="page-item <%= (approvedCurrentPage == approvedTotalPages) ? "disabled" : "" %>">
-                    <a class="page-link" href="?approvedTotalPages=<%= approvedCurrentPage + 1 %>&tab=approved">Next</a>
-                </li>
+                    <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1 %>&tab=approved">Next</a>
+                    </li>
             </ul>
         </div>
        </div> 
