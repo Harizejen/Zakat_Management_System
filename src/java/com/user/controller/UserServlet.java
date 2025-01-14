@@ -61,13 +61,41 @@ public class UserServlet extends HttpServlet {
          String action = request.getParameter("action");
 
         if ("profile".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
-        } else if ("dashboard".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
-        } else if ("borang".equals(action)) {
+            int stud_id = (Integer) request.getSession().getAttribute("studentID");
+            guardian gd = new guardian();
+            guardian gd1 = gd.findGuardian(stud_id);
+            if(gd1 != null){
+                request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
+            }else {
+            request.getSession().setAttribute("warning", "Sila lengkapkan Borang Maklumat terlebih dahulu!");
             request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+            }
+            
+        } else if ("dashboard".equals(action)) {
+            request.getRequestDispatcher("/WEB-INF/view/userDashboard.jsp").forward(request, response);
+        } else if ("borang".equals(action)) {
+            int stud_id = (Integer) request.getSession().getAttribute("studentID");
+            guardian gd = new guardian();
+            guardian gd1 = gd.findGuardian(stud_id);
+            if(gd1 != null){
+                request.setAttribute("warning", "");
+                request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+            }else {
+                request.getSession().setAttribute("warning", "Sila lengkapkan Borang Maklumat terlebih dahulu!");
+                request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+            }
         } else if ("permohonan".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
+            int stud_id = (Integer) request.getSession().getAttribute("studentID");
+            guardian gd = new guardian();
+            guardian gd1 = gd.findGuardian(stud_id);
+            if(gd1 != null){
+                request.getSession().setAttribute("guard_info", gd1);
+                request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
+            }else {
+            request.getSession().setAttribute("warning", "Sila lengkapkan Borang Maklumat terlebih dahulu!");
+            request.getRequestDispatcher("/WEB-INF/view/BorangMaklumat.jsp").forward(request, response);
+            }
+            
         } else if ("records".equals(action)) {
             int stud_id = (Integer) request.getSession().getAttribute("studentID");
             Application ap = new Application();

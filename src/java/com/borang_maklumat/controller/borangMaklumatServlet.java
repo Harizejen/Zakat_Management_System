@@ -262,6 +262,12 @@ public class borangMaklumatServlet extends HttpServlet {
 
             if (upStud && upGuard) {
                 conn.commit(); // Commit transaction
+                Student st = new Student();
+                st = st.findStudent(stud_id);
+                guardian gd = new guardian();
+                gd = gd.findGuardian(stud_id);
+                request.getSession().setAttribute("guard_info", gd);
+                request.getSession().setAttribute("student_data", st);
                 request.setAttribute("stud_id", stud_id);
                 request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
             } else {

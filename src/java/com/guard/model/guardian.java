@@ -44,7 +44,7 @@ public class guardian {
     }
 
     public String getFather_occupation() {
-        return father_occupation;
+        return father_occupation.toUpperCase();
     }
 
     public String getFather_phoneNum() {
@@ -52,7 +52,7 @@ public class guardian {
     }
     
     public String getFather_Address(){
-        return father_address;
+        return father_address.toUpperCase();
     }
 
     public double getFather_income() {
@@ -88,7 +88,7 @@ public class guardian {
     }
 
     public String getGuard_occupation() {
-        return guard_occupation;
+        return guard_occupation.toUpperCase();
     }
 
     public String getGuard_phoneNum() {
@@ -96,7 +96,7 @@ public class guardian {
     }
 
     public String getGuard_address() {
-        return guard_address;
+        return guard_address.toUpperCase();
     }
 
     public String getGuard_postcode() {
@@ -160,7 +160,7 @@ public class guardian {
     }
 
     public void setGuard_relation(String guard_relation) {
-        this.guard_relation = guard_relation;
+        this.guard_relation = guard_relation.toUpperCase();
     }
 
     public void setGuard_occupation(String guard_occupation) {
@@ -182,6 +182,17 @@ public class guardian {
     public void setGuard_residence(String guard_residence) {
         this.guard_residence = guard_residence;
     }
+    
+    public String getResidenceDisplay() {
+        switch (guard_residence) {
+            case "R":
+                return "WARGANEGARA";
+            case "N":
+                return "BUKAN WARGANEGARA";
+            default:
+                return "UNKNOWN"; // Handle unexpected values
+        }
+    }
 
     public void setGuard_income(double guard_income) {
         this.guard_income = guard_income;
@@ -192,7 +203,7 @@ public class guardian {
     }
 
     public guardian findGuardian(int stud_id) {
-        guardian gd = null; // Initialize as null in case no student is found.
+        guardian gd = null; // Initialize as null in case no guardian is found.
         String query = "SELECT * FROM guardian WHERE stud_id = ?";
         try {
             Connection conn = dbconn.getConnection();
@@ -224,24 +235,24 @@ public class guardian {
                 
                 
                 gd = new guardian();
-                gd.setFather_name(f_name);
-                gd.setFather_occupation(f_occupation);
-                gd.setFather_phoneNum(f_pNum);
-                gd.setFather_Address(f_address);
+                gd.setFather_name(f_name != null ? f_name : "Tiada");
+                gd.setFather_occupation(f_occupation != null ? f_occupation : "Tiada");
+                gd.setFather_phoneNum(f_pNum != null ? f_pNum : "Tiada");
+                gd.setFather_Address(f_address != null ? f_address : "Tiada");
                 gd.setFather_income(f_income);
-                gd.setMother_name(m_name);
-                gd.setMother_occupation(m_occupation);
-                gd.setMother_phoneNum(m_pNum);
-                gd.setMother_Address(m_address);
+                gd.setMother_name(m_name != null ? m_name : "Tiada");
+                gd.setMother_occupation(m_occupation != null ? m_occupation : "Tiada");
+                gd.setMother_phoneNum(m_pNum != null ? m_pNum : "Tiada");
+                gd.setMother_Address(m_address != null ? m_address : "Tiada");
                 gd.setMother_income(m_income);
-                gd.setGuard_name(g_name);
-                gd.setGuard_relation(g_relation);
-                gd.setGuard_residence(g_residence);
-                gd.setGuard_postcode(g_postcode);
-                gd.setGuard_occupation(g_occupation);
-                gd.setGuard_phoneNum(g_pNum);
+                gd.setGuard_name(g_name != null ? g_name : "Tiada");
+                gd.setGuard_relation(g_relation != null ? g_relation : "Tiada");
+                gd.setGuard_residence(g_residence != null ? g_residence : "Tiada");
+                gd.setGuard_postcode(g_postcode != null ? g_postcode : "Tiada");
+                gd.setGuard_occupation(g_occupation != null ? g_occupation : "Tiada");
+                gd.setGuard_phoneNum(g_pNum != null ? g_pNum : "Tiada");
                 gd.setGuard_income(g_income);
-                gd.setGuard_address(g_address);
+                gd.setGuard_address(g_address != null ? g_address : "Tiada");
                 gd.setOther_income(oth_income);
             }
         } catch (SQLException e) {
@@ -250,6 +261,28 @@ public class guardian {
         return gd; // Return the Student object or null if not found
     }
     
-    
-    
+    @Override
+    public String toString() {
+        return "Guardian{" +
+                "fatherName='" + father_name + '\'' +
+                ", fatherOccupation='" + father_occupation + '\'' +
+                ", fatherPhoneNum='" + father_phoneNum + '\'' +
+                ", fatherAddress='" + father_address + '\'' +
+                ", fatherIncome=" + father_income +
+                ", motherName='" + mother_name + '\'' +
+                ", motherOccupation='" + mother_occupation + '\'' +
+                ", motherPhoneNum='" + mother_phoneNum + '\'' +
+                ", motherAddress='" + mother_address + '\'' +
+                ", motherIncome=" + mother_income +
+                ", guardName='" + guard_name + '\'' +
+                ", guardRelation='" + guard_relation + '\'' +
+                ", guardOccupation='" + guard_occupation + '\'' +
+                ", guardPhoneNum='" + guard_phoneNum + '\'' +
+                ", guardAddress='" + guard_address + '\'' +
+                ", guardPostcode='" + guard_postcode + '\'' +
+                ", guardResidence='" + guard_residence + '\'' +
+                ", guardIncome=" + guard_income +
+                ", otherIncome=" + other_income +
+                '}';
+    }
 }

@@ -63,7 +63,7 @@ public class HEPListPage extends HttpServlet {
      @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
+         request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
     }
 
     /**

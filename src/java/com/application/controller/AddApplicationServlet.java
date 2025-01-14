@@ -4,6 +4,7 @@
  */
 package com.application.controller;
 
+import com.application.model.Application;
 import com.database.dbconn;
 import com.user.model.Student;
 import java.io.File;
@@ -27,8 +28,8 @@ import javax.servlet.http.Part;
  * @author User
  */
 @MultipartConfig(
-//    location = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads", //hariz file
-    location = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads",    //Nasrullah file
+    location = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads", //hariz file
+    //location = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads",    //Nasrullah file
     fileSizeThreshold = 1024 * 1024 * 2, // 2MB
     maxFileSize = 1024 * 1024 * 10,      // 10MB
     maxRequestSize = 1024 * 1024 * 61   // 61MB
@@ -124,6 +125,13 @@ public class AddApplicationServlet extends HttpServlet {
         if (!uploadDir.exists()) {
             uploadDir.mkdirs(); // Create directory if it does not exist
         }
+        
+//        Application ap = new Application();
+//        if (ap.existedApplication(stud_id, apply_session)) {
+//                request.setAttribute("error", "You have already applied.");
+//                request.getRequestDispatcher("/WEB-INF/view/applicationPage.jsp").forward(request, response);
+//                return;
+//        }
 
         String applyQuery = "INSERT INTO application (stud_id, deadline_id, apply_session, apply_part, apply_cgpa, apply_gpa, apply_foodIncentive, apply_otherSupport, apply_otherSupportName, apply_otherSupportAmount, apply_purpose, apply_date, donation_id) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -168,6 +176,7 @@ public class AddApplicationServlet extends HttpServlet {
 
                                         // Save file name to database
                                         psDocument.setInt(1, apply_id);
+                                        request.getSession().setAttribute("apply_id", apply_id);
                                         psDocument.setString(2, fileName);
                                         psDocument.addBatch();
                                     }

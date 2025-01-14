@@ -43,7 +43,7 @@
             <div class="offcanvas-body">
                 <!-- Profile Section -->
                 <div class="profile-section">
-                    <img src="https://via.placeholder.com/80" alt="Profile Picture">
+                    <img src="${pageContext.request.contextPath}/images/logo_system.png" style="width: 80px; height: auto; border-radius: 50% " alt="Profile Picture">
                     <p class="profile-name"><%= st.getStudName() %></p>
                 </div>
 
@@ -74,7 +74,7 @@
                             <span class="label">NO. PELAJAR</span> <span class="value">: <%= st.getStudID() %></span>
                         </div>
                         <div class="info-row">
-                            <% if(st.getStudIC() == "") { %>
+                            <% if(st.getStudIC() == "" || st.getStudIC() == null) { %>
                                 <span class="label">NO. KP</span> <span class="value" style="color: red">: TIADA MAKLUMAT </span>
                             <% } else { %>
                                 <span class="label">NO. KP</span> <span class="value">: <%= st.getStudIC() %></span>

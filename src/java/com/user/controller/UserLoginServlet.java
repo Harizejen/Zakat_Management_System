@@ -85,10 +85,49 @@ public class UserLoginServlet extends HttpServlet {
         if (st.isValid()) {
             Student stl = st.findStudent(stud_id);
             guardian gd1 = gd.findGuardian(stud_id);
-            request.getSession().setAttribute("guard_info", gd1);
-            // Store the student data in the session
             request.getSession().setAttribute("student_data", stl);
-
+            //System.out.print(gd1.toString());
+            // Check if guardian information is available
+//            if (stl != null && (stl.getStudIC() != null && !stl.getStudIC().isEmpty())) {
+//                // If guardian information is available, set it in the session
+//                request.getSession().setAttribute("student_data", stl);
+//            } else {
+//                // Handle the case where guardian info is not available
+//                request.getSession().setAttribute("student_data", null);
+//            }
+            // Check if guardian information is available
+            if (gd1 != null && (gd1.getFather_name() != null && !gd1.getFather_name().isEmpty())) {
+                // If guardian information is available, set it in the session
+                request.getSession().setAttribute("guard_info", gd1);
+            } else {
+                // Handle the case where guardian info is not available
+                if(gd1 == null){
+                    guardian gd2 = new guardian();
+                    gd2.setFather_name("TIADA");
+                    gd2.setFather_occupation("TIADA");
+                    gd2.setFather_phoneNum("TIADA");
+                    gd2.setFather_Address("TIADA");
+//                    gd.setFather_income(f_income);
+                    gd2.setMother_name("TIADA");
+                    gd2.setMother_occupation("TIADA");
+                    gd2.setMother_phoneNum("TIADA");
+                    gd2.setMother_Address("TIADA");
+//                    gd.setMother_income(m_income);
+                    gd2.setGuard_name("TIADA");
+                    gd2.setGuard_relation("TIADA");
+                    gd2.setGuard_residence("TIADA");
+                    gd2.setGuard_postcode("TIADA");
+                    gd2.setGuard_occupation("TIADA");
+                    gd2.setGuard_phoneNum("TIADA");
+//                    gd.setGuard_income(g_income);
+                    gd2.setGuard_address("TIADA");
+//                    gd.setOther_income(oth_income);
+                    request.getSession().setAttribute("guard_info", gd2);
+                }
+                
+            }
+            
+            
             // Check if the student's information is complete
             boolean isComplete = stl.isInformationComplete(stl); // Implement this method in your Student class
             request.setAttribute("isInformationComplete", isComplete);
