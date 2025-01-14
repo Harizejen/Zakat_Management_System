@@ -91,8 +91,8 @@ public class eligibleCheckServlet extends HttpServlet {
             String eligibilityMessage = "Please complete your information!";
             request.setAttribute("eligibilityMessage", eligibilityMessage);
             request.setAttribute("popupMessage", "Maklumat anda tidak lengkap. Sila lengkapkan borang maklumat.");
-            request.setAttribute("redirectTo", "BorangMaklumat.jsp");
-            request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+            request.setAttribute("redirectTo", "http://localhost:8080/Zakat_Management_System/user.do?action=borang");
+            request.getRequestDispatcher("/WEB-INF/view/userDashboard.jsp").forward(request, response);
             return;
         }
 
@@ -116,7 +116,7 @@ public class eligibleCheckServlet extends HttpServlet {
         }
 
         request.getSession().setAttribute("guard_info", guard);
-        request.getRequestDispatcher("/WEB-INF/view/UserDashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/userDashboard.jsp").forward(request, response);
     }
 
     /**

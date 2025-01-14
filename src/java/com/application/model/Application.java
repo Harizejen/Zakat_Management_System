@@ -177,7 +177,28 @@ public class Application implements Serializable {
     public void setApplyStatus(String apply_status) {
         this.apply_status = apply_status;
     }
+    
+    public boolean existedApplication(int stud_id, String apply_session) {
+        boolean existed = false;
+        String query = "SELECT 1 FROM application WHERE stud_id = ? AND apply_session = ?;";
 
+        try (Connection conn = dbconn.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, stud_id);
+            ps.setString(2, apply_session);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    existed = true;
+                }
+            }
+        } catch (SQLException e) {
+            // Use proper logging or rethrow exception in production
+            e.printStackTrace();
+        }
+        return existed;
+    }
     // Additional Methods
     public String checkStatus(int apply_id) {
         String status = "SEDANG DIPROSES";

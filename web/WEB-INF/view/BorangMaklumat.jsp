@@ -6,6 +6,11 @@
     Student st = (Student) request.getSession().getAttribute("student_data");
     // Retrieve the guardian data from the session
     guardian gd1 = (guardian) request.getSession().getAttribute("guard_info");
+    String error = (String) request.getSession().getAttribute("warning");
+    if(error == "null"){
+        error = "";
+    }
+        
 %>
 <html lang="en">
     <head>
@@ -20,7 +25,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/form.css">
     </head>
-    <body>
+<body>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-md">
             <div class="container-fluid">
@@ -38,19 +43,21 @@
             </div>
             <div class="offcanvas-body">
                 <div class="profile-section">
-                    <img src="https://via.placeholder.com/80" alt="Profile Picture">
+                    <img src="${pageContext.request.contextPath}/images/logo_system.png" style="width: 80px; height: auto; border-radius: 50% " alt="Profile Picture">
                     <p class="profile-name"><%= st != null ? st.getStudName() : "Unknown"%></p>
                 </div>
                 <a href="<%= request.getContextPath()%>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
                 <a href="<%= request.getContextPath()%>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
                 <a href="<%= request.getContextPath()%>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
                 <a href="<%= request.getContextPath()%>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
-                <a href="#" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
+                <a href="${pageContext.request.contextPath}/user_logout.do" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
             </div>
         </aside>
 
         <div class="container">
             <h2 class="text-center mb-4 fw-bold">BORANG PERMOHONAN AGIHAN ZAKAT PENDIDIKAN PELAJAR</h2>
+            
+            <h3 class="text-center text-danger"><%= error%></h3>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="step1-tab" data-bs-toggle="tab" href="#step1" role="tab" aria-controls="step1" aria-selected="true">LANGKAH 1</a>
@@ -388,5 +395,6 @@
 
             <!-- Bootstrap 5 JS -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+</body>
+       
 </html>

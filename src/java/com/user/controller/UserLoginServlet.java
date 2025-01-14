@@ -104,6 +104,24 @@ public class UserLoginServlet extends HttpServlet {
                 if(gd1 == null){
                     guardian gd2 = new guardian();
                     gd2.setFather_name("TIADA");
+                    gd2.setFather_occupation("TIADA");
+                    gd2.setFather_phoneNum("TIADA");
+                    gd2.setFather_Address("TIADA");
+//                    gd.setFather_income(f_income);
+                    gd2.setMother_name("TIADA");
+                    gd2.setMother_occupation("TIADA");
+                    gd2.setMother_phoneNum("TIADA");
+                    gd2.setMother_Address("TIADA");
+//                    gd.setMother_income(m_income);
+                    gd2.setGuard_name("TIADA");
+                    gd2.setGuard_relation("TIADA");
+                    gd2.setGuard_residence("TIADA");
+                    gd2.setGuard_postcode("TIADA");
+                    gd2.setGuard_occupation("TIADA");
+                    gd2.setGuard_phoneNum("TIADA");
+//                    gd.setGuard_income(g_income);
+                    gd2.setGuard_address("TIADA");
+//                    gd.setOther_income(oth_income);
                     request.getSession().setAttribute("guard_info", gd2);
                 }
                 
