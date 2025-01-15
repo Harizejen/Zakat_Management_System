@@ -1,40 +1,63 @@
-
 body {
     font-family: 'Arial', sans-serif;
     font-weight: bold;
-    background-color: #F2EBDD; 
+    /* background-color: #ab8bc0;  */
+   background: linear-gradient(90deg, #961bde 0%, #a200ff 100%);/* Gradient background */
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
+
+h1 {
+    color: white;
+}
+
+.h5 {
+    color: white;
+    
+}
+
+.container {
+    overflow: hidden;
+}
+
 .navbar {
     background-color: #522E5C; 
     padding: 1rem; 
 }
+
 .navbar-brand {
     font-size: 1.5rem; /* Bigger font for brand name */
 }
+
 .card {
     border: none; 
     border-radius: 0.5rem; 
-        
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
 }
-.card-gradient {
-    background: linear-gradient(135deg, rgba(106, 0, 255, 0.84), rgba(255,255,255,0.1)); /* Gradient background */
+
+.card:hover {
+    transform: translateY(-10px); /* Move card up on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
 }
+
+.card-gradient { background: linear-gradient(135deg, rgba(202, 105, 244, 0.84), rgba(255,255,255,0.1)); /* Gradient background */ }
+
 .card-title {
-    font-size: 1.25rem; 
-    color: #343a40; 
+    font-size: 1.5rem; 
+    color: #c5e2ff; 
     font-family: 'Arial', sans-serif;
 }
+
 .card-text {
     font-size: 5rem; 
     font-weight: bold; 
+    color: whitesmoke; /* Change text color for better visibility */
 }
 
 .card-body {
     align-content: center;
     min-height: 350px;
-
 }
 
 @media (max-width: 768px) {
@@ -48,18 +71,20 @@ body {
 
 .footer {
     background-color: #522E5C; 
-    color: #522E5C;
+    color: white; /* Change text color to white for better contrast */
     padding: 1rem 0; 
     position: relative;
 }
+
 footer p {
     margin: 0; /* Remove default margin */
 }
+
 .btn-primary {
     background-color:  #6E1313; 
     border: none; 
 }
-.btn-primary:hover {
-    background-color: #6E1313; /* Darker shade on hover */
-}
 
+.btn-primary:hover {
+    background-color: #8B1A1A; /* Slightly lighter shade on hover */
+}
