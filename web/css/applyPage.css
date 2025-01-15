@@ -7,10 +7,25 @@ and open the template in the editor.
     Created on : Dec 25, 2024, 10:00:24 PM
     Author     : nasru
 */
-.body {
-    background-color: #f5f5dc;
+body {
+    background-color: whitesmoke;
     overflow: hidden;
 }
+
+p {
+    margin-bottom: 4px;
+}
+
+.customInfo1 {
+    
+    font-size: clamp(9px, 2vw + 1rem, 10px);    
+}
+
+.customInfo2 {
+    
+    font-size: clamp(8px, 2vw + 1rem, 9px);    
+}
+
 .navbar {
     background-color: #013220; /* Dark green */
     height: fit-content;
@@ -308,5 +323,26 @@ and open the template in the editor.
 }
 .navbar-expand .navbar-toggler {
   display: block;
+}
+
+.label {
+    font-size: clamp(8px, 1vw + 1rem, 9px);
+}
+
+.form-label {
+    font-weight: 500;
+    font-size: clamp(8px, 1vw + 1rem, 9px);
+}
+
+.form-control {
+    font-size: clamp(8px, 1vw + 1rem, 9px);
+}
+
+.form-select {
+    font-size: clamp(8px, 1vw + 1rem, 9px);
+}
+
+.form-check-label {
+    font-size: clamp(8px, 1vw + 1rem, 9px);
 }
 
