@@ -56,7 +56,7 @@ public class goHEPDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/HEPdashboard.jsp").forward(request, response);
     }
 
     /**
