@@ -13,7 +13,7 @@
     </head>
     <body>
         <!-- Top Navigation Bar -->
-        <nav class="navbar navbar-expand-lg" style="background-color: #780afd">
+        <nav class="navbar navbar-expand-lg" style="background-color: #522E5C">
             <div class="container-fluid">
                 <a class="navbar-brand text-white" href="adminServlet?action=login">Admin Dashboard</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="ms-auto">
-                        <a class="btn btn-light" href="${pageContext.request.contextPath}/adminLogOutServlet" role="button">Logout</a>
+                        <a class="btn btn-light" href="${pageContext.request.contextPath}/adminLogOutServlet" role="button" style="background-color: #6E1313; color: white; border: none;">Logout</a>
                     </div>
                 </div>
             </div>

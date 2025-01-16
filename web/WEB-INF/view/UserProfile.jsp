@@ -57,7 +57,7 @@
 
         <!-- Main Content -->
         <main class="container mt-4">
-            <h1 class="text-center mb-0 fw-bold">PROFIL</h1>
+            <h3 class="text-center mb-0 fw-bold">PROFIL</h3>
             <div class="row">
                 <div class="col-md-8"> <!-- Adjust the width as needed -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -74,102 +74,98 @@
                             <a class="nav-link" id="step4-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab4" aria-selected="false">PENJAGA</a>
                         </li>
                     </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                            <div class="p-4 mt-2 shadow-sm bg-white rounded">
+                                <h4 class="mb-3 fw-bold">📌 Maklumat Peribadi</h4>
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <p><strong>NAMA PENUH:</strong> &nbsp;<%= st.getStudName() != null ? st.getStudName() : "Tiada"%></p>
+                                        <p><strong>NO. KP:</strong>&nbsp;<%= st.getStudIC() != null ? st.getStudIC() : "Tiada"%></p>
+                                        <p><strong>JANTINA:</strong>&nbsp;<%= st.getGenderDisplay() != null ? st.getGenderDisplay() : "Tiada"%></p>
+                                        <p><strong>NO. TELEFON:</strong>&nbsp;<%= st.getStudPhoneNum() != null ? st.getStudPhoneNum() : "Tiada"%></p>
+                                        <p><strong>EMEL:</strong>&nbsp;<%= st.getStudEmail() != null ? st.getStudEmail() : "Tiada"%>
+                                        <p><strong>ALAMAT MENYURAT:</strong>&nbsp;<%= st.getStudAddress() != null ? st.getStudAddress() : "Tiada"%></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>STATUS PERKAHWINAN:</strong><%= st.getGenderDisplay() != null ? st.getGenderDisplay() : "Tiada"%></p>
+                                        <p><strong>NO. PELAJAR:</strong>&nbsp;<%= st.getStudID()%></p>
+                                        <p><strong>KOD PROGRAM:</strong>&nbsp;<%= st.getStudCourse() != null ? st.getStudCourse() : "Tiada"%></p>
+                                        <p><strong>KAMPUS:</strong>&nbsp;<%= st.getStudCampus() != null ? st.getStudCampus() : "Tiada"%></p> 
+                                        <p><strong>NO. AKAUN BANK:</strong>&nbsp;<%= st.getStudBankNum() != null ? st.getStudBankNum() : "Tiada"%></p>
+                                        <p><strong>NAMA BANK:</strong>&nbsp;<%= st.getStudBankName() != null ? st.getStudBankName() : "Tiada"%></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                            <div class="p-4 mt-2 shadow-sm bg-white rounded">
+                                <h4 class="fw-bold">📌 Maklumat Keluarga (Ibu)</h4>
+                                <div class="row mt-4">
+
+                                    <!-- Maklumat Ibu -->
+                                    <div class="col-md-10">
+                                        <p><strong>NAMA IBU:</strong>&nbsp;<%= gd.getMother_name().toUpperCase() != null ? gd.getMother_name().toUpperCase() : "Tiada"%></p>
+                                        <p><strong>PEKERJAAN IBU:</strong> &nbsp;<%= gd.getMother_occupation().toUpperCase() != null ? gd.getMother_occupation().toUpperCase() : "Tiada"%></p>
+                                        <p><strong>PENDAPATAN KASAR:</strong>&nbsp;RM <%= gd.getMother_income() != 0 ? gd.getMother_income() : "-"%></p>
+                                        <p><strong>NO TELEFON IBU:</strong>&nbsp;<%= gd.getMother_phoneNum() != null ? gd.getMother_phoneNum() : "Tiada"%></p>
+                                        <p><strong>ALAMAT IBU:</strong>&nbsp;<%= gd.getMother_Address().toUpperCase() != null ? gd.getMother_Address().toUpperCase() : "Tiada"%></p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                            <div class="p-4 mt-2 shadow-sm bg-white rounded">
+                                <h4 class="fw-bold">📌 Maklumat Keluarga (Bapa)</h4>
+                                <div class="row mt-4">
+                                    <!-- Maklumat Bapa -->
+                                    <div class="col-md-10">
+                                        <p><strong>NAMA BAPA:</strong>&nbsp;<%= gd.getFather_name() != null ? gd.getFather_name() : "Tiada"%></p>
+                                        <p><strong>PEKERJAAN BAPA:</strong>&nbsp;<%= gd.getFather_occupation().toUpperCase() != null ? gd.getFather_occupation().toUpperCase() : "Tiada"%></p>
+                                        <p><strong>PENDAPATAN KASAR:</strong>&nbsp;RM <%= gd.getFather_income() != 0 ? gd.getFather_income() : "Tiada"%></p>
+                                        <p><strong>NO TELEFON BAPA:</strong>&nbsp;<%= gd.getFather_phoneNum() != null ? gd.getFather_phoneNum() : "Tiada"%></p>
+                                        <p><strong>ALAMAT BAPA:</strong>&nbsp;<%= gd.getFather_Address().toUpperCase() != null ? gd.getFather_Address().toUpperCase() : "Tiada"%></p>
+                                    </div>
+                                </div> 
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
+                            <div class="p-4 mt-2 shadow-sm bg-white rounded">
+                                <h4 class="fw-bold">📌 Maklumat Keluarga (Penjaga)</h4>
+                                <div class="row mt-4">
+                                    <!-- Maklumat Penjaga -->
+                                    <div class="col-md-10">
+                                        <p><strong>NAMA PENJAGA:</strong>&nbsp;<%= gd.getGuard_name().toUpperCase() != null ? gd.getGuard_name().toUpperCase() : "Tiada"%></p>
+                                        <p><strong>PEKERJAAN PENJAGA:</strong>&nbsp;<%= gd.getGuard_occupation().toUpperCase() != null ? gd.getGuard_occupation().toUpperCase() : "Tiada"%></p>
+                                        <p><strong>NO TELEFON PENJAGA:</strong>&nbsp;<%= gd.getGuard_phoneNum() != null ? gd.getGuard_phoneNum() : "Tiada"%></p>
+                                        <p><strong>ALAMAT PENJAGA:</strong>&nbsp;<%= gd.getGuard_address().toUpperCase() != null ? gd.getGuard_address().toUpperCase() : "Tiada"%></p>
+                                    </div>
+                                </div> 
+                            </div>
+
+                        </div>       
+
+                    </div>
                 </div>
                 <div class="col-md-4"> <!-- Adjust the width as needed -->
-                    <div class="p-4 shadow-sm bg-white rounded">
+                    <div class="p-4 boxInfoSize shadow-sm bg-white rounded">
                         <h4 class="fw-bold mb-3">Notifikasi</h4>
                         <p><strong>Status Permohonan:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
                         <p><strong>Tarikh Temuduga:</strong> TIADA</p>
                         <p><strong>Tarikh Akhir 2025:</strong> 15 FEBRUARI</p>
                     </div>
-                </div>
-            </div>    
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                    <div class="p-4 mt-2 shadow-sm bg-white rounded">
-                        <h4 class="mb-3 fw-bold">📌 Maklumat Peribadi</h4>
-                        <div class="row mt-4">
-                            <div class="col-md-4">
-                                <p><strong>NAMA PENUH:</strong> &nbsp;<%= st.getStudName() != null ? st.getStudName() : "Tiada"%></p>
-                                <p><strong>NO. KP:</strong>&nbsp;<%= st.getStudIC() != null ? st.getStudIC() : "Tiada"%></p>
-                                <p><strong>JANTINA:</strong>&nbsp;<%= st.getGenderDisplay() != null ? st.getGenderDisplay() : "Tiada"%></p>
-                                <p><strong>NO. TELEFON:</strong>&nbsp;<%= st.getStudPhoneNum() != null ? st.getStudPhoneNum() : "Tiada"%></p>
-                                <p><strong>EMEL:</strong>&nbsp;<%= st.getStudEmail() != null ? st.getStudEmail() : "Tiada"%>
-                                <p><strong>ALAMAT MENYURAT:</strong>&nbsp;<%= st.getStudAddress() != null ? st.getStudAddress() : "Tiada"%></p>
-                            </div>
-                            <div class="col-md-4">
-                                <p><strong>STATUS PERKAHWINAN:</strong><%= st.getGenderDisplay() != null ? st.getGenderDisplay() : "Tiada"%></p>
-                                <p><strong>NO. PELAJAR:</strong>&nbsp;<%= st.getStudID()%></p>
-                                <p><strong>KOD PROGRAM:</strong>&nbsp;<%= st.getStudCourse() != null ? st.getStudCourse() : "Tiada"%></p>
-                                <p><strong>KAMPUS:</strong>&nbsp;<%= st.getStudCampus() != null ? st.getStudCampus() : "Tiada"%></p> 
-                                <p><strong>NO. AKAUN BANK:</strong>&nbsp;<%= st.getStudBankNum() != null ? st.getStudBankNum() : "Tiada"%></p>
-                                <p><strong>NAMA BANK:</strong>&nbsp;<%= st.getStudBankName() != null ? st.getStudBankName() : "Tiada"%></p>
-                            </div>
-                        </div>
+                    <div class="text-center">
+                        <a href="user.do?action=borang" class="btn btn-danger mt-3">KEMASKINI</a>
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                    <div class="p-4 mt-2 shadow-sm bg-white rounded">
-                        <h4 class="fw-bold">📌 Maklumat Keluarga (Ibu)</h4>
-                        <div class="row mt-4">
-                            
-                            <!-- Maklumat Ibu -->
-                            <div class="col-md-4">
-                                <p><strong>NAMA IBU:</strong>&nbsp;<%= gd.getMother_name().toUpperCase() != null ? gd.getMother_name().toUpperCase() : "Tiada"%></p>
-                                <p><strong>PEKERJAAN IBU:</strong> &nbsp;<%= gd.getMother_occupation().toUpperCase() != null ? gd.getMother_occupation().toUpperCase() : "Tiada"%></p>
-                                <p><strong>PENDAPATAN KASAR:</strong>&nbsp;RM <%= gd.getMother_income() != 0 ? gd.getMother_income() : "-"%></p>
-                                <p><strong>NO TELEFON IBU:</strong>&nbsp;<%= gd.getMother_phoneNum() != null ? gd.getMother_phoneNum() : "Tiada"%></p>
-                                <p><strong>ALAMAT IBU:</strong>&nbsp;<%= gd.getMother_Address().toUpperCase() != null ? gd.getMother_Address().toUpperCase() : "Tiada"%></p>
-                            </div>
-                            
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-                    <div class="p-4 mt-2 shadow-sm bg-white rounded">
-                       <h4 class="fw-bold">📌 Maklumat Keluarga (Bapa)</h4>
-                        <div class="row mt-4">
-                            <!-- Maklumat Bapa -->
-                            <div class="col-md-4">
-                                <p><strong>NAMA BAPA:</strong>&nbsp;<%= gd.getFather_name() != null ? gd.getFather_name() : "Tiada"%></p>
-                                <p><strong>PEKERJAAN BAPA:</strong>&nbsp;<%= gd.getFather_occupation().toUpperCase() != null ? gd.getFather_occupation().toUpperCase() : "Tiada"%></p>
-                                <p><strong>PENDAPATAN KASAR:</strong>&nbsp;RM <%= gd.getFather_income() != 0 ? gd.getFather_income() : "Tiada"%></p>
-                                <p><strong>NO TELEFON BAPA:</strong>&nbsp;<%= gd.getFather_phoneNum() != null ? gd.getFather_phoneNum() : "Tiada"%></p>
-                                <p><strong>ALAMAT BAPA:</strong>&nbsp;<%= gd.getFather_Address().toUpperCase() != null ? gd.getFather_Address().toUpperCase() : "Tiada"%></p>
-                            </div>
-                        </div> 
-                    </div>
-                    
-                </div>
-                        
-                <div class="tab-pane fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
-                    <div class="p-4 mt-2 shadow-sm bg-white rounded">
-                       <h4 class="fw-bold">📌 Maklumat Keluarga (Penjaga)</h4>
-                        <div class="row mt-4">
-                            <!-- Maklumat Penjaga -->
-                            <div class="col-md-4">
-                                <p><strong>NAMA PENJAGA:</strong>&nbsp;<%= gd.getGuard_name().toUpperCase() != null ? gd.getGuard_name().toUpperCase() : "Tiada"%></p>
-                                <p><strong>PEKERJAAN PENJAGA:</strong>&nbsp;<%= gd.getGuard_occupation().toUpperCase() != null ? gd.getGuard_occupation().toUpperCase() : "Tiada"%></p>
-                                <p><strong>NO TELEFON PENJAGA:</strong>&nbsp;<%= gd.getGuard_phoneNum() != null ? gd.getGuard_phoneNum() : "Tiada"%></p>
-                                <p><strong>ALAMAT PENJAGA:</strong>&nbsp;<%= gd.getGuard_address().toUpperCase() != null ? gd.getGuard_address().toUpperCase() : "Tiada"%></p>
-                            </div>
-                        </div> 
-                    </div>
-                    
-                </div>       
-
-            </div>
-
-            <div class="text-center">
-                <a href="user.do?action=borang" class="btn btn-danger mt-3">KEMASKINI</a>
-            </div>                
-
-                            
-
-
+            </div>   
 
         </main>
 
