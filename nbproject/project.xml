@@ -8,12 +8,10 @@
             <web-module-libraries>
                 <library dirs="200">
                     <file>${libs.MySQLDriver.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.pdfbox-app-3.0.3.jar}</file>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.pdfbox-app-3.0.3.jar-3}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
