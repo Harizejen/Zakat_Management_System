@@ -35,8 +35,8 @@
    
     </nav>
    
-              <div class="welcome-container mb-4" style="margin-top: 100px;">
-    <h1 class="fw-bold text-center">SELAMAT KEMBALI</h1>
+              <div class="welcome-container mb-4" style="margin-top: 10px;">
+    <h1 class="fw-bold text-center">STAF TERKINI</h1>
 </div>
      
    
@@ -50,9 +50,9 @@
             %>
             <div class="card text-center shadow-sm card-gradient">
                 <div class="card-body">
-                    <h5 class="card-title">Total HEA Staff</h5>
+                    <h5 class="card-title">Jumlah Staf HEA</h5>
                     <p class="card-text display-4" id="HEACount"><%= HEAstaffCount %></p>
-                    <a href="adminServlet?action=viewHEAStaff" class="btn btn-primary">View Staff</a>
+                    <a href="adminServlet?action=viewHEAStaff&page=1" class="btn btn-primary">Lihat Staf</a>
                 </div>
             </div>
         </div>
@@ -63,9 +63,9 @@
             %>
             <div class="card text-center shadow-sm card-gradient">
                 <div class="card-body">
-                    <h5 class="card-title">Total HEP Staff</h5>
+                    <h5 class="card-title">Jumlah Staf HEP </h5>
                     <p class="card-text display-4" id="HEPCount"><%= HEPstaffCount %></p>
-                    <a href="adminServlet?action=viewHEPStaff" class="btn btn-primary">View Staff</a>
+                    <a href="adminServlet?action=viewHEPStaff" class="btn btn-primary">Lihat Staf</a>
                 </div>
             </div>
         </div>
@@ -76,9 +76,9 @@
             %>
             <div class="card text-center shadow-sm card-gradient">
                 <div class="card-body">
-                    <h5 class="card-title">Total UZSW Staff</h5>
+                    <h5 class="card-title">Jumlah Staf UZSW</h5>
                     <p class="card-text display-4" id="UZSWCount"><%= UZSWstaffCount %></p>
-                    <a href="adminServlet?action=viewUZSWStaff" class="btn btn-primary">View Staff</a>
+                    <a href="adminServlet?action=viewUZSWStaff" class="btn btn-primary">Lihat Staf</a>
                 </div>
             </div>
         </div>
@@ -86,7 +86,7 @@
 </div>
 
     </div>
-  <footer class="mt-5" style="background-color: #522E5C; color: white; padding: 5px 0; position: fixed; bottom: 0; width: 100%;">
+  <footer  style="background-color: #522E5C; color: white; padding: 5px 0; position: fixed; bottom: 0; width: 100%;">
     <div class="text-center">
         <p style="margin: 0;">Copyright © 2024</p>
     </div>

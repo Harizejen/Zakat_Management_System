@@ -2,7 +2,7 @@ package com.borang_maklumat.controller;
 
 import com.guard.model.guardian;
 import com.user.model.Student;
-import com.documents.controller.mergeDocsUtilty; // Import your merge utility
+import com.borang_maklumat.controller.mergeDocsUtilty; // Import your merge utility
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,10 +32,11 @@ public class cetakBorangServlet extends HttpServlet {
             List<String> pdfFilePaths = new ArrayList<>();
 
             // Example paths for individual PDFs (replace with actual paths)
-            String basePath = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads\\";
-            pdfFilePaths.add(basePath + stl.getStudName().replaceAll("\\s+", "_") + "_Salinan Kad Pengenalan Ibu dan Bapa_Penjaga.pdf");
-            pdfFilePaths.add(basePath + stl.getStudName().replaceAll("\\s+", "_") + "_Pengesahan Pendapatan.pdf");
-            pdfFilePaths.add(basePath + stl.getStudName().replaceAll("\\s+", "_") + "_KadMatrik_Student.pdf");
+            String basePath = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads\\";
+//            String basePath = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads\\";
+            pdfFilePaths.add(basePath + stl.getStudName() + "_Salinan_Kad_Pengenalan_Ibu_dan_Bapa_Penjaga.pdf");
+            pdfFilePaths.add(basePath + stl.getStudName() + "_Pengesahan_Pendapatan.pdf");
+            pdfFilePaths.add(basePath + stl.getStudName() + "_KadMatrik_Student.pdf");
 
             // Use the student's name for the merged PDF file name
             String studentName = stl.getStudName().replaceAll("\\s+", "_"); // Replace spaces with underscores
