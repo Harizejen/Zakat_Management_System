@@ -35,5 +35,17 @@
             <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEATable.jsp</file>
 >>>>>>> 51f8bc6fe2865031c13a6cbc05193e3e2146a40e
         </group>
+        <group>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/applicationPage.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/ApplicationListHEA.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/application/controller/AddApplicationServlet.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/src/java/com/admin/controller/adminServlet.java</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/UserProfile.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/css/admin_dashboard.css</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEPTable.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/adminDashboard.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/view/HEATable.jsp</file>
+            <file>file:/C:/Users/nasru/OneDrive/Documents/NetBeansProjects/Zakat_Management_System/web/WEB-INF/web.xml</file>
+        </group>
     </open-files>
 </project-private>
