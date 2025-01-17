@@ -13,15 +13,11 @@
                     <file>${file.reference.pdfbox-app-3.0.3.jar}</file>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.pdfbox-app-3.0.3.jar-2}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
+                    <file>${&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD}</file>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.pdfbox-app-3.0.3.jar-1}</file>
-<<<<<<< HEAD
+                    <file>${file.reference.pdfbox-app-3.0.3.jar-3}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
-=======
->>>>>>> 51f8bc6fe2865031c13a6cbc05193e3e2146a40e
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
