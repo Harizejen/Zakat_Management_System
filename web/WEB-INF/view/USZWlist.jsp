@@ -123,7 +123,7 @@
                             </a>
                         </td>
                         <td>
-                            <form action="updateInterviewDate" method="post" class="d-flex align-items-center">
+                            <form action="/updateInterviewDate" method="post" class="d-flex align-items-center">
                                 <input type="hidden" id="appID" name="appID" value="<%= totalApp.getApplyId() %>"/>
                                 <div class="d-flex justify-content-center">
                                     <input type="date" name="tarikhTemuduga" class="form-control" required>
