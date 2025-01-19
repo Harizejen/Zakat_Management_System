@@ -183,7 +183,7 @@
                         <td>
                             <input type="checkbox" name="disemak" value="TRUE" 
                                 <%= (totalApp != null && totalApp.getHepReview() != null && totalApp.getHepReview().equalsIgnoreCase("TRUE")) ? "checked" : "" %> 
-                                <%= (totalApp.getHepReview() != null && totalApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> >
+                                <%= (totalApp.getHepReview() != null && totalApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> required>
                         </td>
                         <td>
                             <button type="submit" class="btn btn-danger btn-sm" 

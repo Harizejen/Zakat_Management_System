@@ -1,19 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/File.java to edit this template
- */
-package com.documents.controller;
+package com.borang_maklumat.controller;
 
-/**
- *
- * @author User
- */
+
+
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
+import org.apache.pdfbox.pdmodel.interactive.form.PDField;
+import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
+import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
+
 import java.io.File;
 import java.io.IOException;
 
 public class mergeDocsUtilty {
-
     public static void mergePDFs(String[] pdfFiles, String outputFilePath) {
         PDFMergerUtility merger = new PDFMergerUtility();
         try {

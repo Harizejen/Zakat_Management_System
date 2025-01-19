@@ -2,7 +2,7 @@ package com.borang_maklumat.controller;
 
 import com.guard.model.guardian;
 import com.user.model.Student;
-import com.documents.controller.mergeDocsUtilty; // Import your merge utility
+import com.borang_maklumat.controller.mergeDocsUtilty; // Import your merge utility
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
