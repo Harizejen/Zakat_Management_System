@@ -190,7 +190,7 @@
                         <td>
                             <input type="checkbox" name="disemak" value="TRUE" 
                                 <%= (totalApp != null && totalApp.getUzswReview() != null && totalApp.getUzswReview().equalsIgnoreCase("TRUE")) ? "checked" : "" %> 
-                                <%= (totalApp.getUzswReview() != null && totalApp .getUzswReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> >
+                                <%= (totalApp.getUzswReview() != null && totalApp .getUzswReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> required>
                         </td>
                         <td>
                             <button type="submit" class="btn btn-danger btn-sm" 
