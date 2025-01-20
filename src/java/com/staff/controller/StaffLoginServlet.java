@@ -512,8 +512,7 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
                     "guardian.guard_income, guardian.mother_income, guardian.father_income, guardian.other_income\n"+
                     "status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
-                    "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id"+
-                    "LEFT JOIN interview ON status_approval.apply_id = interview.apply_id;";
+                    "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id;";
         } else if ("HEP".equals(staffRole)) {
             query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
@@ -549,9 +548,6 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
                 appDetails.setHeaReview(resultSet.getString("hea_review"));
                 appDetails.setHepReview(resultSet.getString("hep_review"));
                 appDetails.setUzswReview(resultSet.getString("uzsw_review"));
-
-                appDetails.setIv_id(resultSet.getInt("iv_id"));
-                appDetails.setIv_date(resultSet.getDate("iv_date"));
                         
                 // Add to list
                 applicationList.add(appDetails);
