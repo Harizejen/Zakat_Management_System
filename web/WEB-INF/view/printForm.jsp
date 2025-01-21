@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <!-- Add this -->
 <%@page import="com.user.model.Student"%>
 <%@page import="com.guard.model.guardian"%>
 <!DOCTYPE html>
@@ -61,6 +62,7 @@
             .custom {
                 position: absolute;
                 top: 30px;
+                left: 100px;
                 margin: 20px;
                 padding-bottom: 3px;
                 padding-top: 3px;
@@ -73,7 +75,7 @@
             .custom1 {
                 position: absolute;
                 top: 30px;
-                left: 190px;
+                left: 210px;
                 margin: 20px;
                 padding-bottom: 3px;
                 padding-top: 3px;
@@ -131,8 +133,8 @@
         <div class="container">
             <button class="btn btn-secondary custom" onclick="window.print()">CETAK</button><br>
 
-            <%-- Only show link if user is staff --%>
-            <c:if test="${sessionScope.userRole eq 'staff'}">
+            <%-- Only show link for staff --%>
+            <c:if test="${sessionScope.userRole == 'staff'}">
                 <a href="${pageContext.request.contextPath}/downloadDocServlet?mergedPdfPath=${mergedPdfPath}" 
                    class="custom1 btn btn-secondary" 
                    target="_blank">CETAK DOKUMEN SOKONGAN</a>
