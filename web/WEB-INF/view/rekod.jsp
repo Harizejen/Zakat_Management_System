@@ -8,7 +8,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.user.model.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
+<%
     // Retrieve the student data from the session
     Student st = (Student) request.getSession().getAttribute("student_data");
     ArrayList<Application> appRecord = (ArrayList<Application>) request.getSession().getAttribute("app_record");
@@ -48,14 +48,14 @@
                 <!-- Profile Section -->
                 <div class="profile-section">
                     <img src="${pageContext.request.contextPath}/images/logo_system.png" style="width: 80px; height: auto; border-radius: 50% " alt="Profile Picture">
-                    <p class="profile-name"><%= st.getStudName() %></p>
+                    <p class="profile-name"><%= st.getStudName()%></p>
                 </div>
 
                 <!-- Menu Items -->
-                <a href="<%= request.getContextPath() %>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
-                <a href="<%= request.getContextPath() %>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
-                <a href="<%= request.getContextPath() %>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
-                <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+                <a href="<%= request.getContextPath()%>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
+                <a href="<%= request.getContextPath()%>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
+                <a href="<%= request.getContextPath()%>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+                <a href="<%= request.getContextPath()%>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
                 <!-- Logout Button -->
                 <a href="${pageContext.request.contextPath}/user_logout.do" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
@@ -67,9 +67,9 @@
             <div class="record-card">
                 <h2 class="text-center mb-4">REKOD</h2>
                 <div class="mb-3">
-                    <p><strong>NAMA:</strong> <%= st.getStudName() %></p>
-                    <p><strong>NO. PELAJAR:</strong> <%= st.getStudID() %></p>
-                    <p><strong>NO. KP:</strong> <%= st.getStudIC() %></p>
+                    <p><strong>NAMA:</strong> <%= st.getStudName()%></p>
+                    <p><strong>NO. PELAJAR:</strong> <%= st.getStudID()%></p>
+                    <p><strong>NO. KP:</strong> <%= st.getStudIC()%></p>
                 </div>
                 <table class="table table-bordered text-center">
                     <thead>
@@ -77,23 +77,27 @@
                             <th>BIL.</th>
                             <th>ZAKAT SESI</th>
                             <th>STATUS</th>
+                            <th>TINDAKAN</th>
                         </tr>
                     </thead>
                     <tbody>
-                     <% 
-                        if (appRecord != null && !appRecord.isEmpty()) {
-                          for (int i = 0; i < appRecord.size(); i++) {
-                             Application app = appRecord.get(i);
-                    %>
+                        <%
+                            if (appRecord != null && !appRecord.isEmpty()) {
+                                for (int i = 0; i < appRecord.size(); i++) {
+                                    Application app = appRecord.get(i);
+                        %>
                         <tr>
-                            <td><%= i+1 %></td>
-                            <td><%= app.getApplySession() %></td>
-                            <td><%= app.getApplyStatus() %></td>
+                            <td><%= i + 1%></td>
+                            <td><%= app.getApplySession()%></td>
+                            <td><%= app.getApplyStatus()%></td>
+                            <td><button class="btn btn-outline-danger" onclick="window.location.href = '<%= request.getContextPath()%>/cetakBorangServlet?stud_id=<%= st.getStudID()%>'">
+                                    CETAK PERMOHONAN
+                                </button></td>
                         </tr>
-                    <%
+                        <%
+                                }
                             }
-                        }
-                    %>
+                        %>
                     </tbody>
                 </table>
             </div>

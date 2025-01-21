@@ -87,7 +87,7 @@ public class StaffLoginServlet extends HttpServlet {
     @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    
+    HttpSession session = request.getSession();
     String staffIdParam = request.getParameter("staffId");
     String password = request.getParameter("password");
     String role = request.getParameter("role");
@@ -117,9 +117,10 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         
         if (stl != null && stl.getStaffrole().equalsIgnoreCase(role)) {
             // Store staff data in the session
-            HttpSession session = request.getSession();
+            
             session.setAttribute("staff_data", stl);
             request.getSession().setAttribute("staffID", staffId);
+            session.setAttribute("userRole", "staff");  // Set role in session
 
             // Retrieve all data for the dashboard
             String userRole = stl.getStaffrole();

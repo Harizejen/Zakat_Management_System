@@ -68,16 +68,15 @@ public class adminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        HttpSession session = request.getSession();
 
         if ("login".equals(action)) {
             List<staff> HEAstaffList = retrieveStaffData("HEA");
             List<staff> HEPstaffList = retrieveStaffData("HEP");
             List<staff> UZSWstaffList = retrieveStaffData("UZSW");
 
-            session.setAttribute("HEAstaffList", HEAstaffList);
-            session.setAttribute("HEPstaffList", HEPstaffList);
-            session.setAttribute("UZSWstaffList", UZSWstaffList);
+            request.setAttribute("HEAstaffList", HEAstaffList);
+            request.setAttribute("HEPstaffList", HEPstaffList);
+            request.setAttribute("UZSWstaffList", UZSWstaffList);
 
             request.getRequestDispatcher("/adminDashboard.jsp").forward(request, response);
         } else if ("viewHEAStaff".equals(action)) {
@@ -85,7 +84,7 @@ public class adminServlet extends HttpServlet {
             String pageParam = request.getParameter("page");
             int currentPage = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
 
-            int itemsPerPage = 10; // Items per page
+            int itemsPerPage = 5; // Items per page
             int offset = (currentPage - 1) * itemsPerPage;
 
             // Retrieve paginated staff data
@@ -99,20 +98,69 @@ public class adminServlet extends HttpServlet {
             request.setAttribute("currentPage", currentPage);
             request.setAttribute("totalPages", totalPages);
 
+            request.setAttribute("itemsPerPage", itemsPerPage);
+
             // Forward to the JSP page
             request.getRequestDispatcher("/WEB-INF/view/HEATable.jsp").forward(request, response);
         } else if ("viewHEPStaff".equals(action)) {
-            List<staff> HEPstaffList = retrieveStaffData("HEP");
-            request.setAttribute("HEPstaffList", HEPstaffList);
+            // Parse the current page from the request
+            String pageParam = request.getParameter("page");
+            int currentPage = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
+
+            int itemsPerPage = 5; // Items per page
+            int offset = (currentPage - 1) * itemsPerPage;
+
+            // Retrieve paginated staff data
+            List<staff> HEAstaffList = retrieveStaffData("HEP", offset, itemsPerPage);
+            int totalStaffCount = countStaff("HEP"); // Total staff count
+            int totalPages = (int) Math.ceil((double) totalStaffCount / itemsPerPage);
+
+            // Set attributes for the JSP
+            request.setAttribute("HEPstaffList", HEAstaffList);
+            request.setAttribute("count", totalStaffCount);
+            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("totalPages", totalPages);
+
+            request.setAttribute("itemsPerPage", itemsPerPage);
+
+            // Forward to the JSP page
             request.getRequestDispatcher("/WEB-INF/view/HEPTable.jsp").forward(request, response);
         } else if ("viewUZSWStaff".equals(action)) {
-            List<staff> UZSWstaffList = retrieveStaffData("UZSW");
-            request.setAttribute("UZSWstaffList", UZSWstaffList);
+            // Parse the current page from the request
+            String pageParam = request.getParameter("page");
+            int currentPage = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
+
+            int itemsPerPage = 5; // Items per page
+            int offset = (currentPage - 1) * itemsPerPage;
+
+            // Retrieve paginated staff data
+            List<staff> HEAstaffList = retrieveStaffData("UZSW", offset, itemsPerPage);
+            int totalStaffCount = countStaff("UZSW"); // Total staff count
+            int totalPages = (int) Math.ceil((double) totalStaffCount / itemsPerPage);
+
+            // Set attributes for the JSP
+            request.setAttribute("UZSWstaffList", HEAstaffList);
+            request.setAttribute("count", totalStaffCount);
+            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("totalPages", totalPages);
+            
+            request.setAttribute("itemsPerPage", itemsPerPage);
+
+            // Forward to the JSP page
             request.getRequestDispatcher("/WEB-INF/view/UZSWTable.jsp").forward(request, response);
         } else if ("addStaff".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/view/addStaff.jsp").forward(request, response);
         } else if ("updateStaff".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/view/updateStaff.jsp").forward(request, response);
+        } else if ("home".equals(action)) {
+            List<staff> HEAstaffList = retrieveStaffData("HEA");
+            List<staff> HEPstaffList = retrieveStaffData("HEP");
+            List<staff> UZSWstaffList = retrieveStaffData("UZSW");
+
+            request.setAttribute("HEAstaffList", HEAstaffList);
+            request.setAttribute("HEPstaffList", HEPstaffList);
+            request.setAttribute("UZSWstaffList", UZSWstaffList);
+            request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
         }
