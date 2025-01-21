@@ -132,7 +132,8 @@
                 <div class="card form-step d-none">
                     <div class="card-header">Dokumen Sokongan</div>
                     <div class="customInfo2 card-body">
-                        <p>Hanya fail PDF sahaja yang diterima.</p>
+                         <p><strong>Hanya fail PDF sahaja yang diterima.</strong></p>
+                        <p><strong>Format fail PDF hendaklah : NAMAPELAJAR_JENIS_DOKUMEN_.pdf</strong></p>
                         <p><strong>Dokumen wajib:</strong></p>
                         <table class="invisible-table">
                             <tr>
@@ -149,19 +150,21 @@
                             </tr>
                         </table>
                         <p><strong>Sertakan jika perlu:</strong></p>
+                        <p><strong>Dokumen Sokongan boleh terdiri daripada : Surat Doktor(Jika ada), Sijil Kematian Ibu/bapa dan lain-lain</strong></p>
                         <table class="invisible-table">
                             <tr>
-                                <td>1. Dokumen Sokongan</td>
+                                <td>1. Dokumen Sokongan 1</td>
                                 <td><input type="file" id="dokumenSokongan" name="dokumenSokongan" accept=".pdf"></td>
                             </tr>
                             <tr>
-                                <td>2. Sijil Kematian 2.</td>
+                                <td>2. Dokumen Sokongan 2</td>
                                 <td><input type="file" id="sijilKematian" name="sijilKematian" accept=".pdf"></td>
                             </tr>
                             <tr>
-                                <td>3. Sijil Doktor.</td>
+                                <td>3. Dokumen Sokongan 3</td>
                                 <td><input type="file" id="sijilDoktor" name="sijilDoktor" accept=".pdf"></td>
                             </tr>
+                            
                         </table>
                         <div class="form-check mt-3">
                             <input class="form-check-input" type="checkbox" id="maklumatBenar" name="maklumatBenar" required>
@@ -471,7 +474,7 @@
                 alert("No file selected");
             }
             
-            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Sijil_Kematian.pdf";
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Dokumen_Sokongan.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
@@ -491,7 +494,7 @@
                 alert("No file selected");
             }
             
-            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Sijil_Doktor.pdf";
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Dokumen_Sokongan.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
