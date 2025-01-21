@@ -121,10 +121,10 @@
                 <span>Jumlah Permohonan: <span class="jumlah-count"><%= totalCount %></span></span>
             </div>
             <div class="form-group">
-                <input type="text" id="searchInput" class="form-control" placeholder="Search application..." onkeyup="searchTable()">
+                <input type="text" id="searchTotal" class="form-control" placeholder="Search application..." onkeyup="searchTotal()">
             </div>
             <br>
-            <table class="table table-hover align-middle" id="applicationTable">
+            <table class="table table-hover align-middle" id="totalTable">
                 <thead class="table-light">
                     <tr>
                         <th>Bil</th>
@@ -255,10 +255,10 @@
                 <span>Jumlah Permohonan: <span class="jumlah-count"><%= pendingCount %></span></span>
             </div>
             <div class="form-group">
-                <input type="text" id="searchInput" class="form-control" placeholder="Search application..." onkeyup="searchTable()">
+                <input type="text" id="searchPending" class="form-control" placeholder="Search application..." onkeyup="searchPending()">
             </div>
             <br>
-            <table class="table table-hover align-middle" id="applicationTable">
+            <table class="table table-hover align-middle" id="pendingTable">
                 <thead class="table-light">
                     <tr>
                         <th>Bil</th>
@@ -387,10 +387,10 @@
                 <span>Jumlah Permohonan: <span class="jumlah-count"><%= rejectedCount %></span></span>
             </div>
             <div class="form-group">
-                <input type="text" id="searchInput" class="form-control" placeholder="Search application..." onkeyup="searchTable()">
+                <input type="text" id="searchRejected" class="form-control" placeholder="Search application..." onkeyup="searchRejected()">
             </div>
             <br>
-            <table class="table table-hover align-middle" id="applicationTable">
+            <table class="table table-hover align-middle" id="rejectedTable">
                 <thead class="table-light">
                     <tr>
                         <th>Bil</th>
@@ -519,10 +519,10 @@
                 <span>Jumlah Permohonan: <span class="jumlah-count"><%= approvedCount %></span></span>
             </div>
             <div class="form-group">
-                <input type="text" id="searchInput" class="form-control" placeholder="Search application..." onkeyup="searchTable()">
+                <input type="text" id="searchApproved" class="form-control" placeholder="Search application..." onkeyup="searchApproved()">
             </div>
             <br>
-            <table class="table table-hover align-middle" id="applicationTable">
+            <table class="table table-hover align-middle" id="approvedTable">
                 <thead class="table-light">
                     <tr>
                         <th>Bil</th>
@@ -655,19 +655,49 @@ function updateDropdown(index, action) {
 </script>
 <!-- Search Functionality -->
 <script>
-    function searchTable() {
-        const input = document.getElementById("searchInput").value.toLowerCase();
-        const rows = document.getElementById("applicationTable").getElementsByTagName("tr");
+    // Search function for Total tab
+    function searchTotal() {
+        const input = document.getElementById("searchTotal").value.toLowerCase();
+        const rows = document.getElementById("totalTable").getElementsByTagName("tr");
 
         for (let i = 0; i < rows.length; i++) {
             const rowData = rows[i].textContent.toLowerCase();
-            if (rowData.includes(input)) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
-            }
+            rows[i].style.display = rowData.includes(input) ? "" : "none";
         }
-    }
+    }
+
+    // Search function for Pending tab
+    function searchPending() {
+        const input = document.getElementById("searchPending").value.toLowerCase();
+        const rows = document.getElementById("pendingTable").getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            const rowData = rows[i].textContent.toLowerCase();
+            rows[i].style.display = rowData.includes(input) ? "" : "none";
+        }
+    }
+
+    // Search function for Rejected tab
+    function searchRejected() {
+        const input = document.getElementById("searchRejected").value.toLowerCase();
+        const rows = document.getElementById("rejectedTable").getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            const rowData = rows[i].textContent.toLowerCase();
+            rows[i].style.display = rowData.includes(input) ? "" : "none";
+        }
+    }
+
+    // Search function for Approved tab
+    function searchApproved() {
+        const input = document.getElementById("searchApproved").value.toLowerCase();
+        const rows = document.getElementById("approvedTable").getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            const rowData = rows[i].textContent.toLowerCase();
+            rows[i].style.display = rowData.includes(input) ? "" : "none";
+        }
+    }
 <% 
         String errorMessage = (String) session.getAttribute("error");
         if (errorMessage != null) {
