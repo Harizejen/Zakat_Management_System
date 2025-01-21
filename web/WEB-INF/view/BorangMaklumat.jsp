@@ -346,8 +346,7 @@
                         <!-- Navigation Buttons -->
                         <div class="d-flex justify-content-between mt-4">
                             <button type="button" class="btn btn-secondary" id="prevBtn" disabled>SEBELUM</button>
-                            <button type="button" class="btn btn-primary" id="nextBtn">SETERUSNYA</button>
-                            <button type="submit" class="btn btn-success d-none" id="submitBtn">HANTAR</button>
+                            <button type="submit" class="btn btn-success" id="submitBtn">HANTAR</button>
                         </div>
                     </div>
                 </div>                    

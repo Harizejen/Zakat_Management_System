@@ -179,7 +179,7 @@
                 <div class="d-flex justify-content-between mb-4">
                     <button class="btn btn-secondary" id="prevBtn" type="button">Kembali</button>
                     <button class="btn btn-primary" id="nextBtn" type="button">Seterusnya</button>
-                    <button class="btn btn-danger d-none" id="submitBtn" type="submit" disabled>HANTAR PERMOHONAN</button>
+                    <button class="btn btn-danger d-none" id="submitBtn" type="submit">HANTAR PERMOHONAN</button>
                 </div>
             </form>
         </div>

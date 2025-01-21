@@ -31,7 +31,7 @@ public class cetakBorangServlet extends HttpServlet {
         if (stl != null) {
             // Assuming you have generated individual PDFs and stored their paths
             List<String> pdfFilePaths = new ArrayList<>();
-            String studentName = stl.getStudName().replace(" ", "_");
+            String studentName = stl.getStudName();
             // Example paths for individual PDFs (replace with actual paths)
             String basePath = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads\\";
 //            String basePath = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads\\";

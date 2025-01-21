@@ -280,8 +280,8 @@
                                 <td><%= pendingApp.getStudId()%></td>
                                 <td><%= pendingApp.getApplyDate()%></td>
                                 <td>
-                                    <a href="#" class="text-decoration-none">
-                                        <%= pendingApp.getStudId()%>_<%=pendingApp.getApplySession()%>.pdf
+                                    <a href="<%= request.getContextPath()%>/cetakBorangServlet?stud_id=<%= pendingApp.getStudId()%>" class="text-decoration-none">
+                                        <%=pendingApp.getStudId()%>_<%=pendingApp.getApplySession()%>.pdf
                                         <i class="bi bi-download download-icon"></i>
                                     </a>
                                 </td>
@@ -413,8 +413,8 @@
                                 <td><%= rejectedApp.getStudId()%></td>
                                 <td><%= rejectedApp.getApplyDate()%></td>
                                 <td>
-                                    <a href="#" class="text-decoration-none">
-                                        <%= rejectedApp.getStudId()%>_<%=rejectedApp.getApplySession()%>.pdf
+                                    <a href="<%= request.getContextPath()%>/cetakBorangServlet?stud_id=<%= rejectedApp.getStudId()%>" class="text-decoration-none">
+                                        <%= rejectedApp.getStudId()%>_<%= rejectedApp.getApplySession()%>.pdf
                                         <i class="bi bi-download download-icon"></i>
                                     </a>
                                 </td>
@@ -546,8 +546,8 @@
                                 <td><%= approvedApp.getStudId()%></td>
                                 <td><%= approvedApp.getApplyDate()%></td>
                                 <td>
-                                    <a href="#" class="text-decoration-none">
-                                        <%= approvedApp.getStudId()%>_<%=approvedApp.getApplySession()%>.pdf
+                                    <a href="<%= request.getContextPath()%>/cetakBorangServlet?stud_id=<%= approvedApp.getStudId()%>" class="text-decoration-none">
+                                        <%=approvedApp.getStudId()%>_<%=approvedApp.getApplySession()%>.pdf
                                         <i class="bi bi-download download-icon"></i>
                                     </a>
                                 </td>
