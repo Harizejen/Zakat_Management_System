@@ -139,7 +139,7 @@
                 <div class="col-md-4 mb-2">
                     <div class="card text-center shadow-sm">
                         <div class="card-body text-white" style="background-color: #8A2565">
-                            <h5>PEMOHONAN DILULUSKAN</h5>
+                            <h5>PERMOHONAN DILULUSKAN</h5>
                             <% 
                             List<ApplicationDetails> approvedList = (List<ApplicationDetails>) session.getAttribute("approvedList");
                             int approvedCount = (approvedList != null) ? approvedList.size() : 0; // Get the size safely

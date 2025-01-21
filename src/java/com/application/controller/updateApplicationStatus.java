@@ -112,9 +112,12 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             return;
     }
 
-    String approveStat = "LULUS";
+    String approveStat = "DALAM PROSES";
     if (selectedAction.equalsIgnoreCase("GAGAL")) {
         approveStat = "GAGAL";
+    }
+    else if(selectedAction.equalsIgnoreCase("LULUS") && staffRole.equalsIgnoreCase("UZSW")){
+        approveStat = "LULUS";
     }
 
     String query = null;
