@@ -50,7 +50,7 @@
                         id="total-tab" data-bs-toggle="tab" data-bs-target="#total" 
                         type="button" role="tab" aria-controls="total" 
                         aria-selected="<%= (tab.equals("total")) ? "true" : "false" %>">
-                    Jumlah
+                    Keseluruhan
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -58,7 +58,7 @@
                         id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" 
                         type="button" role="tab" aria-controls="approved" 
                         aria-selected="<%= (tab.equals("approved")) ? "true" : "false" %>">
-                    Disahkan
+                    Diluluskan
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -66,7 +66,7 @@
                         id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" 
                         type="button" role="tab" aria-controls="pending" 
                         aria-selected="<%= (tab.equals("pending")) ? "true" : "false" %>">
-                    Menunggu
+                    Dalam Proses
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -74,7 +74,7 @@
                         id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" 
                         type="button" role="tab" aria-controls="rejected" 
                         aria-selected="<%= (tab.equals("rejected")) ? "true" : "false" %>">
-                    Ditolak
+                    Digagalkan
                 </button>
             </li>
     </ul>
