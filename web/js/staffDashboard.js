@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Select the toggle button using its class
     const toggleBtn = document.querySelector('.toggle-btn');
+    const overlay = document.getElementById('overlay'); // Select the overlay
 
     // Check if the toggle button exists before proceeding
     if (toggleBtn) {
@@ -12,51 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleBtn.addEventListener('click', () => {
             sidebar.classList.toggle('active');
             content.classList.toggle('active');
+            overlay.classList.toggle('active'); // Toggle the overlay
+        });
+
+        // Add click event listener to the overlay to close the sidebar
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            content.classList.remove('active');
+            overlay.classList.remove('active'); // Hide the overlay
         });
     }
-
-    // Notification Bell Click Event
-    document.getElementById('notificationBell').addEventListener('click', function () {
-        const notificationBox = document.getElementById('notificationBox');
-        notificationBox.style.display = (notificationBox.style.display === 'block') ? 'none' : 'block';
-    });
-
-    // Close notification box when clicking outside
-    document.addEventListener('click', function (e) {
-        const box = document.getElementById('notificationBox');
-        const bell = document.getElementById('notificationBell');
-        if (!box.contains(e.target) && !bell.contains(e.target)) box.style.display = 'none';
-    });
-
-    // Pie chart setup
-
-
-
-
-    // Function to get the current day in Malay and time
-    function updateDayTime() {
-        const daysMalay = ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"]; // Malay days
-        const now = new Date();
-
-        const day = daysMalay[now.getDay()]; // Get the current day (0-6)
-        const hours = now.getHours().toString().padStart(2, '0'); // Hours (24-hour format)
-        const minutes = now.getMinutes().toString().padStart(2, '0'); // Minutes
-        const ampm = hours >= 12 ? 'pm' : 'am'; // AM or PM
-
-        const formattedTime = `${hours}:${minutes}${ampm}`;
-        const formattedDayTime = `${day} ${formattedTime}`;
-
-        console.log(formattedDayTime); // Check if the formatted time is correct in the console
-
-        // Check if the element exists
-        const currentDayTimeElement = document.getElementById("currentDayTime");
-        if (currentDayTimeElement) {
-            currentDayTimeElement.innerText = formattedDayTime;
-        } else {
-            console.error("Element with id 'currentDayTime' not found!");
-        }
-    }
-
-    // Call the updateDayTime function
-    updateDayTime();
 });

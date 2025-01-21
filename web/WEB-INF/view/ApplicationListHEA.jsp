@@ -22,21 +22,23 @@
 </head>
 <body>
 
-<!-- Navigation Bar -->
-<nav class="navbar text-light mb-3" style="background-color: #112C55">
-    <div class="container-fluid d-flex align-items-center">
-         <!-- Back Arrow -->
-        <a href="goHEADashboard" class="btn btn-outline-light me-3">
+    <!-- Navigation Bar -->
+    <nav class="navbar text-light mb-3" style="background-color: #112C55">
+        <div class="container-fluid d-flex align-items-center">
+            <a href="goHEADashboard" class="btn btn-outline-light me-3">
             <i class="bi bi-arrow-left"></i> 
         </a>
-
-        <!-- Right-aligned Section -->
-        <div class="d-flex align-items-center ms-auto">
-            <!-- Log Out -->
-            <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
+            <!-- Brand Name with Increased Left Margin -->
+            <span class="navbar-brand fw-bold ms-2" style="color: white; font-size: 1.5rem;">Zakat Pendidikan Management System</span>
+            
+            <!-- Right-aligned Section -->
+            <div class="d-flex align-items-center ms-auto">
+                <!-- Log Out -->
+                <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav
+
 
 <!-- Main Container -->
 <div class="container"> 
@@ -196,7 +198,7 @@
                         <td>
                             <input type="checkbox" name="disemak" value="TRUE" 
                                 <%= (totalApp != null && totalApp.getHeaReview() != null && totalApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "checked" : "" %> 
-                                <%= (totalApp.getHeaReview() != null && totalApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> >
+                                <%= (totalApp.getHeaReview() != null && totalApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> required>
                         </td>
                         <td>
                             <button type="submit" class="btn btn-danger btn-sm" 
@@ -641,18 +643,6 @@
     </div>
 </div>
 
-<%
-    String successMessage = (String) request.getAttribute("message");
-    String errorMessage = (String) request.getAttribute("errorMessage");
-%>
-<script>
-    <% if (successMessage != null) { %>
-    alert("<%= successMessage %>");
-    <% } %>
-    <% if (errorMessage != null) { %>
-    alert("<%= errorMessage %>");
-    <% } %>
-</script>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
@@ -678,6 +668,28 @@ function updateDropdown(index, action) {
             }
         }
     }
+<% 
+        String errorMessage = (String) session.getAttribute("error");
+        if (errorMessage != null) {
+            // Clear the error message from the session after displaying it
+            session.removeAttribute("error");
+    %>
+        alert('<%= errorMessage %>');
+    <% 
+        } 
+    %>
+
+    // Check if there is a success message in the session
+    <% 
+        String successMessage = (String) session.getAttribute("success");
+        if (successMessage != null) {
+            // Clear the success message from the session after displaying it
+            session.removeAttribute("success");
+    %>
+        alert('<%= successMessage %>');
+    <% 
+        } 
+    %>
 </script>
 </body>
 </html>

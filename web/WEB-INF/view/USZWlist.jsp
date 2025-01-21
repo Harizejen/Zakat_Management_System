@@ -24,30 +24,24 @@
 
 <body>   
 <!-- Navigation Bar -->
-<nav class="navbar text-light mb-3" style="background-color: #112C55">
-    <div class="container-fluid d-flex align-items-center">
-        <a href="goUZSWdashboard" class="btn btn-outline-light me-3">
+    <nav class="navbar text-light mb-3" style="background-color: #112C55">
+        <div class="container-fluid d-flex align-items-center">
+            <a href="goUZSWdashboard" class="btn btn-outline-light me-3">
             <i class="bi bi-arrow-left"></i> 
         </a>
-        <div class="d-flex align-items-center ms-auto">
-            <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
+            <!-- Brand Name with Increased Left Margin -->
+            <span class="navbar-brand fw-bold ms-2" style="color: white; font-size: 1.5rem;">Zakat Pendidikan Management System</span>
+            
+            <!-- Right-aligned Section -->
+            <div class="d-flex align-items-center ms-auto">
+                <!-- Log Out -->
+                <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 <!-- Main Container -->
 <div class="container">
-    <!-- Display Error Messages -->
-    <% if (request.getAttribute("error") != null) { %>
-        <div class="alert alert-danger">
-            <%= request.getAttribute("error") %>
-        </div>
-    <% } %>
-    <% if (request.getAttribute("success") != null) { %>
-        <div class="alert alert-success">
-            <%= request.getAttribute("success") %>
-        </div>
-    <% } %>
 
     <!-- Tabs Navigation -->
     <ul class="nav nav-tabs mb-3" id="applicationTabs" role="tablist">
@@ -56,7 +50,7 @@
                         id="total-tab" data-bs-toggle="tab" data-bs-target="#total" 
                         type="button" role="tab" aria-controls="total" 
                         aria-selected="<%= (tab.equals("total")) ? "true" : "false" %>">
-                    Jumlah
+                    Keseluruhan
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -64,7 +58,7 @@
                         id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" 
                         type="button" role="tab" aria-controls="approved" 
                         aria-selected="<%= (tab.equals("approved")) ? "true" : "false" %>">
-                    Disahkan
+                    Diluluskan
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -72,7 +66,7 @@
                         id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" 
                         type="button" role="tab" aria-controls="pending" 
                         aria-selected="<%= (tab.equals("pending")) ? "true" : "false" %>">
-                    Menunggu
+                    Dalam Proses
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -80,7 +74,7 @@
                         id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" 
                         type="button" role="tab" aria-controls="rejected" 
                         aria-selected="<%= (tab.equals("rejected")) ? "true" : "false" %>">
-                    Ditolak
+                    Digagalkan
                 </button>
             </li>
     </ul>
@@ -111,7 +105,7 @@
                 int endIndex = Math.min(startIndex + itemsPerPage, totalCount);
             %>
             <div class="jumlah-section mb-4">
-                <span>Jumlah Permohonan: <span class="jumlah-count"><%= totalCount %></span></span>
+                <span>Jumlah Keseluruhan Permohonan Yang Diterima: <span class="jumlah-count"><%= totalCount %></span></span>
             </div>
             <div class="form-group">
                 <input type="text" id="searchInput" class="form-control" placeholder="Search application..." onkeyup="searchTable()">
@@ -190,7 +184,7 @@
                         <td>
                             <input type="checkbox" name="disemak" value="TRUE" 
                                 <%= (totalApp != null && totalApp.getUzswReview() != null && totalApp.getUzswReview().equalsIgnoreCase("TRUE")) ? "checked" : "" %> 
-                                <%= (totalApp.getUzswReview() != null && totalApp .getUzswReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> >
+                                <%= (totalApp.getUzswReview() != null && totalApp .getUzswReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> required>
                         </td>
                         <td>
                             <button type="submit" class="btn btn-danger btn-sm" 
@@ -243,7 +237,7 @@
         int pendingEndIndex = Math.min(pendingStartIndex + pendingItemsPerPage, pendingCount);
     %>
             <div class="jumlah-section mb-4">
-                <span>Jumlah Permohonan: <span class="jumlah-count"><%= pendingCount %></span></span>
+                <span>Jumlah Permohonan Yang Masih Dalam Proses Pengesahan: <span class="jumlah-count"><%= pendingCount %></span></span>
             </div>
             <div class="form-group">
                 <input type="text" id="searchInput" class="form-control" placeholder="Search application..." onkeyup="searchTable()">
@@ -375,7 +369,7 @@
         int rejectedEndIndex = Math.min(rejectedStartIndex + rejectedItemsPerPage, rejectedCount);
     %>
             <div class="jumlah-section mb-4">
-                <span>Jumlah Permohonan: <span class="jumlah-count"><%= rejectedCount %></span></span>
+                <span>Jumlah Permohonan Yang Telah Digagalkan: <span class="jumlah-count"><%= rejectedCount %></span></span>
             </div>
             <div class="form-group">
                 <input type="text" id="searchInput" class="form-control" placeholder="Search application..." onkeyup="searchTable()">
@@ -507,7 +501,7 @@
                 int approvedEndIndex = Math.min(approvedStartIndex + approvedItemsPerPage, approvedCount);
             %>
             <div class="jumlah-section mb-4">
-                <span>Jumlah Permohonan: <span class="jumlah-count"><%= approvedCount %></span></span>
+                <span>Jumlah Permohonan Yang Telah Diluluskan: <span class="jumlah-count"><%= approvedCount %></span></span>
             </div>
             <div class="form-group">
                 <input type="text" id="searchInput" class="form-control" placeholder="Search application..." onkeyup="searchTable()">
@@ -645,6 +639,30 @@
             const dropdownButton = element.closest('.dropdown').querySelector('.dropdown-toggle');
             dropdownButton.textContent = element.textContent;
         }
+        
+        // Check if there is an error message in the session
+    <% 
+        String errorMessage = (String) session.getAttribute("error");
+        if (errorMessage != null) {
+            // Clear the error message from the session after displaying it
+            session.removeAttribute("error");
+    %>
+        alert('<%= errorMessage %>');
+    <% 
+        } 
+    %>
+
+    // Check if there is a success message in the session
+    <% 
+        String successMessage = (String) session.getAttribute("success");
+        if (successMessage != null) {
+            // Clear the success message from the session after displaying it
+            session.removeAttribute("success");
+    %>
+        alert('<%= successMessage %>');
+    <% 
+        } 
+    %>
     </script>
 </body>
 </html>

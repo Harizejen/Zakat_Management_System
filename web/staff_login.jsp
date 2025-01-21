@@ -56,7 +56,6 @@
                             </div>
                             <button type="submit" class="btn btn-primary w-100">LOG MASUK</button>
                         </form>
-                        <p class="mt-3">Lupa Kata Laluan? <a href>Tekan Sini</a></p>
                     </div>
                     <div class="col-md-6 rounded-end illustration">
                         <img src="images/login_illustrate.png" alt="Illustration" class="img-fluid">
