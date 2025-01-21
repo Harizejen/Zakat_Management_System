@@ -39,7 +39,7 @@ public class cetakBorangServlet extends HttpServlet {
             pdfFilePaths.add(basePath + stl.getStudName() + "_KadMatrik_Student.pdf");
 
             // Use the student's name for the merged PDF file name
-            String studentName = stl.getStudName().replaceAll("\\s+", "_"); // Replace spaces with underscores
+            String studentName = stl.getStudName(); // Replace spaces with underscores
             String mergedPdfPath = basePath + studentName + "_merged.pdf"; // Specify the output path
 
             // Convert List to Array for merging

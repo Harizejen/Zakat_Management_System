@@ -19,15 +19,18 @@
 </head>
 <body>
 <!-- Navigation Bar -->
-<nav class="navbar text-light mb-3" style="background-color: #112C55">
-    <div class="container-fluid d-flex align-items-center">
-        <!-- Right-aligned Section -->
-        <div class="d-flex align-items-center ms-auto">
-            <!-- Log Out -->
-            <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
+    <nav class="navbar text-light mb-3" style="background-color: #112C55">
+        <div class="container-fluid d-flex align-items-center">
+            <!-- Brand Name with Increased Left Margin -->
+            <span class="navbar-brand fw-bold ms-2" style="color: white; font-size: 1.5rem;">Zakat Pendidikan Management System</span>
+            
+            <!-- Right-aligned Section -->
+            <div class="d-flex align-items-center ms-auto">
+                <!-- Log Out -->
+                <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
         <!-- Main Container -->
     <div class="container main-container">
@@ -37,12 +40,12 @@
             <div class="col-md-6 d-flex flex-column">
                 <!-- Welcome Text -->
                 <div class="welcome-container mb-3">
-                    <h1 class="fw-bold text-center">SELAMAT KEMBALI</h1>
-                </div>
+                        <h1 class="fw-bold text-center" style="font-size: 2rem;">UNIT HAL EHWAL PELAJAR</h1>
+                    </div>
                 <!-- Summary Card -->
                 <div class="card text-center border-0 shadow-sm">
                     <div class="card-body card-body-lg text-white" style="background-color: #112C55">
-                        <h5>JUMLAH PERMOHONAN:</h5>
+                        <h5>JUMLAH KESELURUHAN PERMOHONAN:</h5>
                         <% 
                         List<ApplicationDetails> totalList = (List<ApplicationDetails>) session.getAttribute("totalList");
                         int totalCount = (totalList != null) ? totalList.size() : 0; // Get the size safely
@@ -70,7 +73,7 @@
             <div class="col-md-4 mb-2">
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #B74A4C">
-                        <h5>PEMOHONAN MENUNGGU:</h5>
+                        <h5>PERMOHONAN DALAM PROSES:</h5>
                         <% 
                         List<ApplicationDetails> pendingList = (List<ApplicationDetails>) session.getAttribute("pendingList");
                         int pendingCount = (pendingList != null) ? pendingList.size() : 0; // Get the size safely
@@ -83,7 +86,7 @@
             <div class="col-md-4 mb-2">
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #8A2565">
-                        <h5>PEMOHONAN DISAHKAN:</h5>
+                        <h5>PERMOHONAN DILULUSKAN:</h5>
                         <% 
                         List<ApplicationDetails> approvedList = (List<ApplicationDetails>) session.getAttribute("approvedList");
                         int approvedCount = (approvedList != null) ? approvedList.size() : 0; // Get the size safely
@@ -96,7 +99,7 @@
             <div class="col-md-4 mb-2">
                 <div class="card text-center shadow-sm">
                     <div class="card-body text-white" style="background-color: #7B577D">
-                        <h5>PEMOHONAN DITOLAK:</h5>
+                        <h5>PERMOHONAN DIGAGALKAN:</h5>
                         <% 
                         List<ApplicationDetails> rejectedList = (List<ApplicationDetails>) session.getAttribute("rejectedList");
                         int rejectedCount = (rejectedList != null) ? rejectedList.size() : 0; // Get the size safely

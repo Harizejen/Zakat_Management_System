@@ -4,6 +4,11 @@
  * and open the template in the editor.
  */
 package com.deadline.model;
+import com.database.dbconn;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -15,6 +20,8 @@ public class deadline {
     private Date application_deadline;
     private Date application_open_date;
     private Date application_dur_stat;
+    
+    public deadline(){}
 
     public deadline(int deaadline_id, Date application_deadline, Date application_open_date, Date application_dur_stat) {
         this.deaadline_id = deaadline_id;
@@ -53,6 +60,25 @@ public class deadline {
 
     public void setApplication_dur_stat(Date application_dur_stat) {
         this.application_dur_stat = application_dur_stat;
+    }
+    
+    public deadline getDeadline(){
+        deadline d = new deadline();
+        String query = "SELECT * FROM deadline ORDER BY application_deadline DESC LIMIT 1;";
+        try{
+            Connection conn = dbconn.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                d.setDeaadline_id(rs.getInt("deadline_id"));
+                d.setApplication_open_date(rs.getDate("application_open_date"));
+                d.setApplication_deadline(rs.getDate("application_deadline"));
+                return d;
+            } 
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return d;
     }
     
     

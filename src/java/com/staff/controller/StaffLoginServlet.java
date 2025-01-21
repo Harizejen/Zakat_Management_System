@@ -87,7 +87,7 @@ public class StaffLoginServlet extends HttpServlet {
     @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    
+    HttpSession session = request.getSession();
     String staffIdParam = request.getParameter("staffId");
     String password = request.getParameter("password");
     String role = request.getParameter("role");
@@ -114,11 +114,13 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
     if (st.isValid()) {
         staff stl = st.findStaff(staffId);
-
+        
         if (stl != null && stl.getStaffrole().equalsIgnoreCase(role)) {
             // Store staff data in the session
-            HttpSession session = request.getSession();
+            
             session.setAttribute("staff_data", stl);
+            request.getSession().setAttribute("staffID", staffId);
+            session.setAttribute("userRole", "staff");  // Set role in session
 
             // Retrieve all data for the dashboard
             String userRole = stl.getStaffrole();
@@ -166,25 +168,28 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
     if ("HEA".equals(staffRole)) {
         // HEA receives all unreviewed applications
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review IS NULL AND status_approval.app_stat_hea IS NULL;";
     } else if ("HEP".equals(staffRole)) {
         // HEP receives applications approved by HEA but not yet reviewed by HEP
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS'\n" +
                 "AND status_approval.hep_review IS NULL AND status_approval.app_stat_hep IS NULL;";
     } else if ("UZSW".equals(staffRole)) {
         // UZSW receives applications approved by both HEA and HEP but not yet reviewed by UZSW
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS'\n" +
                 "AND status_approval.hep_review = 'TRUE' AND status_approval.app_stat_hep = 'LULUS'\n" +
                 "AND status_approval.uzsw_review IS NULL AND status_approval.app_stat_uzsw IS NULL;";
@@ -265,6 +270,9 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             appDetails.setHeaReview(resultSet.getString("hea_review"));
             appDetails.setHepReview(resultSet.getString("hep_review"));
             appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+            
+            appDetails.setInterviewDate(resultSet.getDate("interview_date")); // Add this line
+            
 
             // Add to list
             pendingApplications.add(appDetails);
@@ -281,25 +289,28 @@ private List<ApplicationDetails> countApprovedApplicationsByRole(String staffRol
 
     if ("HEA".equals(staffRole)) {
         // HEA retrieves applications they approved
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS';";
     } else if ("HEP".equals(staffRole)) {
         // HEP retrieves applications approved by both HEA and HEP
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS'\n" +
                 "AND status_approval.hep_review = 'TRUE' AND status_approval.app_stat_hep = 'LULUS';";
     } else if ("UZSW".equals(staffRole)) {
         // UZSW retrieves applications fully approved by HEA, HEP, and UZSW
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS'\n" +
                 "AND status_approval.hep_review = 'TRUE' AND status_approval.app_stat_hep = 'LULUS'\n" +
                 "AND status_approval.uzsw_review = 'TRUE' AND status_approval.app_stat_uzsw = 'LULUS';";
@@ -380,6 +391,8 @@ private List<ApplicationDetails> countApprovedApplicationsByRole(String staffRol
             appDetails.setHeaReview(resultSet.getString("hea_review"));
             appDetails.setHepReview(resultSet.getString("hep_review"));
             appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+            
+            appDetails.setInterviewDate(resultSet.getDate("interview_date")); // Add this line
 
             // Add to list
             approvedApplications.add(appDetails);
@@ -395,23 +408,26 @@ private List<ApplicationDetails> countRejectedApplicationsByRole(String staffRol
     String query = null;
 
         if ("HEA".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                     "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'GAGAL';";
         } else if ("HEP".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                     "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "WHERE status_approval.hea_review = 'TRUE' AND status_approval.hep_review = 'TRUE' \n" +
                     "AND status_approval.app_stat_hea = 'LULUS' AND status_approval.app_stat_hep = 'GAGAL';";
         } else if ("UZSW".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                     "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "WHERE status_approval.hea_review = 'TRUE' AND status_approval.hep_review = 'TRUE' \n" +
                     "AND status_approval.app_stat_hea = 'LULUS' AND status_approval.app_stat_hep = 'LULUS' \n" +
                     "AND status_approval.uzsw_review = 'TRUE' AND status_approval.app_stat_uzsw = 'GAGAL';";
@@ -492,6 +508,8 @@ private List<ApplicationDetails> countRejectedApplicationsByRole(String staffRol
             appDetails.setHeaReview(resultSet.getString("hea_review"));
             appDetails.setHepReview(resultSet.getString("hep_review"));
             appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+            
+            appDetails.setInterviewDate(resultSet.getDate("interview_date")); // Add this line
 
             // Add to list
             rejectedApplications.add(appDetails);
@@ -508,16 +526,19 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
         String query = null;
 
         if ("HEA".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id;";
         } else if ("HEP".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS';";
         } else if ("UZSW".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id WHERE status_approval.hea_review = 'TRUE' AND status_approval.hep_review = 'TRUE' \n" +
                     "AND status_approval.app_stat_hea = 'LULUS' AND status_approval.app_stat_hep = 'LULUS';";
         }
@@ -530,64 +551,63 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
                 ApplicationDetails appDetails = new ApplicationDetails();
 
                 // Set values for Application table
-                appDetails.setApplyId(resultSet.getInt("apply_id"));
-                appDetails.setStudId(resultSet.getInt("stud_id"));
-                appDetails.setDeadlineId(resultSet.getInt("deadline_id"));
-                appDetails.setApplySession(resultSet.getString("apply_session"));
-                appDetails.setApplyPart(resultSet.getInt("apply_part"));
-                appDetails.setApplyCgpa(resultSet.getDouble("apply_cgpa"));
-                appDetails.setApplyGpa(resultSet.getDouble("apply_gpa"));
-                // Convert string values to boolean for food incentive and other support
-                String foodIncentive = resultSet.getString("apply_foodincentive");
-                appDetails.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
+            appDetails.setApplyId(resultSet.getInt("apply_id"));
+            appDetails.setStudId(resultSet.getInt("stud_id"));
+            appDetails.setDeadlineId(resultSet.getInt("deadline_id"));
+            appDetails.setApplySession(resultSet.getString("apply_session"));
+            appDetails.setApplyPart(resultSet.getInt("apply_part"));
+            appDetails.setApplyCgpa(resultSet.getDouble("apply_cgpa"));
+            appDetails.setApplyGpa(resultSet.getDouble("apply_gpa"));
+            // Convert string values to boolean for food incentive and other support
+            String foodIncentive = resultSet.getString("apply_foodincentive");
+            appDetails.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
 
-                String otherSupport = resultSet.getString("apply_otherSupport");
-                appDetails.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
-                
-                appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName"));
-                appDetails.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
-                appDetails.setApplyPurpose(resultSet.getString("apply_purpose"));
-                appDetails.setApplyDate(resultSet.getString("apply_date"));
-                appDetails.setDonationId(resultSet.getInt("donation_id"));
+            String otherSupport = resultSet.getString("apply_otherSupport");
+            appDetails.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
+            appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName"));
+            appDetails.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+            appDetails.setApplyPurpose(resultSet.getString("apply_purpose"));
+            appDetails.setApplyDate(resultSet.getString("apply_date"));
+            appDetails.setDonationId(resultSet.getInt("donation_id"));
 
-                // Set values for Student table
-                appDetails.setStudName(resultSet.getString("stud_name"));
-                appDetails.setStudIc(resultSet.getString("stud_ic"));
-                appDetails.setStudEmail(resultSet.getString("stud_email"));
-                appDetails.setStudPassword(resultSet.getString("stud_password"));
-                appDetails.setStudState(resultSet.getString("stud_state"));
-                appDetails.setStudZipcode(resultSet.getString("stud_zipcode"));
-                appDetails.setStudCourse(resultSet.getString("stud_course"));
-                appDetails.setStudFaculty(resultSet.getString("stud_faculty"));
-                appDetails.setStudCampus(resultSet.getString("stud_campus"));
-                appDetails.setStudGender(resultSet.getString("stud_gender"));
-                appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum"));
-                appDetails.setStudBankName(resultSet.getString("stud_bankName"));
-                appDetails.setStudBankNum(resultSet.getString("stud_bankNum"));
-                appDetails.setStudAddress(resultSet.getString("stud_address"));
-                appDetails.setStudMarriage(resultSet.getString("stud_marriage"));
+            // Set values for Student table
+            appDetails.setStudName(resultSet.getString("stud_name"));
+            appDetails.setStudIc(resultSet.getString("stud_ic"));
+            appDetails.setStudEmail(resultSet.getString("stud_email"));
+            appDetails.setStudPassword(resultSet.getString("stud_password"));
+            appDetails.setStudState(resultSet.getString("stud_state"));
+            appDetails.setStudZipcode(resultSet.getString("stud_zipcode"));
+            appDetails.setStudCourse(resultSet.getString("stud_course"));
+            appDetails.setStudFaculty(resultSet.getString("stud_faculty"));
+            appDetails.setStudCampus(resultSet.getString("stud_campus"));
+            appDetails.setStudGender(resultSet.getString("stud_gender"));
+            appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum"));
+            appDetails.setStudBankName(resultSet.getString("stud_bankName"));
+            appDetails.setStudBankNum(resultSet.getString("stud_bankNum"));
+            appDetails.setStudAddress(resultSet.getString("stud_address"));
+            appDetails.setStudMarriage(resultSet.getString("stud_marriage"));
 
-                // Set values for Guardian table
-                appDetails.setGuardId(resultSet.getInt("guard_id"));
-                appDetails.setFatherName(resultSet.getString("father_name"));
-                appDetails.setFatherOccupation(resultSet.getString("father_occupation"));
-                appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum"));
-                appDetails.setFatherAddress(resultSet.getString("father_address"));
-                appDetails.setMotherName(resultSet.getString("mother_name"));
-                appDetails.setMotherOccupation(resultSet.getString("mother_occupation"));
-                appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum"));
-                appDetails.setMotherAddress(resultSet.getString("mother_address"));
-                appDetails.setGuardName(resultSet.getString("guard_name"));
-                appDetails.setGuardRelation(resultSet.getString("guard_relation"));
-                appDetails.setGuardOccupation(resultSet.getString("guard_occupation"));
-                appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum"));
-                appDetails.setGuardAddress(resultSet.getString("guard_address"));
-                appDetails.setGuardPostcode(resultSet.getString("guard_postcode"));
-                appDetails.setGuardResidence(resultSet.getString("guard_residence"));
-                appDetails.setGuardIncome(resultSet.getDouble("guard_income"));
-                appDetails.setMotherIncome(resultSet.getDouble("mother_income"));
-                appDetails.setFatherIncome(resultSet.getDouble("father_income"));
-                appDetails.setOtherIncome(resultSet.getDouble("other_income"));
+            // Set values for Guardian table
+            appDetails.setGuardId(resultSet.getInt("guard_id"));
+            appDetails.setFatherName(resultSet.getString("father_name"));
+            appDetails.setFatherOccupation(resultSet.getString("father_occupation"));
+            appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum"));
+            appDetails.setFatherAddress(resultSet.getString("father_address"));
+            appDetails.setMotherName(resultSet.getString("mother_name"));
+            appDetails.setMotherOccupation(resultSet.getString("mother_occupation"));
+            appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum"));
+            appDetails.setMotherAddress(resultSet.getString("mother_address"));
+            appDetails.setGuardName(resultSet.getString("guard_name"));
+            appDetails.setGuardRelation(resultSet.getString("guard_relation"));
+            appDetails.setGuardOccupation(resultSet.getString("guard_occupation"));
+            appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum"));
+            appDetails.setGuardAddress(resultSet.getString("guard_address"));
+            appDetails.setGuardPostcode(resultSet.getString("guard_postcode"));
+            appDetails.setGuardResidence(resultSet.getString("guard_residence"));
+            appDetails.setGuardIncome(resultSet.getDouble("guard_income"));
+            appDetails.setMotherIncome(resultSet.getDouble("mother_income"));
+            appDetails.setFatherIncome(resultSet.getDouble("father_income"));
+            appDetails.setOtherIncome(resultSet.getDouble("other_income"));
 
                 // Set values for Status Approval table
                 appDetails.setStaffId(resultSet.getInt("staff_id"));
@@ -598,6 +618,8 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
                 appDetails.setHeaReview(resultSet.getString("hea_review"));
                 appDetails.setHepReview(resultSet.getString("hep_review"));
                 appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+                
+                appDetails.setInterviewDate(resultSet.getDate("interview_date")); // Add this line
 
                 // Add to list
                 applicationList.add(appDetails);

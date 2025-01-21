@@ -67,6 +67,7 @@ public class UZSWListPage extends HttpServlet {
      @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            
               request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
         
     }

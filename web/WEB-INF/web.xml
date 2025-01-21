@@ -100,6 +100,10 @@
         <servlet-name>goHEPDashboard</servlet-name>
         <servlet-class>com.staff.controller.goHEPDashboard</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updateInterviewServlet</servlet-name>
+        <servlet-class>com.interview.controller.updateInterviewServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/staff_login.do</url-pattern>
@@ -199,6 +203,10 @@
     <servlet-mapping>
         <servlet-name>goHEPDashboard</servlet-name>
         <url-pattern>/goHEPDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateInterviewServlet</servlet-name>
+        <url-pattern>/updateInterviewServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -1,6 +1,7 @@
-.body {
+body {
     background-color: #f5f5dc;
     font-family: Arial, sans-serif;
+    overflow-y: hidden;
 }
 .header {
     background-color: #4b2354;
