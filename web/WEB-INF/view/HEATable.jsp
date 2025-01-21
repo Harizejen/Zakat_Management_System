@@ -15,7 +15,7 @@
         <!-- Top Navigation Bar -->
         <nav class="navbar navbar-expand-lg" style="background-color: #522E5C">
             <div class="container-fluid">
-                <a class="navbar-brand text-white bold-text" href="adminServlet?action=login">Admin Dashboard</a>
+                <a class="navbar-brand text-white bold-text" href="adminServlet?action=home">Admin Dashboard</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -28,29 +28,17 @@
         </nav>
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="javascript:window.history.back();" class="btn btn-link">
+                <a href="adminServlet?action=home" class="btn btn-link">
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
             </div>
             <%
                 List<staff> staffList = (List<staff>) request.getAttribute("HEAstaffList");
-                int staffCount = (staffList != null) ? staffList.size() : 0; // Total number of staff
                 int count = (Integer) request.getAttribute("count");
-                int itemsPerPage = 5; // Number of items per page
-                int currentPage = 1; // Default current page
-                String pageParam = request.getParameter("page");
-                if (pageParam != null) {
-                    try {
-                        currentPage = Integer.parseInt(pageParam);
-                    } catch (NumberFormatException e) {
-                        currentPage = 1; // Fallback to page 1 if invalid
-                    }
-                }
-                int totalPages = (int) Math.ceil((double) staffCount / itemsPerPage); // Calculate total pages
-                int startIndex = (currentPage - 1) * itemsPerPage;
-                int endIndex = Math.min(startIndex + itemsPerPage, staffCount);
-
-            %>
+                int currentPage = (Integer) request.getAttribute("currentPage");
+                int totalPages = (Integer) request.getAttribute("totalPages");
+                int itemsPerPage = (Integer) request.getAttribute("itemsPerPage");
+%>
             <h5>Jumlah Staf HEA <span class="text-primary"><%= count%> Staf</span></h5>
             <table class="table">
                 <thead>
@@ -64,11 +52,12 @@
                 <tbody>
                     <%
                         if (staffList != null && !staffList.isEmpty()) {
-                            for (int i = startIndex; i < endIndex; i++) {
+                            for (int i = 0; i < staffList.size(); i++) {
                                 staff staff = staffList.get(i);
+                                int rowNumber = (currentPage - 1) * itemsPerPage + i + 1;
                     %>
                     <tr>
-                        <td><%= startIndex + (i - startIndex) + 1%></td>
+                        <td class="text-center"><%= rowNumber%></td>
                         <td><%= staff.getStaffname()%></td>
                         <td><%= staff.getStaffemail()%></td>
                         <td>
@@ -139,11 +128,7 @@
                 </div>
             </div>
         </div>
-        <footer class="mt-5" style="background-color: #522E5C; color: white; padding: 5px 0; position: fixed; bottom: 0; width: 100%;">
-            <div class="text-center">
-                <p style="margin: 0;">Copyright © 2024</p>
-            </div>
-        </footer>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
