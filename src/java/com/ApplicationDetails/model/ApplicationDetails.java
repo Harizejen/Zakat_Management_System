@@ -623,4 +623,15 @@ public class ApplicationDetails implements Serializable {
     private int iv_id;
     private Date iv_date;
     
+    private java.sql.Date interviewDate; // Add this field
+
+    // Getters and setters
+    public java.sql.Date getInterviewDate() {
+        return interviewDate;
+    }
+
+    public void setInterviewDate(java.sql.Date interviewDate) {
+        this.interviewDate = interviewDate;
+    }
+    
 }

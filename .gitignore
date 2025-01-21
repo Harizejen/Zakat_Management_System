@@ -2,27 +2,27 @@
 /dist/
 /build/
 
-# Ignore NetBeans-specific private configuration
-nbproject/private/
+# # Ignore NetBeans-specific private configuration
+# nbproject/private/
 
-/nbproject/build-impl.xml
+# /nbproject/build-impl.xml
 
-# Ignore library JAR files (if stored locally)
-lib/*.jar
+# # Ignore library JAR files (if stored locally)
+# lib/*.jar
 
-# Ignore OS-specific files
-*.DS_Store
-Thumbs.db
+# # Ignore OS-specific files
+# *.DS_Store
+# Thumbs.db
 
-# Ignore logs and temporary files
-*.log
-*.tmp
-*.bak
+# # Ignore logs and temporary files
+# *.log
+# *.tmp
+# *.bak
 
-# Ignore IDE-specific files (if shared)
-*.iml
-.idea/
+# # Ignore IDE-specific files (if shared)
+# *.iml
+# .idea/
 
-# Exclude local environment or config files
-.env
-*.properties
+# # Exclude local environment or config files
+# .env
+# *.properties
