@@ -3,38 +3,37 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.staff.controller;
+package com.interview.controller;
 
-import com.database.dbconn;
-import com.staff.model.staff;
-import com.application.model.Application;
 import com.ApplicationDetails.model.ApplicationDetails;
-import com.status_approval.model.status_approval;
-import javax.servlet.ServletException;
+import com.database.dbconn;
+import com.staff.controller.StaffLoginServlet;
+import com.staff.model.staff;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+
 /**
  *
  * @author User
  */
-@WebServlet(name = "StaffLoginServlet", urlPatterns = {"/staff_login.do"})
-public class StaffLoginServlet extends HttpServlet {
-     private static final long serialVersionUID = 1L;
+public class updateInterviewServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,10 +52,10 @@ public class StaffLoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet StaffLoginServlet</title>");            
+            out.println("<title>Servlet updateInterviewDate</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet StaffLoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet updateInterviewDate at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -72,96 +71,96 @@ public class StaffLoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    
-    String staffIdParam = request.getParameter("staffId");
-    String password = request.getParameter("password");
-    String role = request.getParameter("role");
+    System.out.println("updateInterviewServlet accessed via POST");
+    staff st = (staff) request.getSession().getAttribute("staff_data");
 
-    if (staffIdParam == null || password == null || role == null) {
-        request.setAttribute("error", "All fields are required.");
-        request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
+    if (st == null) {
+        request.setAttribute("error", "Session expired. Please log in again.");
+        request.getRequestDispatcher("/WEB-INF/view/staff_login.jsp").forward(request, response);
         return;
     }
 
-    int staffId;
+    String appID = request.getParameter("appID");
+    int staffid = st.getStaffid();
+    String applicationIVDateStr = request.getParameter("tarikhTemuduga");
+
+    // Validate input
+    if (appID == null || applicationIVDateStr == null || applicationIVDateStr.isEmpty()) {
+        request.setAttribute("error", "Application ID and date are required.");
+        request.getRequestDispatcher("/WEB-INF/view/UZSWlist.jsp").forward(request, response);
+        return;
+    }
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    java.sql.Date applicationIVDate;
+
     try {
-        staffId = Integer.parseInt(staffIdParam);
-    } catch (NumberFormatException e) {
-        request.setAttribute("error", "Invalid Staff ID format.");
-        request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
+        applicationIVDate = new java.sql.Date(sdf.parse(applicationIVDateStr).getTime());
+    } catch (ParseException e) {
+        request.setAttribute("error", "Invalid date format. Use yyyy-MM-dd.");
+        request.getRequestDispatcher("/WEB-INF/view/UZSWlist.jsp").forward(request, response);
         return;
     }
 
-    // Create staff object and set credentials
-    staff st = new staff();
-    st.setStaffid(staffId);
-    st.setStaffpassword(password);
+    String updateQuery = "UPDATE interview SET staff_id = ?, iv_date = ? WHERE apply_id = ?";
+    String insertQuery = "INSERT INTO interview (staff_id, apply_id, iv_date) VALUES (?, ?, ?)";
 
-    if (st.isValid()) {
-        staff stl = st.findStaff(staffId);
-        
-        if (stl != null && stl.getStaffrole().equalsIgnoreCase(role)) {
-            // Store staff data in the session
+    try (Connection connection = dbconn.getConnection()) {
+        connection.setAutoCommit(false); // Start transaction
+
+        // Try UPDATE first
+        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            updateStatement.setInt(1, staffid);
+            updateStatement.setDate(2, applicationIVDate);
+            updateStatement.setInt(3, Integer.parseInt(appID)); // Assuming apply_id is INT
+
+            int rowsAffected = updateStatement.executeUpdate();
+
+            if (rowsAffected == 0) { // No rows updated, do INSERT
+                try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                    insertStatement.setInt(1, staffid);
+                    insertStatement.setInt(2, Integer.parseInt(appID));
+                    insertStatement.setDate(3, applicationIVDate);
+                    insertStatement.executeUpdate();
+                }
+            }
+
+            connection.commit(); // Commit transaction
+
+            // --- RELOAD DATA AFTER UPDATE ---
             HttpSession session = request.getSession();
-            session.setAttribute("staff_data", stl);
-            request.getSession().setAttribute("staffID", staffId);
+            String role = st.getStaffrole();
 
-            // Retrieve all data for the dashboard
-            String userRole = stl.getStaffrole();
-            List<ApplicationDetails> totalList = countAllApplicationsByRole(userRole);
-            List<ApplicationDetails> pendingList = countPendingApplicationsByRole(userRole);
-            List<ApplicationDetails> approvedList = countApprovedApplicationsByRole(userRole);
-            List<ApplicationDetails> rejectedList = countRejectedApplicationsByRole(userRole);
-            
-            // Set the lists as attributes
+            // Reload all application lists
+            List<ApplicationDetails> totalList = countAllApplicationsByRole(role);
+            List<ApplicationDetails> pendingList = countPendingApplicationsByRole(role);
+            List<ApplicationDetails> approvedList = countApprovedApplicationsByRole(role);
+            List<ApplicationDetails> rejectedList = countRejectedApplicationsByRole(role);
+
+            // Update session attributes with fresh data
             session.setAttribute("totalList", totalList);
             session.setAttribute("pendingList", pendingList);
             session.setAttribute("approvedList", approvedList);
             session.setAttribute("rejectedList", rejectedList);
 
-            // Decide which JSP to forward based on the user role
-            String dashboardPage;
-            switch (role) {
-                case "HEA":
-                    dashboardPage = "/WEB-INF/view/HEAdashboard.jsp";
-                    break;
-                case "HEP":
-                    dashboardPage = "/WEB-INF/view/HEPdashboard.jsp";
-                    break;
-                case "UZSW":
-                    dashboardPage = "/WEB-INF/view/UZSWdashboard.jsp";
-                    break;
-                default:
-                    request.setAttribute("error", "Invalid role.");
-                    dashboardPage = "/staff_login.jsp";
-                    break;
-            }
-            request.getRequestDispatcher(dashboardPage).forward(request, response);
-        } else {
-            request.setAttribute("error", "Invalid credentials or role.");
-            request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
+        } catch (SQLException e) {
+            connection.rollback(); // Rollback on error
+            throw e;
         }
-    } else {
-        request.setAttribute("error", "Invalid credentials.");
-        request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
+
+        // Forward to JSP with updated data
+        request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
+
+    } catch (SQLException | NumberFormatException e) {
+        e.printStackTrace();
+        request.setAttribute("error", "Database error: " + e.getMessage());
+        request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
     }
 }
-    private List<ApplicationDetails> countPendingApplicationsByRole(String staffRole) {
+
+private List<ApplicationDetails> countPendingApplicationsByRole(String staffRole) {
     List<ApplicationDetails> pendingApplications = new ArrayList<>();
     String query = null;
 
@@ -550,63 +549,64 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
                 ApplicationDetails appDetails = new ApplicationDetails();
 
                 // Set values for Application table
-            appDetails.setApplyId(resultSet.getInt("apply_id"));
-            appDetails.setStudId(resultSet.getInt("stud_id"));
-            appDetails.setDeadlineId(resultSet.getInt("deadline_id"));
-            appDetails.setApplySession(resultSet.getString("apply_session"));
-            appDetails.setApplyPart(resultSet.getInt("apply_part"));
-            appDetails.setApplyCgpa(resultSet.getDouble("apply_cgpa"));
-            appDetails.setApplyGpa(resultSet.getDouble("apply_gpa"));
-            // Convert string values to boolean for food incentive and other support
-            String foodIncentive = resultSet.getString("apply_foodincentive");
-            appDetails.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
+                appDetails.setApplyId(resultSet.getInt("apply_id"));
+                appDetails.setStudId(resultSet.getInt("stud_id"));
+                appDetails.setDeadlineId(resultSet.getInt("deadline_id"));
+                appDetails.setApplySession(resultSet.getString("apply_session"));
+                appDetails.setApplyPart(resultSet.getInt("apply_part"));
+                appDetails.setApplyCgpa(resultSet.getDouble("apply_cgpa"));
+                appDetails.setApplyGpa(resultSet.getDouble("apply_gpa"));
+                // Convert string values to boolean for food incentive and other support
+                String foodIncentive = resultSet.getString("apply_foodincentive");
+                appDetails.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
 
-            String otherSupport = resultSet.getString("apply_otherSupport");
-            appDetails.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
-            appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName"));
-            appDetails.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
-            appDetails.setApplyPurpose(resultSet.getString("apply_purpose"));
-            appDetails.setApplyDate(resultSet.getString("apply_date"));
-            appDetails.setDonationId(resultSet.getInt("donation_id"));
+                String otherSupport = resultSet.getString("apply_otherSupport");
+                appDetails.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
+                
+                appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName"));
+                appDetails.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+                appDetails.setApplyPurpose(resultSet.getString("apply_purpose"));
+                appDetails.setApplyDate(resultSet.getString("apply_date"));
+                appDetails.setDonationId(resultSet.getInt("donation_id"));
 
-            // Set values for Student table
-            appDetails.setStudName(resultSet.getString("stud_name"));
-            appDetails.setStudIc(resultSet.getString("stud_ic"));
-            appDetails.setStudEmail(resultSet.getString("stud_email"));
-            appDetails.setStudPassword(resultSet.getString("stud_password"));
-            appDetails.setStudState(resultSet.getString("stud_state"));
-            appDetails.setStudZipcode(resultSet.getString("stud_zipcode"));
-            appDetails.setStudCourse(resultSet.getString("stud_course"));
-            appDetails.setStudFaculty(resultSet.getString("stud_faculty"));
-            appDetails.setStudCampus(resultSet.getString("stud_campus"));
-            appDetails.setStudGender(resultSet.getString("stud_gender"));
-            appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum"));
-            appDetails.setStudBankName(resultSet.getString("stud_bankName"));
-            appDetails.setStudBankNum(resultSet.getString("stud_bankNum"));
-            appDetails.setStudAddress(resultSet.getString("stud_address"));
-            appDetails.setStudMarriage(resultSet.getString("stud_marriage"));
+                // Set values for Student table
+                appDetails.setStudName(resultSet.getString("stud_name"));
+                appDetails.setStudIc(resultSet.getString("stud_ic"));
+                appDetails.setStudEmail(resultSet.getString("stud_email"));
+                appDetails.setStudPassword(resultSet.getString("stud_password"));
+                appDetails.setStudState(resultSet.getString("stud_state"));
+                appDetails.setStudZipcode(resultSet.getString("stud_zipcode"));
+                appDetails.setStudCourse(resultSet.getString("stud_course"));
+                appDetails.setStudFaculty(resultSet.getString("stud_faculty"));
+                appDetails.setStudCampus(resultSet.getString("stud_campus"));
+                appDetails.setStudGender(resultSet.getString("stud_gender"));
+                appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum"));
+                appDetails.setStudBankName(resultSet.getString("stud_bankName"));
+                appDetails.setStudBankNum(resultSet.getString("stud_bankNum"));
+                appDetails.setStudAddress(resultSet.getString("stud_address"));
+                appDetails.setStudMarriage(resultSet.getString("stud_marriage"));
 
-            // Set values for Guardian table
-            appDetails.setGuardId(resultSet.getInt("guard_id"));
-            appDetails.setFatherName(resultSet.getString("father_name"));
-            appDetails.setFatherOccupation(resultSet.getString("father_occupation"));
-            appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum"));
-            appDetails.setFatherAddress(resultSet.getString("father_address"));
-            appDetails.setMotherName(resultSet.getString("mother_name"));
-            appDetails.setMotherOccupation(resultSet.getString("mother_occupation"));
-            appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum"));
-            appDetails.setMotherAddress(resultSet.getString("mother_address"));
-            appDetails.setGuardName(resultSet.getString("guard_name"));
-            appDetails.setGuardRelation(resultSet.getString("guard_relation"));
-            appDetails.setGuardOccupation(resultSet.getString("guard_occupation"));
-            appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum"));
-            appDetails.setGuardAddress(resultSet.getString("guard_address"));
-            appDetails.setGuardPostcode(resultSet.getString("guard_postcode"));
-            appDetails.setGuardResidence(resultSet.getString("guard_residence"));
-            appDetails.setGuardIncome(resultSet.getDouble("guard_income"));
-            appDetails.setMotherIncome(resultSet.getDouble("mother_income"));
-            appDetails.setFatherIncome(resultSet.getDouble("father_income"));
-            appDetails.setOtherIncome(resultSet.getDouble("other_income"));
+                // Set values for Guardian table
+                appDetails.setGuardId(resultSet.getInt("guard_id"));
+                appDetails.setFatherName(resultSet.getString("father_name"));
+                appDetails.setFatherOccupation(resultSet.getString("father_occupation"));
+                appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum"));
+                appDetails.setFatherAddress(resultSet.getString("father_address"));
+                appDetails.setMotherName(resultSet.getString("mother_name"));
+                appDetails.setMotherOccupation(resultSet.getString("mother_occupation"));
+                appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum"));
+                appDetails.setMotherAddress(resultSet.getString("mother_address"));
+                appDetails.setGuardName(resultSet.getString("guard_name"));
+                appDetails.setGuardRelation(resultSet.getString("guard_relation"));
+                appDetails.setGuardOccupation(resultSet.getString("guard_occupation"));
+                appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum"));
+                appDetails.setGuardAddress(resultSet.getString("guard_address"));
+                appDetails.setGuardPostcode(resultSet.getString("guard_postcode"));
+                appDetails.setGuardResidence(resultSet.getString("guard_residence"));
+                appDetails.setGuardIncome(resultSet.getDouble("guard_income"));
+                appDetails.setMotherIncome(resultSet.getDouble("mother_income"));
+                appDetails.setFatherIncome(resultSet.getDouble("father_income"));
+                appDetails.setOtherIncome(resultSet.getDouble("other_income"));
 
                 // Set values for Status Approval table
                 appDetails.setStaffId(resultSet.getInt("staff_id"));
@@ -638,6 +638,7 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
      */
     @Override
     public String getServletInfo() {
-        return "Staff Login Servlet";
+        return "Short description";
     }// </editor-fold>
+
 }
