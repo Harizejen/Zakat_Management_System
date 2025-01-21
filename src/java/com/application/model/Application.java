@@ -200,6 +200,27 @@ public class Application implements Serializable {
         return existed;
     }
     // Additional Methods
+    
+    public String getAppIDStat(int stud_id){
+        String status = "SEDANG DIPROSES";
+        String query = "SELECT apply_id FROM application WHERE stud_id = ?;";
+        try{
+            Connection conn = dbconn.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, stud_id);
+            
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                int apply_id = rs.getInt("apply_id");
+                status = checkStatus(apply_id);
+            }
+            return status;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return status;
+    }
+    
     public String checkStatus(int apply_id) {
         String status = "SEDANG DIPROSES";
         String query = "SELECT approve_status FROM `status_approval` WHERE apply_id = ?;";
