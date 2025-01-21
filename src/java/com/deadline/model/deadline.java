@@ -73,9 +73,6 @@ public class deadline {
                 d.setDeaadline_id(rs.getInt("deadline_id"));
                 d.setApplication_open_date(rs.getDate("application_open_date"));
                 d.setApplication_deadline(rs.getDate("application_deadline"));
-                System.out.println(rs.getInt("deadline_id"));
-                System.out.println(rs.getDate("application_open_date"));
-                System.out.println(rs.getDate("application_deadline"));
                 return d;
             } 
         }catch(SQLException e){
