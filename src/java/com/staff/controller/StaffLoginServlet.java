@@ -508,9 +508,7 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
         String query = null;
 
         if ("HEA".equals(staffRole)) {
-            query = "SELECT student.stud_id, application.apply_cgpa, application.apply_date,\n" +
-                    "guardian.guard_income, guardian.mother_income, guardian.father_income, guardian.other_income\n"+
-                    "status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id;";
         } else if ("HEP".equals(staffRole)) {
@@ -531,23 +529,74 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
             while (resultSet.next()) {
                 ApplicationDetails appDetails = new ApplicationDetails();
 
-                appDetails.setStudId(resultSet.getInt("stud_id"));
-                appDetails.setApplyCgpa(resultSet.getDouble("apply_cgpa"));
-                appDetails.setApplyDate(resultSet.getString("apply_date"));
+                // Set values for Application table
+            appDetails.setApplyId(resultSet.getInt("apply_id"));
+            appDetails.setStudId(resultSet.getInt("stud_id"));
+            appDetails.setDeadlineId(resultSet.getInt("deadline_id"));
+            appDetails.setApplySession(resultSet.getString("apply_session"));
+            appDetails.setApplyPart(resultSet.getInt("apply_part"));
+            appDetails.setApplyCgpa(resultSet.getDouble("apply_cgpa"));
+            appDetails.setApplyGpa(resultSet.getDouble("apply_gpa"));
+            // Convert string values to boolean for food incentive and other support
+            String foodIncentive = resultSet.getString("apply_foodincentive");
+            appDetails.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
 
-                appDetails.setGuardIncome(resultSet.getDouble("guard_income"));
-                appDetails.setMotherIncome(resultSet.getDouble("mother_income"));
-                appDetails.setFatherIncome(resultSet.getDouble("father_income"));
-                appDetails.setOtherIncome(resultSet.getDouble("other_income"));
+            String otherSupport = resultSet.getString("apply_otherSupport");
+            appDetails.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
+            appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName"));
+            appDetails.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+            appDetails.setApplyPurpose(resultSet.getString("apply_purpose"));
+            appDetails.setApplyDate(resultSet.getString("apply_date"));
+            appDetails.setDonationId(resultSet.getInt("donation_id"));
 
-                appDetails.setStaffId(resultSet.getInt("staff_id"));
-                appDetails.setApproveStatus(resultSet.getString("approve_status"));
-                appDetails.setAppStatHEA(resultSet.getString("app_stat_HEA"));
-                appDetails.setAppStatHEP(resultSet.getString("app_stat_HEP"));
-                appDetails.setAppStatUZSW(resultSet.getString("app_stat_UZSW"));
-                appDetails.setHeaReview(resultSet.getString("hea_review"));
-                appDetails.setHepReview(resultSet.getString("hep_review"));
-                appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+            // Set values for Student table
+            appDetails.setStudName(resultSet.getString("stud_name"));
+            appDetails.setStudIc(resultSet.getString("stud_ic"));
+            appDetails.setStudEmail(resultSet.getString("stud_email"));
+            appDetails.setStudPassword(resultSet.getString("stud_password"));
+            appDetails.setStudState(resultSet.getString("stud_state"));
+            appDetails.setStudZipcode(resultSet.getString("stud_zipcode"));
+            appDetails.setStudCourse(resultSet.getString("stud_course"));
+            appDetails.setStudFaculty(resultSet.getString("stud_faculty"));
+            appDetails.setStudCampus(resultSet.getString("stud_campus"));
+            appDetails.setStudGender(resultSet.getString("stud_gender"));
+            appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum"));
+            appDetails.setStudBankName(resultSet.getString("stud_bankName"));
+            appDetails.setStudBankNum(resultSet.getString("stud_bankNum"));
+            appDetails.setStudAddress(resultSet.getString("stud_address"));
+            appDetails.setStudMarriage(resultSet.getString("stud_marriage"));
+
+            // Set values for Guardian table
+            appDetails.setGuardId(resultSet.getInt("guard_id"));
+            appDetails.setFatherName(resultSet.getString("father_name"));
+            appDetails.setFatherOccupation(resultSet.getString("father_occupation"));
+            appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum"));
+            appDetails.setFatherAddress(resultSet.getString("father_address"));
+            appDetails.setMotherName(resultSet.getString("mother_name"));
+            appDetails.setMotherOccupation(resultSet.getString("mother_occupation"));
+            appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum"));
+            appDetails.setMotherAddress(resultSet.getString("mother_address"));
+            appDetails.setGuardName(resultSet.getString("guard_name"));
+            appDetails.setGuardRelation(resultSet.getString("guard_relation"));
+            appDetails.setGuardOccupation(resultSet.getString("guard_occupation"));
+            appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum"));
+            appDetails.setGuardAddress(resultSet.getString("guard_address"));
+            appDetails.setGuardPostcode(resultSet.getString("guard_postcode"));
+            appDetails.setGuardResidence(resultSet.getString("guard_residence"));
+            appDetails.setGuardIncome(resultSet.getDouble("guard_income"));
+            appDetails.setMotherIncome(resultSet.getDouble("mother_income"));
+            appDetails.setFatherIncome(resultSet.getDouble("father_income"));
+            appDetails.setOtherIncome(resultSet.getDouble("other_income"));
+
+            // Set values for Status Approval table
+            appDetails.setStaffId(resultSet.getInt("staff_id"));
+            appDetails.setApproveStatus(resultSet.getString("approve_status"));
+            appDetails.setAppStatHEA(resultSet.getString("app_stat_HEA"));
+            appDetails.setAppStatHEP(resultSet.getString("app_stat_HEP"));
+            appDetails.setAppStatUZSW(resultSet.getString("app_stat_UZSW"));
+            appDetails.setHeaReview(resultSet.getString("hea_review"));
+            appDetails.setHepReview(resultSet.getString("hep_review"));
+            appDetails.setUzswReview(resultSet.getString("uzsw_review"));
                         
                 // Add to list
                 applicationList.add(appDetails);

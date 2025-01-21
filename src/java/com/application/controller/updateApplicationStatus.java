@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -144,13 +144,39 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             }
 
             int rowsUpdated = statement.executeUpdate();
-            if(rowsUpdated > 0) 
+            if(rowsUpdated > 0){ 
                 isUpdated = true;
+                
+                // Re-fetch the updated application lists
+        HttpSession session = request.getSession();
+        List<ApplicationDetails> totalList = countAllApplicationsByRole(staffRole);
+        List<ApplicationDetails> pendingList = countPendingApplicationsByRole(staffRole);
+        List<ApplicationDetails> approvedList = countApprovedApplicationsByRole(staffRole);
+        List<ApplicationDetails> rejectedList = countRejectedApplicationsByRole(staffRole);
+
+        // Update session attributes
+        session.setAttribute("totalList", totalList);
+        session.setAttribute("pendingList", pendingList);
+        session.setAttribute("approvedList", approvedList);
+        session.setAttribute("rejectedList", rejectedList);
+
+        request.getSession().setAttribute("success", "Application status updated successfully.");
+        
+        // Forward to the appropriate JSP with updated data
+        if ("HEA".equals(staffRole)) {
+            request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
+        } else if ("HEP".equals(staffRole)) {
+            request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
+        } else if ("UZSW".equals(staffRole)) {
+            request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
+        }
+        
+          }
         }
     } catch (Exception e) {
         e.printStackTrace();
             request.getSession().setAttribute("error", "An error occurred while updating the application status.");
-            request.getRequestDispatcher("/WEB-INF/view/UZSWlist.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
             return;
     }
 
@@ -174,7 +200,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         } else if ("HEP".equals(staffRole)) {
             request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
         } else if ("UZSW".equals(staffRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/UZSWlist.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
         }
     } else {
         request.setAttribute("errorMessage", "Failed to update application status.");
