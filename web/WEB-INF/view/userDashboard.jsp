@@ -4,11 +4,20 @@
     Author     : Hariz
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="com.deadline.model.deadline"%>
+<%@page import="com.application.model.Application"%>
 <%@page import="com.user.model.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
     // Retrieve the student data from the session
-    Student st = (Student) request.getSession().getAttribute("student_data"); 
+    Student st = (Student) request.getSession().getAttribute("student_data");
+    Application ap = new Application();
+    ap = ap.getApplication(st.getStudID());
+    deadline d = new deadline();
+    d = d.getDeadline();
+    Date currentDate = new Date();
     String eligibilityMessage = (String) request.getAttribute("eligibilityMessage");
     String popupMessage = (String) request.getAttribute("popupMessage");
     String redirectTo = (String) request.getAttribute("redirectTo");
@@ -85,30 +94,54 @@
                     <!-- Status Permohonan Zakat -->
                     <div class="card">
                         <h2>Status Permohonan Zakat:</h2>
+                        <% if(ap != null) { %>
                         <div class="info-row">
-                            <span class="label">TARIKH MOHON</span> <span class="value">: 15 JANUARI 2025</span>
+                            <span class="label">TARIKH MOHON</span> <span class="value">: <%= ap.getApplyDate() %></span>
                         </div>
                         <div class="info-row">
-                            <span class="label">STATUS</span> <span class="value">: SEDANG DIPROSES</span>
+                            <span class="label">STATUS</span> <span class="value">: <%= ap.getApplyStatus() %></span>
+                        </div>
+                        <% }else{ %>
+                        <div class="info-row">
+                            <span class="label">TARIKH MOHON</span> <span class="value">: BELUM MEMOHON</span>
                         </div>
                         <div class="info-row">
-                            <span class="label">ULASAN</span> <span class="value">: -</span>
+                            <span class="label">STATUS</span> <span class="value">: BELUM MEMOHON</span>
                         </div>
+                        <% } %>
                     </div>
                 </div>
 
                 <!-- Right Column -->
                 <div class="card">
                     <h2>Tawaran Zakat Semasa:</h2>
-                    <div class="info-row">
-                        <span class="label">STATUS TAWARAN</span> <span class="value">: DIBUKA</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">TARIKH BUKA</span> <span class="value">: 01 JANUARI 2025</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">TARIKH TUTUP</span> <span class="value">: 15 FEBRUARI 2025</span>
-                    </div>
+                    <% if (d != null) { 
+                        if (d.getApplication_deadline().before(currentDate)) { 
+                    %>
+                        <div class="info-row">
+                            <span class="label">STATUS TAWARAN</span> <span class="value">: DIBUKA</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">TARIKH BUKA</span> <span class="value">: <%= d.getApplication_open_date() %></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">TARIKH TUTUP</span> <span class="value">: <%= d.getApplication_deadline() %></span>
+                        </div>
+                    <% } else { %>
+                        <div class="info-row">
+                            <span class="label">STATUS TAWARAN</span> <span class="value">: DITUTUP</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">TARIKH BUKA</span> <span class="value">: <%= d.getApplication_open_date() %></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">TARIKH TUTUP</span> <span class="value">: <%= d.getApplication_deadline() %></span>
+                        </div>
+                        
+                    <%  }  
+                        }
+                    %>
+
 
                     <div class="button-container">
                         <a href="<%= request.getContextPath() %>/user.do?action=borang" class="button">MOHON</a>

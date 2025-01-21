@@ -7,17 +7,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.sql.Date;
 
 @WebServlet(name = "SaveDeadlineServlet", urlPatterns = {"/deadline_save.do"})
 public class SaveDeadlineServlet extends HttpServlet {
@@ -30,7 +25,7 @@ public class SaveDeadlineServlet extends HttpServlet {
         
         if (st == null) {
             request.setAttribute("error", "Session expired. Please log in again.");
-            request.getRequestDispatcher("/WEB-INF/view/staff_login.jsp").forward(request, response);
+            response.sendRedirect("staff_login.jsp");
             return;
         }
 
@@ -41,7 +36,7 @@ public class SaveDeadlineServlet extends HttpServlet {
         // Validate input parameters
         if (applicationOpenDateStr == null || applicationOpenDateStr.isEmpty() ||
             applicationDeadlineStr == null || applicationDeadlineStr.isEmpty()) {
-            request.setAttribute("error", "Both dates are required.");
+            request.getSession().setAttribute("error", "Both dates are required.");
             request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
             return;
         }
@@ -56,22 +51,35 @@ public class SaveDeadlineServlet extends HttpServlet {
             applicationOpenDate = new java.sql.Date(openDateUtil.getTime());
             applicationDeadline = new java.sql.Date(deadlineDateUtil.getTime());
         } catch (ParseException e) {
-            request.setAttribute("error", "Invalid date format. Please use yyyy-MM-dd.");
+            request.getSession().setAttribute("error", "Invalid date format. Please use yyyy-MM-dd.");
+            request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
+            return;
+        }
+      
+        // Check if both dates have already passed
+        java.util.Date currentDateUtil = new java.util.Date();
+        if (applicationOpenDate.before(currentDateUtil) || applicationDeadline.before(currentDateUtil)) {
+            request.getSession().setAttribute("error", "One or both of the dates have already passed. Please enter valid dates.");
             request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
             return;
         }
 
+        // Check if the end date is before the start date
+        if (applicationDeadline.before(applicationOpenDate)) {
+            request.getSession().setAttribute("error", "The application deadline cannot be before the application open date.");
+            request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
+            return;
+        }
 
         // Determine application_dur_start
         String applicationDurStart;
-        java.util.Date currentDateUtil = new java.util.Date();
         if (currentDateUtil.before(applicationOpenDate) || currentDateUtil.after(applicationDeadline)) {
             applicationDurStart = "DITUTUP";
         } else {
             applicationDurStart = "DIBUKA";
         }
 
-        String insertQuery = "INSERT INTO deadline (staff_id, application_open_date, application_deadline, application_start) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO deadline (staff_id, application_open_date, application_deadline, application_dur_start) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = dbconn.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -82,12 +90,11 @@ public class SaveDeadlineServlet extends HttpServlet {
             preparedStatement.setString(4, applicationDurStart);
 
             preparedStatement.executeUpdate();
+            request.getSession().setAttribute("success", "Deadline saved successfully.");
             request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
-
-            
         } catch (SQLException e) {
             e.printStackTrace();
-            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getSession().setAttribute("error", "Database error: " + e.getMessage());
             request.getRequestDispatcher("/WEB-INF/view/UZSWdashboard.jsp").forward(request, response);
         }
     }
