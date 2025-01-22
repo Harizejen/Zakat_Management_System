@@ -132,9 +132,9 @@
                 <div class="card form-step d-none">
                     <div class="card-header">Dokumen Sokongan</div>
                     <div class="customInfo2 card-body">
-                         <p><strong>Hanya fail PDF sahaja yang diterima.</strong></p>
+                        <p><strong>Hanya fail PDF sahaja yang diterima.</strong></p>
                         <p><strong>Format fail PDF hendaklah : NAMAPELAJAR_JENIS_DOKUMEN_.pdf</strong></p>
-                        <p><strong>Dokumen wajib:</strong></p>
+                        <p style="color: crimson;"><strong>Dokumen wajib:</strong></p>
                         <table class="invisible-table">
                             <tr>
                                 <td><label for="kadPengenalan">1. Salinan Kad Pengenalan Ibu dan Bapa / Penjaga.</label></td>
