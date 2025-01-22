@@ -24,11 +24,25 @@ p {
 }
 
 .boxInfoSize {
-    margin-top: 54px;
-    position: relative;
-    max-width: 400px; /* Adjusted width */
-    margin-left: auto; /* Center the notification box */
-    margin-right: auto; /* Center the notification box */
+    margin-top: 53px;
+    max-width: 400px;
+    height: 270px; /* Fixed but shorter height */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space out content */
+}
+
+.boxInfoSize p {
+    margin-bottom: 5px; /* Spacing between paragraphs */
+    margin: 0px;
+}
+
+.boxInfoSize h4 {
+    margin-bottom: 10px; /* Spacing below header */
+    font-size: 20px;
 }
 
 .text-danger {

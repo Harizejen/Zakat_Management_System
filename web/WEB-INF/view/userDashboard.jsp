@@ -147,7 +147,7 @@
 
                     <div class="button-container">
                         <a href="<%= request.getContextPath()%>/user.do?action=borang" class="button">MOHON</a>
-                        <a href="#" class="button">SYARAT</a>
+                        
                         <a href="#" class="button" onclick="submitPostForm()">SEMAK KELAYAKAN</a>
                     </div>
                 </div>
