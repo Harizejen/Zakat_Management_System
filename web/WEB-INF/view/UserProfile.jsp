@@ -159,9 +159,9 @@
                         <p><strong>Status Permohonan:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
                         <p><strong>Tarikh Temuduga:</strong> TIADA</p>
                         <p><strong>Tarikh Akhir 2025:</strong> 15 FEBRUARI</p>
-                    </div>
-                    <div class="text-center">
+                        <div class="text-center">
                         <a href="user.do?action=borang" class="btn btn-danger mt-3">KEMASKINI</a>
+                    </div>
                     </div>
                 </div>
 
