@@ -153,15 +153,15 @@
                         <p><strong>Dokumen Sokongan boleh terdiri daripada : Surat Doktor(Jika ada), Sijil Kematian Ibu/bapa dan lain-lain</strong></p>
                         <table class="invisible-table">
                             <tr>
-                                <td>1. Dokumen Sokongan 1</td>
+                                <td>1. Dokumen Sokongan</td>
                                 <td><input type="file" id="dokumenSokongan" name="dokumenSokongan" accept=".pdf"></td>
                             </tr>
                             <tr>
-                                <td>2. Dokumen Sokongan 2</td>
+                                <td>2. Sijil Kematian</td>
                                 <td><input type="file" id="sijilKematian" name="sijilKematian" accept=".pdf"></td>
                             </tr>
                             <tr>
-                                <td>3. Dokumen Sokongan 3</td>
+                                <td>3. Sijil Doktor</td>
                                 <td><input type="file" id="sijilDoktor" name="sijilDoktor" accept=".pdf"></td>
                             </tr>
                             
@@ -474,7 +474,7 @@
                 alert("No file selected");
             }
             
-            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Dokumen_Sokongan.pdf";
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Sijil_Kematian.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
@@ -494,7 +494,7 @@
                 alert("No file selected");
             }
             
-            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Dokumen_Sokongan.pdf";
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Sijil_Kematian.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);

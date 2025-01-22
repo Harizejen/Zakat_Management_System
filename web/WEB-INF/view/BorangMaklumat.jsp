@@ -57,7 +57,7 @@
         <div class="container">
             <h2 class="text-center mb-4 fw-bold">BORANG PERMOHONAN AGIHAN ZAKAT PENDIDIKAN PELAJAR</h2>
 
-            <h3 class="text-center text-danger"><%= error%></h3>
+            <h3 class="text-center text-danger"><%= error != null ? error : " " %></h3>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="step1-tab" data-bs-toggle="tab" href="#step1" role="tab" aria-controls="step1" aria-selected="true">LANGKAH 1</a>
