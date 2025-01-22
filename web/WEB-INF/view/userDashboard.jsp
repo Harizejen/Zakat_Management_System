@@ -10,7 +10,7 @@
 <%@page import="com.application.model.Application"%>
 <%@page import="com.user.model.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
+<%
     // Retrieve the student data from the session
     Student st = (Student) request.getSession().getAttribute("student_data");
     Application ap = new Application();
@@ -38,11 +38,11 @@
         <nav class="navbar navbar-expand-md">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
-                     <i class="bi bi-list" style="color: white;"></i> <!-- Use Bootstrap Icon -->
+                    <i class="bi bi-list" style="color: white;"></i> <!-- Use Bootstrap Icon -->
                 </button>
             </div>
         </nav>
-        
+
         <!-- Sidebar (Offcanvas) -->
         <aside class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
             <div class="offcanvas-header">
@@ -53,23 +53,23 @@
                 <!-- Profile Section -->
                 <div class="profile-section">
                     <img src="${pageContext.request.contextPath}/images/logo_system.png" style="width: 80px; height: auto; border-radius: 50% " alt="Profile Picture">
-                    <p class="profile-name"><%= st.getStudName() %></p>
+                    <p class="profile-name"><%= st.getStudName()%></p>
                 </div>
 
                 <!-- Menu Items -->
-                <a href="<%= request.getContextPath() %>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
-                <a href="<%= request.getContextPath() %>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
-                <a href="<%= request.getContextPath() %>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
-                <a href="<%= request.getContextPath() %>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
+                <a href="<%= request.getContextPath()%>/user.do?action=dashboard" class="menu-item"><i class="bi bi-house"></i> ANJUNG</a>
+                <a href="<%= request.getContextPath()%>/user.do?action=profile" class="menu-item"><i class="bi bi-person"></i> PROFIL</a>
+                <a href="<%= request.getContextPath()%>/user.do?action=permohonan" class="menu-item"><i class="bi bi-file-earmark"></i> PERMOHONAN</a>
+                <a href="<%= request.getContextPath()%>/user.do?action=records" class="menu-item"><i class="bi bi-clipboard"></i> REKOD</a>
 
                 <!-- Logout Button -->
                 <a href="${pageContext.request.contextPath}/user_logout.do" class="menu-item btn-logout"><i class="bi bi-box-arrow-right"></i> LOG KELUAR</a>
             </div>
         </aside>
-                
+
         <main class="dashboard-container" id="main-content">
             <h1 class="text-center mb-0">SELAMAT DATANG</h1>
-            
+
             <div class="container">
                 <!-- Left Column with Two Rows -->
                 <div class="left-column">
@@ -77,16 +77,16 @@
                     <div class="card">
                         <h2>Maklumat Pengguna:</h2>
                         <div class="info-row">
-                            <span class="label">NAMA</span> <span class="value">: <%= st.getStudName() %></span>
+                            <span class="label">NAMA</span> <span class="value">: <%= st.getStudName()%></span>
                         </div>
                         <div class="info-row">
-                            <span class="label">NO. PELAJAR</span> <span class="value">: <%= st.getStudID() %></span>
+                            <span class="label">NO. PELAJAR</span> <span class="value">: <%= st.getStudID()%></span>
                         </div>
                         <div class="info-row">
-                            <% if(st.getStudIC() == "" || st.getStudIC() == null) { %>
-                                <span class="label">NO. KP</span> <span class="value" style="color: red">: TIADA MAKLUMAT </span>
-                            <% } else { %>
-                                <span class="label">NO. KP</span> <span class="value">: <%= st.getStudIC() %></span>
+                            <% if (st.getStudIC() == "" || st.getStudIC() == null) { %>
+                            <span class="label">NO. KP</span> <span class="value" style="color: red">: TIADA MAKLUMAT </span>
+                            <% } else {%>
+                            <span class="label">NO. KP</span> <span class="value">: <%= st.getStudIC()%></span>
                             <% } %>
                         </div>
                     </div>
@@ -94,14 +94,16 @@
                     <!-- Status Permohonan Zakat -->
                     <div class="card">
                         <h2>Status Permohonan Zakat:</h2>
-                        <% if(ap != null) { %>
+                        <% if (ap != null) {%>
                         <div class="info-row">
-                            <span class="label">TARIKH MOHON</span> <span class="value">: <%= ap.getApplyDate() %></span>
+                            <span class="label">TARIKH MOHON</span> 
+                            <span class="value">: <%= ap.getApplyDate() != null ? ap.getApplyDate() : "BELUM MEMOHON"%></span>
                         </div>
                         <div class="info-row">
-                            <span class="label">STATUS</span> <span class="value">: <%= ap.getApplyStatus() %></span>
+                            <span class="label">STATUS</span> 
+                            <span class="value">: <%= ap.getApplyStatus() != null ? ap.getApplyStatus() : "BELUM MEMOHON"%></span>
                         </div>
-                        <% }else{ %>
+                        <% } else { %>
                         <div class="info-row">
                             <span class="label">TARIKH MOHON</span> <span class="value">: BELUM MEMOHON</span>
                         </div>
@@ -115,43 +117,43 @@
                 <!-- Right Column -->
                 <div class="card">
                     <h2>Tawaran Zakat Semasa:</h2>
-                    <% if (d != null) { 
-                        if (d.getApplication_deadline().before(currentDate)) { 
+                    <% if (d != null) {
+                            if (d.getApplication_deadline().after(currentDate)) {
                     %>
-                        <div class="info-row">
-                            <span class="label">STATUS TAWARAN</span> <span class="value">: DIBUKA</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">TARIKH BUKA</span> <span class="value">: <%= d.getApplication_open_date() %></span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">TARIKH TUTUP</span> <span class="value">: <%= d.getApplication_deadline() %></span>
-                        </div>
-                    <% } else { %>
-                        <div class="info-row">
-                            <span class="label">STATUS TAWARAN</span> <span class="value">: DITUTUP</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">TARIKH BUKA</span> <span class="value">: <%= d.getApplication_open_date() %></span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">TARIKH TUTUP</span> <span class="value">: <%= d.getApplication_deadline() %></span>
-                        </div>
-                        
-                    <%  }  
+                    <div class="info-row">
+                        <span class="label">STATUS TAWARAN</span> <span class="value">: DIBUKA</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">TARIKH BUKA</span> <span class="value">: <%= d.getApplication_open_date()%></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">TARIKH TUTUP</span> <span class="value">: <%= d.getApplication_deadline()%></span>
+                    </div>
+                    <% } else {%>
+                    <div class="info-row">
+                        <span class="label">STATUS TAWARAN</span> <span class="value">: DITUTUP</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">TARIKH BUKA</span> <span class="value">: <%= d.getApplication_open_date()%></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">TARIKH TUTUP</span> <span class="value">: <%= d.getApplication_deadline()%></span>
+                    </div>
+
+                    <%  }
                         }
                     %>
 
 
                     <div class="button-container">
-                        <a href="<%= request.getContextPath() %>/user.do?action=borang" class="button">MOHON</a>
-                        <a href="#" class="button">SYARAT</a>
+                        <a href="<%= request.getContextPath()%>/user.do?action=borang" class="button">MOHON</a>
+                        
                         <a href="#" class="button" onclick="submitPostForm()">SEMAK KELAYAKAN</a>
                     </div>
                 </div>
             </div>
         </main>
-                    
+
         <!-- Modal for Pop-Up Message -->
         <div class="modal fade" id="eligibilityModal" tabindex="-1" aria-labelledby="eligibilityModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -161,7 +163,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p><%= eligibilityMessage != null ? eligibilityMessage : "" %></p>
+                        <p><%= eligibilityMessage != null ? eligibilityMessage : ""%></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tutup</button>
@@ -169,27 +171,28 @@
                 </div>
             </div>
         </div>
-        
+
         <footer class="text-center py-3 ">
-            <p class="mb-0 text-white">&copy;copyrights<span id="year"></span></p>
+            <p class="mt-3-0 text-white">&copy;copyrights<span id="year"></span></p>
         </footer>
 
         <script>
             // Set current year dynamically
             document.getElementById("year").textContent = new Date().getFullYear();
-            
+
             function submitPostForm() {
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = '<%= request.getContextPath() %>/eligible_check.do';
+                form.action = '<%= request.getContextPath()%>/eligible_check.do';
                 document.body.appendChild(form);
                 form.submit();
-            };
-            
+            }
+            ;
+
             window.onload = function () {
-                var popupMessage = "<%= popupMessage != null ? popupMessage : "" %>";
-                var eligibilityMessage = "<%= eligibilityMessage != null ? eligibilityMessage : "" %>";
-                var redirectTo = "<%= redirectTo != null ? redirectTo : "" %>";
+                var popupMessage = "<%= popupMessage != null ? popupMessage : ""%>";
+                var eligibilityMessage = "<%= eligibilityMessage != null ? eligibilityMessage : ""%>";
+                var redirectTo = "<%= redirectTo != null ? redirectTo : ""%>";
 
                 if (popupMessage) {
                     // Show alert and redirect

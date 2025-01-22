@@ -132,7 +132,8 @@
                 <div class="card form-step d-none">
                     <div class="card-header">Dokumen Sokongan</div>
                     <div class="customInfo2 card-body">
-                        <p>Hanya fail PDF sahaja yang diterima.</p>
+                         <p><strong>Hanya fail PDF sahaja yang diterima.</strong></p>
+                        <p><strong>Format fail PDF hendaklah : NAMAPELAJAR_JENIS_DOKUMEN_.pdf</strong></p>
                         <p><strong>Dokumen wajib:</strong></p>
                         <table class="invisible-table">
                             <tr>
@@ -149,19 +150,21 @@
                             </tr>
                         </table>
                         <p><strong>Sertakan jika perlu:</strong></p>
+                        <p><strong>Dokumen Sokongan boleh terdiri daripada : Surat Doktor(Jika ada), Sijil Kematian Ibu/bapa dan lain-lain</strong></p>
                         <table class="invisible-table">
                             <tr>
-                                <td>1. Sijil Kematian 1.</td>
-                                <td><input type="file" name="sijilKematian1" accept=".pdf"></td>
+                                <td>1. Dokumen Sokongan 1</td>
+                                <td><input type="file" id="dokumenSokongan" name="dokumenSokongan" accept=".pdf"></td>
                             </tr>
                             <tr>
-                                <td>2. Sijil Kematian 2.</td>
-                                <td><input type="file" name="sijilKematian2" accept=".pdf"></td>
+                                <td>2. Dokumen Sokongan 2</td>
+                                <td><input type="file" id="sijilKematian" name="sijilKematian" accept=".pdf"></td>
                             </tr>
                             <tr>
-                                <td>3. Sijil Doktor.</td>
-                                <td><input type="file" name="sijilDoktor" accept=".pdf"></td>
+                                <td>3. Dokumen Sokongan 3</td>
+                                <td><input type="file" id="sijilDoktor" name="sijilDoktor" accept=".pdf"></td>
                             </tr>
+                            
                         </table>
                         <div class="form-check mt-3">
                             <input class="form-check-input" type="checkbox" id="maklumatBenar" name="maklumatBenar" required>
@@ -176,7 +179,7 @@
                 <div class="d-flex justify-content-between mb-4">
                     <button class="btn btn-secondary" id="prevBtn" type="button">Kembali</button>
                     <button class="btn btn-primary" id="nextBtn" type="button">Seterusnya</button>
-                    <button class="btn btn-danger d-none" id="submitBtn" type="submit" disabled>HANTAR PERMOHONAN</button>
+                    <button class="btn btn-danger d-none" id="submitBtn" type="submit">HANTAR PERMOHONAN</button>
                 </div>
             </form>
         </div>
@@ -342,6 +345,9 @@
             const inputSlipGaji = document.querySelector('#slipGaji');
             const inputKadMatrik = document.querySelector('#kadMatrik');
             const studentName = document.querySelector('#student-name').textContent.trim();
+            const inputDokumenSokongan = document.querySelector('#dokumenSokongan');
+            const inputSijilKematian = document.querySelector('#sijilKematian');
+            const inputSijilDoktor = document.querySelector('#sijilDoktor');
             const submitButton = document.querySelector('#submitBtn');
 
             // Validation flags
@@ -437,6 +443,66 @@
             }
             updateSubmitButtonState();
         };
+        
+        inputDokumenSokongan.addEventListener('change',()=>{
+            validateFileDokumenSokongan();
+        });
+        
+        function validateFileDokumenSokongan(){
+            const file = inputDokumenSokongan.files[0];
+            if(!file){
+                alert("No file selected");
+            }
+            
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Dokumen_Sokongan.pdf";
+            const uploadedFileName = file.name;
+            if(uploadedFileName !== expectedFileName){
+                alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
+                inputDokumenSokongan.value = "";
+            }else{
+                console.log("Receive " + uploadedFileName);
+            }
+        }
+        
+        inputSijilKematian.addEventListener('change',()=>{
+            validateFileSijilKematian();
+        });
+        
+        function validateFileSijilKematian(){
+            const file = inputSijilKematian.files[0];
+            if(!file){
+                alert("No file selected");
+            }
+            
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Dokumen_Sokongan.pdf";
+            const uploadedFileName = file.name;
+            if(uploadedFileName !== expectedFileName){
+                alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
+                inputSijilKematian.value = "";
+            }else{
+                console.log("Receive " + uploadedFileName);
+            }
+        }
+        
+        inputSijilDoktor.addEventListener('change',()=>{
+            validateFileSijilDoktor();
+        });
+        
+        function validateFileSijilDoktor(){
+            const file = inputSijilDoktor.files[0];
+            if(!file){
+                alert("No file selected");
+            }
+            
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Dokumen_Sokongan.pdf";
+            const uploadedFileName = file.name;
+            if(uploadedFileName !== expectedFileName){
+                alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);
+                inputSijilDoktor.value = "";
+            }else{
+                console.log("Receive " + uploadedFileName);
+            }
+        }
         
         // Form submission handler
         const form = document.querySelector('#file-upload-form');

@@ -4,6 +4,11 @@
  * and open the template in the editor.
  */
 package com.interview.model;
+import com.database.dbconn;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -38,5 +43,25 @@ public class interview {
     private int iv_id;
     private Date iv_date;
 
-    
+    public static Date getInterviewDateByStudentId(int studId) {
+        String sql = "SELECT i.iv_date " +
+                     "FROM interview i " +
+                     "JOIN application a ON i.apply_id = a.apply_id " +
+                     "JOIN student s ON a.stud_id = s.stud_id " +
+                     "WHERE s.stud_id = ?";
+        
+        try (Connection conn = dbconn.getConnection();  // Replace with your DB connection
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, studId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getDate("iv_date");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;  // No interview found
+    }
 }

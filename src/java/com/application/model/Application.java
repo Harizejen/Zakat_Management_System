@@ -361,7 +361,7 @@ public class Application implements Serializable {
                      + "FROM application a "
                      + "JOIN student s ON a.stud_id = s.stud_id "
                      + "LEFT JOIN status_approval sa ON a.apply_id = sa.apply_id "
-                     + "WHERE s.stud_id = ?";
+                     + "WHERE s.stud_id = ? ORDER BY a.apply_session DESC;";
 
         try (Connection conn = dbconn.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {

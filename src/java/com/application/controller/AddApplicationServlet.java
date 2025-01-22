@@ -6,6 +6,7 @@ package com.application.controller;
 
 import com.application.model.Application;
 import com.database.dbconn;
+import com.deadline.model.deadline;
 import com.user.model.Student;
 import java.io.File;
 import java.io.IOException;
@@ -91,12 +92,14 @@ public class AddApplicationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean insertApplication = false;
         boolean insertDocument = false;
+        deadline d = new deadline();
+        d = d.getDeadline();
 
         Student st = (Student) request.getSession().getAttribute("student_data");
 
         // Retrieve application data
         int stud_id = st.getStudID();
-        int deadline_id = 1; // Example value for testing; replace with actual logic
+        int deadline_id = d.getDeaadline_id(); // Example value for testing; replace with actual logic
         String apply_session = "Sesi " + LocalDate.now().getYear();
         String apply_foodIncentive = request.getParameter("apply_foodIncentive");
         String apply_otherSupport = request.getParameter("apply_otherSupport");

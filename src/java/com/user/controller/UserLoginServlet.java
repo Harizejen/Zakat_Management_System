@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,7 +37,7 @@ public class UserLoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserLoginServlet</title>");            
+            out.println("<title>Servlet UserLoginServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet UserLoginServlet at " + request.getContextPath() + "</h1>");
@@ -68,15 +69,15 @@ public class UserLoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
         int stud_id = Integer.parseInt(request.getParameter("stud_id"));
         String stud_password = request.getParameter("stud_password");
-        
+
         request.getSession().setAttribute("studentID", stud_id);
-        
+
         Student st = new Student();
         guardian gd = new guardian();
         st.setStudID(stud_id);
@@ -101,7 +102,7 @@ public class UserLoginServlet extends HttpServlet {
                 request.getSession().setAttribute("guard_info", gd1);
             } else {
                 // Handle the case where guardian info is not available
-                if(gd1 == null){
+                if (gd1 == null) {
                     guardian gd2 = new guardian();
                     gd2.setFather_name("TIADA");
                     gd2.setFather_occupation("TIADA");
@@ -124,13 +125,13 @@ public class UserLoginServlet extends HttpServlet {
 //                    gd.setOther_income(oth_income);
                     request.getSession().setAttribute("guard_info", gd2);
                 }
-                
+
             }
-            
-            
+
             // Check if the student's information is complete
             boolean isComplete = stl.isInformationComplete(stl); // Implement this method in your Student class
             request.setAttribute("isInformationComplete", isComplete);
+            session.setAttribute("userRole", "student");
 
             request.getRequestDispatcher("/WEB-INF/view/userDashboard.jsp").forward(request, response);
         } else {

@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <!-- Add this -->
 <%@page import="com.user.model.Student"%>
 <%@page import="com.guard.model.guardian"%>
 <!DOCTYPE html>
@@ -61,6 +62,7 @@
             .custom {
                 position: absolute;
                 top: 30px;
+                left: 100px;
                 margin: 20px;
                 padding-bottom: 3px;
                 padding-top: 3px;
@@ -69,11 +71,11 @@
                 border-radius: 5px;
 
             }
-            
+
             .custom1 {
                 position: absolute;
                 top: 30px;
-                left: 190px;
+                left: 210px;
                 margin: 20px;
                 padding-bottom: 3px;
                 padding-top: 3px;
@@ -100,7 +102,7 @@
                     margin-bottom: 0.5px; /* Reduce spacing between elements */
                 }
                 /* Other style overrides as needed */
-                
+
                 /* Hide elements that should not be printed */
                 .no-print {
                     display: none;
@@ -129,8 +131,14 @@
             String mergedPdfPath = (String) request.getAttribute("mergedPdfPath");
         %>
         <div class="container">
-            <button class="btn btn-secondary custom" onclick="window.print()">CETAK</button>
-            <a href="${pageContext.request.contextPath}/downloadDocServlet?mergedPdfPath=${mergedPdfPath}" class="custom1 btn btn-secondary" target="_blank">CETAK DOKUMEN SOKONGAN</a>
+            <button class="btn btn-secondary custom" onclick="window.print()">CETAK</button><br>
+
+            <%-- Only show link for staff --%>
+            <c:if test="${sessionScope.userRole == 'staff'}">
+                <a href="${pageContext.request.contextPath}/downloadDocServlet?mergedPdfPath=${mergedPdfPath}" 
+                   class="custom1 btn btn-secondary" 
+                   target="_blank">CETAK DOKUMEN SOKONGAN</a>
+            </c:if>
             <div class="text-center my-2">
                 <img alt="Logo" class="mb-2" src="${pageContext.request.contextPath}/images/logo_system.png" style="width : 50px; height : auto"/>
                 <h4 class="fw-bold" style="font-size: 12px;">

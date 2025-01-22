@@ -6,9 +6,11 @@ package com.user.controller;
 
 import com.application.model.Application;
 import com.guard.model.guardian;
+import com.interview.model.interview;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -63,8 +65,11 @@ public class UserServlet extends HttpServlet {
         if ("profile".equals(action)) {
             int stud_id = (Integer) request.getSession().getAttribute("studentID");
             guardian gd = new guardian();
+            interview iv = new interview();
             guardian gd1 = gd.findGuardian(stud_id);
+            Date iv_date = iv.getInterviewDateByStudentId(stud_id);
             if(gd1 != null){
+                request.setAttribute("date", iv_date);
                 request.getRequestDispatcher("/WEB-INF/view/UserProfile.jsp").forward(request, response);
             }else {
             request.getSession().setAttribute("warning", "Sila lengkapkan Borang Maklumat terlebih dahulu!");

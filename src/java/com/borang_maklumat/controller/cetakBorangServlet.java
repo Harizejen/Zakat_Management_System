@@ -3,6 +3,7 @@ package com.borang_maklumat.controller;
 import com.guard.model.guardian;
 import com.user.model.Student;
 import com.borang_maklumat.controller.mergeDocsUtilty; // Import your merge utility
+import java.io.File;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,16 +31,31 @@ public class cetakBorangServlet extends HttpServlet {
         if (stl != null) {
             // Assuming you have generated individual PDFs and stored their paths
             List<String> pdfFilePaths = new ArrayList<>();
-
+            String studentName = stl.getStudName();
             // Example paths for individual PDFs (replace with actual paths)
             String basePath = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads\\";
 //            String basePath = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads\\";
-            pdfFilePaths.add(basePath + stl.getStudName() + "_Salinan_Kad_Pengenalan_Ibu_dan_Bapa_Penjaga.pdf");
-            pdfFilePaths.add(basePath + stl.getStudName() + "_Pengesahan_Pendapatan.pdf");
-            pdfFilePaths.add(basePath + stl.getStudName() + "_KadMatrik_Student.pdf");
+            // 1. Required Documents (Always included)
+            pdfFilePaths.add(basePath + studentName + "_Salinan_Kad_Pengenalan_Ibu_dan_Bapa_Penjaga.pdf");
+            pdfFilePaths.add(basePath + studentName + "_Pengesahan_Pendapatan.pdf");
+            pdfFilePaths.add(basePath + studentName + "_KadMatrik_Student.pdf");
+
+            // 2. Optional Documents (Check existence)
+            String[] optionalDocs = {
+                studentName + "_Dokumen_Sokongan.pdf",
+                studentName + "_Sijil_Kematian.pdf",
+                studentName + "_Sijil_Doktor.pdf"
+            };
+
+            for (String doc : optionalDocs) {
+                File file = new File(basePath + doc);
+                if (file.exists()) {
+                    pdfFilePaths.add(basePath + doc);
+                }
+            }
 
             // Use the student's name for the merged PDF file name
-            String studentName = stl.getStudName(); // Replace spaces with underscores
+            
             String mergedPdfPath = basePath + studentName + "_merged.pdf"; // Specify the output path
 
             // Convert List to Array for merging

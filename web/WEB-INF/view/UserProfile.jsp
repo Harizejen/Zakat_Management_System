@@ -1,11 +1,22 @@
+<%@page import="com.deadline.model.deadline"%>
+<%@page import="com.application.model.Application"%>
+<%@page import="java.util.Date"%>
 <%@page import="com.user.model.Student"%>
 <%@page import="com.guard.model.guardian"%>
+<%@page import="com.interview.model.interview" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     // Retrieve the student data from the session
     Student st = (Student) request.getSession().getAttribute("student_data");
     // Retrieve the student data from the session
     guardian gd = (guardian) request.getSession().getAttribute("guard_info");
+
+    Date iv_date = (Date) request.getAttribute("date");
+
+    Application ap = new Application();
+    ap = ap.getApplication(st.getStudID());
+    deadline d = new deadline();
+    d = d.getDeadline();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -155,14 +166,15 @@
                 </div>
                 <div class="col-md-4"> <!-- Adjust the width as needed -->
                     <div class="p-4 boxInfoSize shadow-sm bg-white rounded">
-                        <h4 class="fw-bold mb-3">Notifikasi</h4>
-                        <p><strong>Status Permohonan:</strong> <span class="text-danger">TIDAK LENGKAP</span></p>
-                        <p><strong>Tarikh Temuduga:</strong> TIADA</p>
-                        <p><strong>Tarikh Akhir 2025:</strong> 15 FEBRUARI</p>
-                        <div class="text-center">
+                        <h4 class="text-center fw-bold mb-3">Notifikasi</h4>
+                        <p><strong>Status Permohonan:</strong> <span class="text-danger"><%= ap.getApplyStatus() != null ? ap.getApplyStatus() : "BELUM MEMOHON"%></span></p>
+                        <p><strong>Tarikh Temuduga: </strong><%= iv_date != null ? iv_date : "TIADA"%></p>
+                        <p><strong>Tarikh Akhir: </strong><%= d.getApplication_deadline()%></p>
                         <a href="user.do?action=borang" class="btn btn-danger mt-3">KEMASKINI</a>
                     </div>
-                    </div>
+<!--            //         <div class="text-center">
+                        <a href="user.do?action=borang" class="btn btn-danger mt-3">KEMASKINI</a>
+                    </div>-->
                 </div>
 
             </div>   
