@@ -23,7 +23,7 @@
     <div id="sidebar">
         <!-- Profile Section -->
         <div class="profile-section d-flex flex-column align-items-center justify-content-center mb-4">
-            <img src="${pageContext.request.contextPath}/images/logo_system.png" class="rounded-circle mb-2" style="width: 80px; height: 80px; border-radius: 50% " alt="Profile Picture">
+            <img src="${pageContext.request.contextPath}/images/logo_system.png" style="width: 80px; height: auto; border-radius: 50% " alt="Profile Picture">
             <h5 class="text-white text-center"><%= st.getStaffname() %></h5>
         </div>
 

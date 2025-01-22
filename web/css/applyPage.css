@@ -10,46 +10,78 @@ and open the template in the editor.
 body {
     background-color: whitesmoke;
     overflow: hidden;
+    font-size: 1rem; /* Base font size (16px) */
+    line-height: 1.5; /* Better readability */
 }
 
 p {
-    margin-bottom: 4px;
-    font-size: 10px;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem; /* 14px */
 }
 
 .customInfo1 {
-    
-    font-size: clamp(10px, 2vw + 1rem, 11px);    
+    font-size: clamp(1.125rem, 2vw + 0.5rem, 1.25rem); /* 18-20px */
 }
 
 .customInfo2 {
-    
-    font-size: clamp(8px, 2vw + 1rem, 9px);    
+    font-size: clamp(0.75rem, 1.5vw + 0.5rem, 0.875rem); /* 12-14px */
 }
 
+/* Form elements */
+.form-label {
+    font-weight: 500;
+    font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem); /* 14-16px */
+}
+
+.form-control,
+.form-select {
+    font-size: clamp(0.8rem, 1vw + 0.5rem, 0.9rem); /* 13-14px */
+/*    padding: 0.375rem 0.75rem;*/
+}
+
+.form-check-label {
+    font-size: clamp(0.8rem, 1vw + 0.5rem, 0.9rem); /* 13-14px */
+}
+
+/* Card headers */
+.card-header {
+    font-size: 1.1rem; /* 17.6px */
+    font-weight: 600;
+}
+
+/* Menu items */
+.menu-item {
+    font-size: 1rem; /* 16px */
+}
+
+.profile-name {
+    font-size: 1.1rem; /* 17.6px */
+}
+
+/* Buttons */
+.btn {
+    font-size: 0.9rem; /* 14.4px */
+    padding: 0.5rem 1rem;
+}
+
+/* Adjust existing specific selectors */
+.label {
+    font-size: clamp(0.8rem, 1vw + 0.5rem, 0.9rem); /* 13-14px */
+}
+
+/* Keep existing color schemes and layout properties */
 .navbar {
-    background-color: #013220; /* Dark green */
+    background-color: #013220;
     height: fit-content;
 }
-.navbar-toggler {
-    border: none;
-    display: block;
-}
-.navbar-toggler-icon {
-    color: white;
-}
 
-.navbar-toggler i {
-   font-size: 32px; /* Adjust the size based on viewport width */
-   min-width: 1.5rem
-}
-
-/* Sidebar (Offcanvas) */
 .offcanvas {
-  background-color: #8b0000; /* Dark red */
-  color: white;
-  width: 300px;
+    background-color: #8b0000;
+    color: white;
+    width: 300px;
 }
+
+/* Rest of your existing styles remain unchanged */
 
 .offcanvas-header {
   border-bottom: 1px solid #495057;
@@ -170,6 +202,7 @@ p {
   width: 100%;
   text-align: left;
 }
+
 
 @media (min-width: 576px) {
   .navbar-expand-sm {
@@ -325,25 +358,3 @@ p {
 .navbar-expand .navbar-toggler {
   display: block;
 }
-
-.label {
-    font-size: clamp(8px, 1vw + 1rem, 9px);
-}
-
-.form-label {
-    font-weight: 500;
-    font-size: clamp(8px, 1vw + 1rem, 9px);
-}
-
-.form-control {
-    font-size: clamp(8px, 1vw + 1rem, 9px);
-}
-
-.form-select {
-    font-size: clamp(8px, 1vw + 1rem, 9px);
-}
-
-.form-check-label {
-    font-size: clamp(8px, 1vw + 1rem, 9px);
-}
-
