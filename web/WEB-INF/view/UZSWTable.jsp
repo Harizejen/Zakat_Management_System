@@ -35,7 +35,7 @@
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href="adminServlet?action=home" class="btn btn-link">
-                    <i class="fas fa-arrow-left"></i> Back
+                    <i class="fas fa-arrow-left"></i> Kembali
                 </a>
             </div>
             <%
@@ -96,7 +96,7 @@
                 <ul class="pagination justify-content-center">
                     <!-- Previous Button -->
                     <li class="page-item <%= (currentPage <= 1) ? "disabled" : ""%>">
-                        <a class="page-link" href="?action=viewUZSWStaff&page=<%= currentPage - 1%>">Previous</a>
+                        <a class="page-link" href="?action=viewUZSWStaff&page=<%= currentPage - 1%>">Sebelum</a>
                     </li>
 
                     <!-- Page Numbers -->
@@ -108,7 +108,7 @@
 
                     <!-- Next Button -->
                     <li class="page-item <%= (currentPage >= totalPages) ? "disabled" : ""%>">
-                        <a class="page-link" href="?action=viewUZSWStaff&page=<%= currentPage + 1%>">Next</a>
+                        <a class="page-link" href="?action=viewUZSWStaff&page=<%= currentPage + 1%>">Seterusnya</a>
                     </li>
                 </ul>
             </nav>

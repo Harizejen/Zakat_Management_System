@@ -2,7 +2,7 @@ body {
     font-family: 'Arial', sans-serif;
     font-weight: bold;
     /* background-color: #ab8bc0;  */
-   background: linear-gradient(90deg, #961bde 0%, #a200ff 100%);/* Gradient background */
+   background-color: #F2EBDD;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -34,6 +34,7 @@ h1 {
     border: none; 
     border-radius: 0.5rem; 
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
+    background-color: #CEB5D4;
 }
 
 .card:hover {
@@ -41,18 +42,17 @@ h1 {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
 }
 
-.card-gradient { background: linear-gradient(135deg, rgba(202, 105, 244, 0.84), rgba(255,255,255,0.1)); /* Gradient background */ }
 
 .card-title {
     font-size: 1.5rem; 
-    color: #c5e2ff; 
+    color: black; 
     font-family: 'Arial', sans-serif;
 }
 
 .card-text {
     font-size: 5rem; 
     font-weight: bold; 
-    color: whitesmoke; /* Change text color for better visibility */
+    color: black; /* Change text color for better visibility */
 }
 
 .card-body {

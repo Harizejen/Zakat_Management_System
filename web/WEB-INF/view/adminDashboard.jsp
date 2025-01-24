@@ -10,13 +10,12 @@
         <link rel="stylesheet" href="css/admin_dashboard.css">
         <title>Admin Dashboard</title>
     </head>
-    <body>
+    <body> <!-- Updated background color -->
 
         <!-- Top Navigation Bar -->
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-
-                <a class="navbar-brand text-white" href="adminServlet?action=login">Admin Dashboard</a>
+                <a class="navbar-brand text-white" href="adminServlet?action=login">Zakat Pendidikan Management System</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -28,34 +27,34 @@
                            style="background-color: #6E1313; color: white; border: none;">
                             Logout
                         </a>
-
                     </div>
                 </div>
             </div>
-
         </nav>
 
+        <!-- Welcome Section -->
         <div class="welcome-container mb-4" style="margin-top: 10px;">
-            <h1 class="fw-bold text-center">STAF TERKINI</h1>
+            <h1 class="fw-bold text-center" style="color: black;">ADMIN DASHBOARD</h1>
         </div>
 
-
-
+        <!-- Dashboard Cards -->
         <div class="container-fluid mt-3">
             <div class="row mt-3 justify-content-center">
+                <!-- HEA Staff -->
                 <div class="col-md-3">
                     <%
                         List<staff> HEAstaffList = (List<staff>) request.getAttribute("HEAstaffList");
                         int HEAstaffCount = (HEAstaffList != null) ? HEAstaffList.size() : 0;
                     %>
-                    <div class="card text-center shadow-sm card-gradient">
+                    <div class="card text-center shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title">Jumlah Staf HEA</h5>
-                            <p class="card-text display-4" id="HEACount"><%= HEAstaffCount%></p>
+                            <p class="card-text display-4" id="HEACount"><%= HEAstaffCount %></p>
                             <a href="adminServlet?action=viewHEAStaff&page=1" class="btn btn-primary">Lihat Staf</a>
                         </div>
                     </div>
                 </div>
+                <!-- HEP Staff -->
                 <div class="col-md-3">
                     <%
                         List<staff> HEPstaffList = (List<staff>) request.getAttribute("HEPstaffList");
@@ -63,12 +62,13 @@
                     %>
                     <div class="card text-center shadow-sm card-gradient">
                         <div class="card-body">
-                            <h5 class="card-title">Jumlah Staf HEP </h5>
-                            <p class="card-text display-4" id="HEPCount"><%= HEPstaffCount%></p>
+                            <h5 class="card-title">Jumlah Staf HEP</h5>
+                            <p class="card-text display-4" id="HEPCount"><%= HEPstaffCount %></p>
                             <a href="adminServlet?action=viewHEPStaff" class="btn btn-primary">Lihat Staf</a>
                         </div>
                     </div>
                 </div>
+                <!-- UZSW Staff -->
                 <div class="col-md-3">
                     <%
                         List<staff> UZSWstaffList = (List<staff>) request.getAttribute("UZSWstaffList");
@@ -77,7 +77,7 @@
                     <div class="card text-center shadow-sm card-gradient">
                         <div class="card-body">
                             <h5 class="card-title">Jumlah Staf UZSW</h5>
-                            <p class="card-text display-4" id="UZSWCount"><%= UZSWstaffCount%></p>
+                            <p class="card-text display-4" id="UZSWCount"><%= UZSWstaffCount %></p>
                             <a href="adminServlet?action=viewUZSWStaff" class="btn btn-primary">Lihat Staf</a>
                         </div>
                     </div>
@@ -85,15 +85,15 @@
             </div>
         </div>
 
-    
-    <footer  style="background-color: #522E5C; color: white; padding: 5px 0; position: fixed; bottom: 0; width: 100%;">
-        <div class="text-center">
-            <p style="margin: 0;">Copyright © 2024</p>
-        </div>
-    </footer>
+        <!-- Footer -->
+        <footer style="background-color: #522E5C; color: white; padding: 5px 0; position: fixed; bottom: 0; width: 100%;">
+            <div class="text-center">
+                <p style="margin: 0;">Copyright © 2024</p>
+            </div>
+        </footer>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
-</body>
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="script.js"></script>
+    </body>
 </html>

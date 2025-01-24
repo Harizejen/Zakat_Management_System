@@ -15,7 +15,7 @@
         <!-- Top Navigation Bar -->
         <nav class="navbar navbar-expand-lg" style="background-color: #522E5C">
             <div class="container-fluid">
-                <a class="navbar-brand text-white bold-text" href="adminServlet?action=home">Admin Dashboard</a>
+                <a class="navbar-brand text-white bold-text" href="adminServlet?action=home">Zakat Pendidikan Management System</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -29,7 +29,7 @@
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href="adminServlet?action=home" class="btn btn-link">
-                    <i class="fas fa-arrow-left"></i> Back
+                    <i class="fas fa-arrow-left"></i> Kembali
                 </a>
             </div>
             <%
@@ -39,7 +39,7 @@
                 int totalPages = (Integer) request.getAttribute("totalPages");
                 int itemsPerPage = (Integer) request.getAttribute("itemsPerPage");
 %>
-            <h5>Jumlah Staf HEA <span class="text-primary"><%= count%> Staf</span></h5>
+            <h5>Jumlah Staf HEA: <span class="text-primary"><%= count%> Staf</span></h5>
             <table class="table">
                 <thead>
                     <tr>
@@ -90,7 +90,7 @@
                 <ul class="pagination justify-content-center">
                     <!-- Previous Button -->
                     <li class="page-item <%= (currentPage <= 1) ? "disabled" : ""%>">
-                        <a class="page-link" href="?action=viewHEAStaff&page=<%= currentPage - 1%>">Previous</a>
+                        <a class="page-link" href="?action=viewHEAStaff&page=<%= currentPage - 1%>">Sebelum</a>
                     </li>
 
                     <!-- Page Numbers -->
@@ -102,7 +102,7 @@
 
                     <!-- Next Button -->
                     <li class="page-item <%= (currentPage >= totalPages) ? "disabled" : ""%>">
-                        <a class="page-link" href="?action=viewHEAStaff&page=<%= currentPage + 1%>">Next</a>
+                        <a class="page-link" href="?action=viewHEAStaff&page=<%= currentPage + 1%>">Seterusnya</a>
                     </li>
                 </ul>
             </nav>
@@ -122,7 +122,7 @@
                         <h5 id="logoutModalLabel" class="mb-4">Adakah anda ingin keluar?</h5>
                         <div class="d-flex justify-content-center gap-3">
                             <a href="${pageContext.request.contextPath}/adminLogOutServlet" class="btn btn-outline-light px-4">KELUAR</a>
-                            <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">BATAL</button>
+                            <button type="button" class="btn btn-danger px-4"  data-bs-dismiss="modal">BATAL</button>
                         </div>
                     </div>
                 </div>

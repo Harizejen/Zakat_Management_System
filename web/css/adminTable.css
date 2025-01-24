@@ -63,7 +63,7 @@ body {
 
 .btn-log {
     color: white;
-    background-color:#6d1313;
+    background-color: #522E5C ;
     border-color: transparent;
     box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.5);
     border-radius: 25px;
@@ -100,7 +100,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .table th {
-    background-color: #6d1313;
+    background-color: #522E5C;
     color: white;
 }
 .table tbody tr:nth-child(odd) {
