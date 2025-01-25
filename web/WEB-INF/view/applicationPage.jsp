@@ -494,7 +494,7 @@
                 alert("No file selected");
             }
             
-            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Sijil_Kematian.pdf";
+            const expectedFileName = studentName.replaceAll("\\s+", "_") + "_Sijil_Doktor.pdf";
             const uploadedFileName = file.name;
             if(uploadedFileName !== expectedFileName){
                 alert("Expected filename is " + expectedFileName + " but receive " + uploadedFileName);

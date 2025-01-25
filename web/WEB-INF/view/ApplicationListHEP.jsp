@@ -274,7 +274,7 @@
                                         <i class="bi bi-download download-icon"></i>
                                     </a>
                                 </td>
-                                </td>
+                               
                         <form action="updateApplicationStatus" method="post" 
                               <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
                             <td>

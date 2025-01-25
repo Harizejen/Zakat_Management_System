@@ -182,7 +182,7 @@
                                             <input type="text" class="form-control" id="stud_id" name="stud_id" value="<%= st != null ? st.getStudID() : ""%>">
                                         </div>
                                         <div class="col-md-3 mb-3">
-                                            <label for="stud_course" class="form-label">Kod Program</label>
+                                            <label for="stud_course" class="form-label">Program</label>
                                             <input type="text" class="form-control" id="stud_course" name="stud_course" value="<%= st != null ? st.getStudCourse() : ""%>">
                                         </div>
                                         <div class="col-md-3 mb-3">
