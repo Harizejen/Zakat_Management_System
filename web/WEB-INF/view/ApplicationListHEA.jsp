@@ -218,7 +218,7 @@
 
             <ul class="pagination justify-content-end">
                 <li class="page-item <%= (currentPage == 1) ? "disabled" : "" %>">
-                    <a class="page-link" href="?totalPage=<%= currentPage - 1 %>&tab=total" tabindex="-1">Previous</a>
+                    <a class="page-link" href="?totalPage=<%= currentPage - 1 %>&tab=total" tabindex="-1">Kembali</a>
                 </li>
                 <% for (int i = 1; i <= totalPages; i++) { %>
                     <li class="page-item <%= (i == currentPage) ? "active" : "" %>">
@@ -226,7 +226,7 @@
                     </li>
                 <% } %>
                 <li class="page-item <%= (currentPage == totalPages) ? "disabled" : "" %>">
-                    <a class="page-link" href="?totalPage=<%= currentPage + 1 %>&tab=total">Next</a>
+                    <a class="page-link" href="?totalPage=<%= currentPage + 1 %>&tab=total">Seterusnya</a>
                 </li>
             </ul>
         </div>
@@ -350,7 +350,7 @@
             </table>
             <ul class="pagination justify-content-end">
                 <li class="page-item <%= (pendingCurrentPage == 1) ? "disabled" : "" %>">
-                    <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1 %>&tab=pending" tabindex="-1">Previous</a>
+                    <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1 %>&tab=pending" tabindex="-1">Kembali</a>
                 </li>
                 <% for (int i = 1; i <= pendingTotalPages; i++) { %>
                     <li class="page-item <%= (i == pendingCurrentPage) ? "active" : "" %>">
@@ -358,7 +358,7 @@
                     </li>
                 <% } %>
                 <li class="page-item <%= (pendingCurrentPage == pendingTotalPages) ? "disabled" : "" %>">
-                    <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1 %>&tab=pending">Next</a>
+                    <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1 %>&tab=pending">Seterusnya</a>
                 </li>
             </ul>
         </div>
@@ -482,7 +482,7 @@
             </table>
             <ul class="pagination justify-content-end">
                 <li class="page-item <%= (rejectedCurrentPage == 1) ? "disabled" : "" %>">
-                    <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1 %>&tab=rejected" tabindex="-1">Previous</a>
+                    <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1 %>&tab=rejected" tabindex="-1">Kembali</a>
                 </li>
                 <% for (int i = 1; i <= rejectedTotalPages; i++) { %>
                     <li class="page-item <%= (i == rejectedCurrentPage) ? "active" : "" %>">
@@ -490,7 +490,7 @@
                     </li>
                 <% } %>
                 <li class="page-item <%= (rejectedCurrentPage == rejectedTotalPages) ? "disabled" : "" %>">
-                    <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1 %>&tab=rejected">Next</a>
+                    <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1 %>&tab=rejected">Seterusnya</a>
                 </li>
             </ul>
         </div>
@@ -614,7 +614,7 @@
             </table>
             <ul class="pagination justify-content-end">
                 <li class="page-item <%= (approvedCurrentPage == 1) ? "disabled" : "" %>">
-                    <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1 %>&tab=approved" tabindex="-1">Previous</a>
+                    <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1 %>&tab=approved" tabindex="-1">Kembali</a>
                 </li>
                 <% for (int i = 1; i <= approvedTotalPages; i++) { %>
                     <li class="page-item <%= (i == approvedCurrentPage) ? "active" : "" %>">
@@ -622,7 +622,7 @@
                     </li>
                 <% } %>
                 <li class="page-item <%= (approvedCurrentPage == approvedTotalPages) ? "disabled" : "" %>">
-                    <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1 %>&tab=approved">Next</a>
+                    <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1 %>&tab=approved">Seterusnya</a>
                     </li>
             </ul>
         </div>
