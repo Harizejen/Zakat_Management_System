@@ -1,20 +1,21 @@
 body {
     font-family: 'Arial', sans-serif;
     font-weight: bold;
-    /* background-color: #ab8bc0;  */
-   background-color: #F2EBDD;
+    background-color: #F2EBDD; /* Light beige background */
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
 h1 {
-    color: white;
+    color: #522E5C; /* Dark purple for headings */
+    text-align: center;
+    margin-top: 20px;
 }
 
-.h5 {
-    color: white;
-    
+h5 {
+    color: #522E5C; /* Dark purple for subheadings */
+    font-weight: bold;
 }
 
 .container {
@@ -22,19 +23,29 @@ h1 {
 }
 
 .navbar {
-    background-color: #522E5C; 
-    padding: 1rem; 
+    background-color: #522E5C; /* Dark purple navbar */
+    padding: 1rem;
 }
 
 .navbar-brand {
     font-size: 1.5rem; /* Bigger font for brand name */
+    color: white !important; /* White text for brand */
+}
+
+.navbar-toggler {
+    border-color: white; /* White border for toggler */
+}
+
+.navbar-toggler-icon {
+    background-color: white; /* White toggler icon */
 }
 
 .card {
-    border: none; 
-    border-radius: 0.5rem; 
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
-    background-color: #CEB5D4;
+    border: none;
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    background-color: #CEB5D4; /* Light purple card background */
+    margin: 10px;
 }
 
 .card:hover {
@@ -42,49 +53,101 @@ h1 {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
 }
 
-
 .card-title {
-    font-size: 1.5rem; 
-    color: black; 
+    font-size: 1.5rem;
+    color: #522E5C; /* Dark purple for card titles */
     font-family: 'Arial', sans-serif;
+    font-weight: bold;
 }
 
 .card-text {
-    font-size: 5rem; 
-    font-weight: bold; 
-    color: black; /* Change text color for better visibility */
+    font-size: 5rem;
+    font-weight: bold;
+    color: #522E5C; /* Dark purple for card text */
 }
 
 .card-body {
-    align-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     min-height: 350px;
 }
 
-@media (max-width: 768px) {
-    .container-fluid {
-        padding: 1rem;
-    }
-    .card {
-        margin-bottom: 2rem; /* Space between cards */
-    }
+.btn-primary {
+    background-color: #6E1313; /* Dark red for buttons */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.btn-primary:hover {
+    background-color: #8B1A1A; /* Slightly lighter red on hover */
 }
 
 .footer {
-    background-color: #522E5C; 
-    color: white; /* Change text color to white for better contrast */
-    padding: 1rem 0; 
-    position: relative;
+    background-color: #522E5C; /* Dark purple footer */
+    color: white;
+    padding:  0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
 }
 
 footer p {
     margin: 0; /* Remove default margin */
 }
 
-.btn-primary {
-    background-color:  #6E1313; 
-    border: none; 
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 1rem;
+    }
+
+    .card {
+        margin-bottom: 2rem; /* Space between cards on smaller screens */
+    }
+
+    .card-text {
+        font-size: 3rem; /* Smaller font size for card text on mobile */
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem; /* Smaller font size for brand on mobile */
+    }
 }
 
-.btn-primary:hover {
-    background-color: #8B1A1A; /* Slightly lighter shade on hover */
+/* Sidebar Styling */
+.sidebar {
+    background-color: #522E5C; /* Dark purple sidebar */
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+}
+
+.sidebar h4 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar .nav-link {
+    color: white;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.sidebar .nav-link:hover {
+    background-color: #6E1313; /* Dark red on hover */
+}
+
+.sidebar .nav-link.active {
+    background-color: #8B1A1A; /* Slightly lighter red for active link */
 }
