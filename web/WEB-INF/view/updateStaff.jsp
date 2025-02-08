@@ -17,6 +17,8 @@
         <a href="javascript:window.history.back();"> <!-- Link back to the staff list -->
             <i class="fas fa-arrow-left fa-2x" style="border: 2px solid white; border-radius: 50%; padding: 5px;"></i>
         </a>
+        <!-- Brand Name with Increased Left Margin -->
+            <span class="navbar-brand fw-bold ms-2" style="color: white; font-size: 1.5rem;">Zakat Pendidikan Management System</span>
     </div>
     <div class="container">
         <h2 class="text-center">KEMASKINI STAF</h2>
@@ -63,7 +65,7 @@
                 </div>
             </div>
             <div class="text-end">
-                <button class="btn btn-outline-custom me-2" type="button" onclick="window.location.href='adminServlet?action=viewHEA Staff'"> <!-- Redirect to staff list -->
+                <button class="btn btn-outline-custom me-2" type="button" onclick="window.location.href='adminServlet?action=viewHEAStaff'"> <!-- Redirect to staff list -->
                     BATAL
                 </button>
                 <button class="btn btn-custom" type="submit">

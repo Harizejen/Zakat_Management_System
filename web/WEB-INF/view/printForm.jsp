@@ -84,6 +84,19 @@
                 border-radius: 5px;
 
             }
+            
+            .custom2 {
+                position: absolute;
+                top: 30px;
+                left: 1210px;
+                margin: 20px;
+                padding-bottom: 3px;
+                padding-top: 3px;
+                padding-left: 8px;
+                padding-right: 8px;
+                border-radius: 5px;
+
+            }
 
             @media print {
                 body {
@@ -107,7 +120,7 @@
                 .no-print {
                     display: none;
                 }
-                .custom, .custom1 {
+                .custom, .custom1, .custom2 {
                     display: none;
                 }
             }
@@ -146,6 +159,8 @@
                 </h4>
 
             </div>
+                <button class="btn btn-secondary custom2" onclick="history.back()">KEMBALI</button><br>
+
             <div class="form-section">
                 <h5>
                     A. MAKLUMAT PENGENALAN PEMOHON

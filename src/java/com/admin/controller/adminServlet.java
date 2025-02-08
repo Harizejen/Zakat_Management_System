@@ -143,7 +143,7 @@ public class adminServlet extends HttpServlet {
             request.setAttribute("count", totalStaffCount);
             request.setAttribute("currentPage", currentPage);
             request.setAttribute("totalPages", totalPages);
-            
+
             request.setAttribute("itemsPerPage", itemsPerPage);
 
             // Forward to the JSP page
@@ -151,7 +151,8 @@ public class adminServlet extends HttpServlet {
         } else if ("addStaff".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/view/addStaff.jsp").forward(request, response);
         } else if ("updateStaff".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/view/updateStaff.jsp").forward(request, response);
+            // Redirect to updateStaffServlet with staffId parameter
+            response.sendRedirect(request.getContextPath() + "/updateStaffServlet?staffId=" + request.getParameter("staffId"));
         } else if ("home".equals(action)) {
             List<staff> HEAstaffList = retrieveStaffData("HEA");
             List<staff> HEPstaffList = retrieveStaffData("HEP");

@@ -235,7 +235,7 @@ public class guardian {
                 
                 
                 gd = new guardian();
-                gd.setFather_name(f_name != null ? f_name : "Tiada");
+                gd.setFather_name(f_name);
                 gd.setFather_occupation(f_occupation != null ? f_occupation : "Tiada");
                 gd.setFather_phoneNum(f_pNum != null ? f_pNum : "Tiada");
                 gd.setFather_Address(f_address != null ? f_address : "Tiada");
@@ -245,7 +245,7 @@ public class guardian {
                 gd.setMother_phoneNum(m_pNum != null ? m_pNum : "Tiada");
                 gd.setMother_Address(m_address != null ? m_address : "Tiada");
                 gd.setMother_income(m_income);
-                gd.setGuard_name(g_name != null ? g_name : "Tiada");
+                gd.setGuard_name(g_name);
                 gd.setGuard_relation(g_relation != null ? g_relation : "Tiada");
                 gd.setGuard_residence(g_residence != null ? g_residence : "Tiada");
                 gd.setGuard_postcode(g_postcode != null ? g_postcode : "Tiada");

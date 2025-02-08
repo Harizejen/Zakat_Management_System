@@ -217,25 +217,28 @@ private List<ApplicationDetails> countPendingApplicationsByRole(String staffRole
 
     if ("HEA".equals(staffRole)) {
         // HEA receives all unreviewed applications
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review IS NULL AND status_approval.app_stat_hea IS NULL;";
     } else if ("HEP".equals(staffRole)) {
         // HEP receives applications approved by HEA but not yet reviewed by HEP
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS'\n" +
                 "AND status_approval.hep_review IS NULL AND status_approval.app_stat_hep IS NULL;";
     } else if ("UZSW".equals(staffRole)) {
         // UZSW receives applications approved by both HEA and HEP but not yet reviewed by UZSW
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS'\n" +
                 "AND status_approval.hep_review = 'TRUE' AND status_approval.app_stat_hep = 'LULUS'\n" +
                 "AND status_approval.uzsw_review IS NULL AND status_approval.app_stat_uzsw IS NULL;";
@@ -316,6 +319,9 @@ private List<ApplicationDetails> countPendingApplicationsByRole(String staffRole
             appDetails.setHeaReview(resultSet.getString("hea_review"));
             appDetails.setHepReview(resultSet.getString("hep_review"));
             appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+            
+            appDetails.setInterviewDate(resultSet.getDate("interview_date")); // Add this line
+            
 
             // Add to list
             pendingApplications.add(appDetails);
@@ -332,25 +338,28 @@ private List<ApplicationDetails> countApprovedApplicationsByRole(String staffRol
 
     if ("HEA".equals(staffRole)) {
         // HEA retrieves applications they approved
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS';";
     } else if ("HEP".equals(staffRole)) {
         // HEP retrieves applications approved by both HEA and HEP
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS'\n" +
                 "AND status_approval.hep_review = 'TRUE' AND status_approval.app_stat_hep = 'LULUS';";
     } else if ("UZSW".equals(staffRole)) {
         // UZSW retrieves applications fully approved by HEA, HEP, and UZSW
-        query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+        query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                 "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                 "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                 "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                 "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS'\n" +
                 "AND status_approval.hep_review = 'TRUE' AND status_approval.app_stat_hep = 'LULUS'\n" +
                 "AND status_approval.uzsw_review = 'TRUE' AND status_approval.app_stat_uzsw = 'LULUS';";
@@ -431,6 +440,8 @@ private List<ApplicationDetails> countApprovedApplicationsByRole(String staffRol
             appDetails.setHeaReview(resultSet.getString("hea_review"));
             appDetails.setHepReview(resultSet.getString("hep_review"));
             appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+            
+            appDetails.setInterviewDate(resultSet.getDate("interview_date")); // Add this line
 
             // Add to list
             approvedApplications.add(appDetails);
@@ -446,23 +457,26 @@ private List<ApplicationDetails> countRejectedApplicationsByRole(String staffRol
     String query = null;
 
         if ("HEA".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                     "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'GAGAL';";
         } else if ("HEP".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                     "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "WHERE status_approval.hea_review = 'TRUE' AND status_approval.hep_review = 'TRUE' \n" +
                     "AND status_approval.app_stat_hea = 'LULUS' AND status_approval.app_stat_hep = 'GAGAL';";
         } else if ("UZSW".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application \n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application \n" +
                     "LEFT JOIN student ON application.stud_id = student.stud_id \n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id \n" +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id \n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "WHERE status_approval.hea_review = 'TRUE' AND status_approval.hep_review = 'TRUE' \n" +
                     "AND status_approval.app_stat_hea = 'LULUS' AND status_approval.app_stat_hep = 'LULUS' \n" +
                     "AND status_approval.uzsw_review = 'TRUE' AND status_approval.app_stat_uzsw = 'GAGAL';";
@@ -543,6 +557,8 @@ private List<ApplicationDetails> countRejectedApplicationsByRole(String staffRol
             appDetails.setHeaReview(resultSet.getString("hea_review"));
             appDetails.setHepReview(resultSet.getString("hep_review"));
             appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+            
+            appDetails.setInterviewDate(resultSet.getDate("interview_date")); // Add this line
 
             // Add to list
             rejectedApplications.add(appDetails);
@@ -559,16 +575,19 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
         String query = null;
 
         if ("HEA".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id;";
         } else if ("HEP".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id WHERE status_approval.hea_review = 'TRUE' AND status_approval.app_stat_hea = 'LULUS';";
         } else if ("UZSW".equals(staffRole)) {
-            query = "SELECT application.*, student.*, guardian.*, status_approval.* FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
+            query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
                     "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
                     "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id WHERE status_approval.hea_review = 'TRUE' AND status_approval.hep_review = 'TRUE' \n" +
                     "AND status_approval.app_stat_hea = 'LULUS' AND status_approval.app_stat_hep = 'LULUS';";
         }
@@ -649,6 +668,8 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
                 appDetails.setHeaReview(resultSet.getString("hea_review"));
                 appDetails.setHepReview(resultSet.getString("hep_review"));
                 appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+                
+                appDetails.setInterviewDate(resultSet.getDate("interview_date")); // Add this line
 
                 // Add to list
                 applicationList.add(appDetails);
@@ -660,7 +681,6 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
 
         return applicationList;
     }
-    
 
     /**
      * Returns a short description of the servlet.
