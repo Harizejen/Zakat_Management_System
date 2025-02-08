@@ -343,12 +343,12 @@
                                 </div>
                             </div>    
                         </div>
-                        <!-- Navigation Buttons -->
-                        <div class="d-flex justify-content-between mt-4">
+             <!-- Navigation Buttons -->
+            <div class="d-flex justify-content-between mt-4">
                             <button type="button" class="btn btn-secondary" id="prevBtn" disabled>SEBELUM</button>
-                            <button type="button" class="btn btn-primary" id="nextBtn">SETERUSNYA</button>
-                            <button type="submit" class="btn btn-success d-none" id="submitBtn">HANTAR</button>
-                        </div>
+                <button type="button" class="btn btn-primary" id="nextBtn">SETERUSNYA</button>
+                <button type="submit" class="btn btn-success d-none" id="submitBtn">HANTAR</button>
+            </div>
                     </div>
                 </div>                    
             </form>
@@ -356,7 +356,7 @@
                 // Set current year dynamically
                 document.getElementById("year").textContent = new Date().getFullYear();
 
-                document.addEventListener('DOMContentLoaded', function () {
+                 document.addEventListener('DOMContentLoaded', function () {
                     const prevBtn = document.getElementById('prevBtn');
                     const nextBtn = document.getElementById('nextBtn');
                     const submitBtn = document.getElementById('submitBtn');
@@ -376,12 +376,12 @@
                     tabs.forEach((tab, index) => {
                         tab.addEventListener('click', () => {
                             updateButtonVisibility();
-                        });
+                    });
                     });
 
                     // Initialize button visibility
                     updateButtonVisibility();
-                });
+                    });
             </script>
 
             <!-- Bootstrap 5 JS -->
