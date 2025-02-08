@@ -355,7 +355,7 @@
             </form>
             <script>
 
-                document.addEventListener('DOMContentLoaded', function () {
+                 document.addEventListener('DOMContentLoaded', function () {
                     const prevBtn = document.getElementById('prevBtn');
                     const nextBtn = document.getElementById('nextBtn');
                     const submitBtn = document.getElementById('submitBtn');

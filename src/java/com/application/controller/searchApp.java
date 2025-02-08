@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author User
  */
-@WebServlet(name = "searchApp", urlPatterns = {"/searchApp"})
+//@WebServlet(name = "searchApp", urlPatterns = {"/searchApp"})
 public class searchApp extends HttpServlet {
 
     /**
@@ -98,11 +98,11 @@ public class searchApp extends HttpServlet {
 
         String redirectPage;
         if ("HEA".equals(staffRole)) {
-            redirectPage = "/view/ApplicationListHEA.jsp?tab=search";
+            redirectPage = "WEB-INF/view/ApplicationListHEA.jsp?tab=search";
         } else if ("HEP".equals(staffRole)) {
-            redirectPage = "/view/ApplicationListHEP.jsp?tab=search";
+            redirectPage = "WEB-INF/view/ApplicationListHEP.jsp?tab=search";
         } else if ("UZSW".equals(staffRole)) {
-            redirectPage = "/view/USZWlist.jsp?tab=search";
+            redirectPage = "WEB-INF/view/USZWlist.jsp?tab=search";
         } else {
             redirectPage = "/staff_login.jsp"; // Fallback if role is not recognized
         }
