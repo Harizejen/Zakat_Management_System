@@ -99,11 +99,13 @@
                     <div class="card text-center border-0 shadow-sm">
                         <div class="card-body card-body-lg text-white" style="background-color: #112C55">
                             <h5>JUMLAH KESELURUHAN PERMOHONAN:</h5>
-                            <% 
-                            List<ApplicationDetails> totalList = (List<ApplicationDetails>) session.getAttribute("totalList");
-                            int totalCount = (totalList != null) ? totalList.size() : 0; // Get the size safely
-                            %>
-                            <h2><%= totalCount %></h2>
+                            <%
+                                List<ApplicationDetails> totalList = (List<ApplicationDetails>) session.getAttribute("totalList");
+                                int totalCount = (totalList != null) ? totalList.size() : 0; // Get the size safely
+                                List<ApplicationDetails> allList = (List<ApplicationDetails>) session.getAttribute("allList");
+                                int allCount = (allList != null) ? allList.size() : 0; // Get the size safely
+                        %>
+                        <h2><%= totalCount%> / <%= allCount %></h2>
                             <!-- Center the button -->
                             <div class="d-flex justify-content-center">
                                 <a href="UZSWServlet" class="btn btn-danger">Lihat ></a>

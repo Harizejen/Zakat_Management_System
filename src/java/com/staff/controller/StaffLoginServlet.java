@@ -128,12 +128,13 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             List<ApplicationDetails> pendingList = countPendingApplicationsByRole(userRole);
             List<ApplicationDetails> approvedList = countApprovedApplicationsByRole(userRole);
             List<ApplicationDetails> rejectedList = countRejectedApplicationsByRole(userRole);
-            
+            List<ApplicationDetails> allList = countAllApplications();
             // Set the lists as attributes
             session.setAttribute("totalList", totalList);
             session.setAttribute("pendingList", pendingList);
             session.setAttribute("approvedList", approvedList);
             session.setAttribute("rejectedList", rejectedList);
+            session.setAttribute("allList", allList);
 
             // Decide which JSP to forward based on the user role
             String dashboardPage;
@@ -543,6 +544,102 @@ private List<ApplicationDetails> countAllApplicationsByRole(String staffRole) {
                     "AND status_approval.app_stat_hea = 'LULUS' AND status_approval.app_stat_hep = 'LULUS';";
         }
 
+        try (Connection connection = dbconn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                ApplicationDetails appDetails = new ApplicationDetails();
+
+                // Set values for Application table
+            appDetails.setApplyId(resultSet.getInt("apply_id"));
+            appDetails.setStudId(resultSet.getInt("stud_id"));
+            appDetails.setDeadlineId(resultSet.getInt("deadline_id"));
+            appDetails.setApplySession(resultSet.getString("apply_session"));
+            appDetails.setApplyPart(resultSet.getInt("apply_part"));
+            appDetails.setApplyCgpa(resultSet.getDouble("apply_cgpa"));
+            appDetails.setApplyGpa(resultSet.getDouble("apply_gpa"));
+            // Convert string values to boolean for food incentive and other support
+            String foodIncentive = resultSet.getString("apply_foodincentive");
+            appDetails.setApplyFoodIncentive("YA".equalsIgnoreCase(foodIncentive));
+
+            String otherSupport = resultSet.getString("apply_otherSupport");
+            appDetails.setApplyOtherSupport("YA".equalsIgnoreCase(otherSupport));
+            appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName"));
+            appDetails.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+            appDetails.setApplyPurpose(resultSet.getString("apply_purpose"));
+            appDetails.setApplyDate(resultSet.getString("apply_date"));
+            appDetails.setDonationId(resultSet.getInt("donation_id"));
+
+            // Set values for Student table
+            appDetails.setStudName(resultSet.getString("stud_name"));
+            appDetails.setStudIc(resultSet.getString("stud_ic"));
+            appDetails.setStudEmail(resultSet.getString("stud_email"));
+            appDetails.setStudPassword(resultSet.getString("stud_password"));
+            appDetails.setStudState(resultSet.getString("stud_state"));
+            appDetails.setStudZipcode(resultSet.getString("stud_zipcode"));
+            appDetails.setStudCourse(resultSet.getString("stud_course"));
+            appDetails.setStudFaculty(resultSet.getString("stud_faculty"));
+            appDetails.setStudCampus(resultSet.getString("stud_campus"));
+            appDetails.setStudGender(resultSet.getString("stud_gender"));
+            appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum"));
+            appDetails.setStudBankName(resultSet.getString("stud_bankName"));
+            appDetails.setStudBankNum(resultSet.getString("stud_bankNum"));
+            appDetails.setStudAddress(resultSet.getString("stud_address"));
+            appDetails.setStudMarriage(resultSet.getString("stud_marriage"));
+
+            // Set values for Guardian table
+            appDetails.setGuardId(resultSet.getInt("guard_id"));
+            appDetails.setFatherName(resultSet.getString("father_name"));
+            appDetails.setFatherOccupation(resultSet.getString("father_occupation"));
+            appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum"));
+            appDetails.setFatherAddress(resultSet.getString("father_address"));
+            appDetails.setMotherName(resultSet.getString("mother_name"));
+            appDetails.setMotherOccupation(resultSet.getString("mother_occupation"));
+            appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum"));
+            appDetails.setMotherAddress(resultSet.getString("mother_address"));
+            appDetails.setGuardName(resultSet.getString("guard_name"));
+            appDetails.setGuardRelation(resultSet.getString("guard_relation"));
+            appDetails.setGuardOccupation(resultSet.getString("guard_occupation"));
+            appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum"));
+            appDetails.setGuardAddress(resultSet.getString("guard_address"));
+            appDetails.setGuardPostcode(resultSet.getString("guard_postcode"));
+            appDetails.setGuardResidence(resultSet.getString("guard_residence"));
+            appDetails.setGuardIncome(resultSet.getDouble("guard_income"));
+            appDetails.setMotherIncome(resultSet.getDouble("mother_income"));
+            appDetails.setFatherIncome(resultSet.getDouble("father_income"));
+            appDetails.setOtherIncome(resultSet.getDouble("other_income"));
+
+                // Set values for Status Approval table
+                appDetails.setStaffId(resultSet.getInt("staff_id"));
+                appDetails.setApproveStatus(resultSet.getString("approve_status"));
+                appDetails.setAppStatHEA(resultSet.getString("app_stat_HEA"));
+                appDetails.setAppStatHEP(resultSet.getString("app_stat_HEP"));
+                appDetails.setAppStatUZSW(resultSet.getString("app_stat_UZSW"));
+                appDetails.setHeaReview(resultSet.getString("hea_review"));
+                appDetails.setHepReview(resultSet.getString("hep_review"));
+                appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+                
+                appDetails.setInterviewDate(resultSet.getDate("interview_date")); // Add this line
+
+                // Add to list
+                applicationList.add(appDetails);
+        }
+
+        } catch (SQLException e) {
+            Logger.getLogger(StaffLoginServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        return applicationList;
+    }
+
+private List<ApplicationDetails> countAllApplications() {
+        List<ApplicationDetails> applicationList = new ArrayList<>();
+        String query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date FROM application LEFT JOIN student ON application.stud_id = student.stud_id\n" +
+                    "LEFT JOIN guardian ON application.stud_id = guardian.stud_id\n" +
+                    "LEFT JOIN interview i ON application.apply_id = i.apply_id " +
+                    "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id;";
+        
         try (Connection connection = dbconn.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {

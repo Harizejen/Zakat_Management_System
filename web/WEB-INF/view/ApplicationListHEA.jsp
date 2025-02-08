@@ -76,6 +76,14 @@
                 Digagalkan
             </button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link <%= (tab.equals("search")) ? "active" : "" %>" 
+                    id="rejected-tab" data-bs-toggle="tab" data-bs-target="#search" 
+                    type="button" role="tab" aria-controls="search" 
+                    aria-selected="<%= (tab.equals("search")) ? "true" : "false" %>">
+                Carian
+            </button>
+        </li>
     </ul>
 <!--    <ul class="nav nav-tabs mb-3" id="applicationTabs" role="tablist">
         <li class="nav-item" role="presentation">
@@ -623,6 +631,145 @@
                 <% } %>
                 <li class="page-item <%= (approvedCurrentPage == approvedTotalPages) ? "disabled" : "" %>">
                     <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1 %>&tab=approved">Seterusnya</a>
+                    </li>
+            </ul>
+        </div>
+        
+         <div class="tab-pane fade <%= (tab.equals("search")) ? "show active" : "" %>" id="search" role="tabpanel" aria-labelledby="search-tab">
+            <%
+                int searchItemsPerPage = 6;
+                int searchCurrentPage = 1; // Default to the first page
+                String searchPageParam = request.getParameter("searchPage");
+                if (searchPageParam != null) {
+                    try {
+                        searchCurrentPage = Integer.parseInt(searchPageParam);
+                    } catch (NumberFormatException e) {
+                        searchCurrentPage = 1; // Reset to first page if invalid
+                    }
+                }
+
+                List<ApplicationDetails> searchList = (List<ApplicationDetails>) session.getAttribute("searchList");
+                int searchCount = (searchList != null) ? searchList.size() : 0;
+                int searchTotalPages = (int) Math.ceil((double) searchCount / searchItemsPerPage);
+                int searchStartIndex = (searchCurrentPage - 1) * searchItemsPerPage;
+                int searchEndIndex = Math.min(searchStartIndex + searchItemsPerPage, searchCount);
+            %>
+            <form action="searchApp" method="get" class="d-flex align-items-center mb-3">
+                <!-- Search Input with Icon -->
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-white border-right-0">
+                            <i class="bi bi-search"></i> 
+                        </span>
+                    </div>
+                    <input type="text" name="query" id="searchInput" class="form-control border-left-0" placeholder="Nyatakan nama, no. pelajar, atau tarikh mohon">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary ml-2">Search</button>
+            </form>
+            <br>
+            <table class="table table-hover align-middle" id="approvedTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Bil</th>
+                        <th>Nama</th>
+                        <th>No. Pelajar</th>
+                        <th>Tarikh Mohon</th>
+                        <th>Borang</th>
+                        <th>Status</th>
+                        <th>Disemak</th>
+                        <th>Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% 
+                    if (searchList != null && !searchList.isEmpty()) {
+                        for (int i = searchStartIndex; i < searchEndIndex; i++) {
+                            ApplicationDetails searchApp = searchList.get(i);
+                    %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td><%= searchApp.getStudName() %></td>
+                        <td><%= searchApp.getStudId() %></td>
+                        <td><%= searchApp.getApplyDate() %></td>
+                        <td>
+                            <a href="#" class="text-decoration-none">
+                                <%= searchApp.getStudId() %>_<%=searchApp.getApplySession()%>.pdf
+                                <i class="bi bi-download download-icon"></i>
+                            </a>
+                        </td>
+                        <form action="updateApplicationStatus" method="post" 
+                            <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> >
+                          <td>
+                        <input type="hidden" id="appID" name="appID" value="<%= searchApp.getApplyId() %>"/> 
+                        <div class="select-box">
+                        <select name="selectedAction" 
+                            <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> >
+                            <% 
+                            // Check if getHeaReview() is TRUE
+                            if (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) {
+                                // If TRUE, check getHeaStatus()
+                                if ("LULUS".equalsIgnoreCase(searchApp.getAppStatHEA())) {
+                            %>
+                                <option value="GAGAL">GAGAL</option>
+                                <option value="LULUS" selected>LULUS</option>
+                            <% 
+                                } else {
+                            %>
+                                <option value="GAGAL" selected>GAGAL</option>
+                                <option value="LULUS">LULUS</option>
+                            <% 
+                                }
+                            } else {
+                                // If getHeaReview() is null, use CGPA to determine selection
+                                if (searchApp.getApplyCgpa() <= 3.0) {
+                            %>
+                                <option value="GAGAL" selected>GAGAL</option>
+                                <option value="LULUS">LULUS</option>
+                            <% 
+                                } else {
+                            %>
+                                <option value="GAGAL">GAGAL</option>
+                                <option value="LULUS" selected>LULUS</option>
+                            <% 
+                                }
+                            }
+                            %>
+                        </select>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="disemak" value="TRUE" 
+                                <%= (searchApp != null && searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "checked" : "" %> 
+                                <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> >
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-danger btn-sm" 
+                                <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : "" %> >
+                                Serah
+                            </button>
+                        </td>
+                    </form>
+                        </td>
+                    </tr>
+                    <% 
+                        } // End of for loop
+                    } // End of if statement
+                    %>
+                </tbody>
+            </table>
+            <ul class="pagination justify-content-end">
+                <li class="page-item <%= (searchCurrentPage == 1) ? "disabled" : "" %>">
+                    <a class="page-link" href="?searchPage=<%= searchCurrentPage - 1 %>&tab=search" tabindex="-1">Kembali</a>
+                </li>
+                <% for (int i = 1; i <= searchTotalPages; i++) { %>
+                    <li class="page-item <%= (i == searchCurrentPage) ? "active" : "" %>">
+                        <a class="page-link" href="?searchPage=<%= i %>&tab=search"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= (searchCurrentPage == searchTotalPages) ? "disabled" : "" %>">
+                    <a class="page-link" href="?searchPage=<%= searchCurrentPage + 1 %>&tab=search">Seterusnya</a>
                     </li>
             </ul>
         </div>
