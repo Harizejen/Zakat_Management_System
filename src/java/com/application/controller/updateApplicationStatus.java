@@ -86,130 +86,100 @@ public class updateApplicationStatus extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-       @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+        @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    // Retrieve staff details from the session
-    staff st = (staff) request.getSession().getAttribute("staff_data");
-    Integer staffId = st != null ? st.getStaffid() : null;
-    String staffRole = st != null ? st.getStaffrole() : null;
+        // Retrieve staff details from the session
+        staff st = (staff) request.getSession().getAttribute("staff_data");
+        Integer staffId = st != null ? st.getStaffid() : null;
+        String staffRole = st != null ? st.getStaffrole() : null;
 
-    if (staffId == null) {
-        request.setAttribute("error", "Staff not logged in.");
-        request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
-        return;
-    }
-
-    // Retrieve form data
-    String appID = request.getParameter("appID");
-    String selectedAction = request.getParameter("selectedAction");
-    String disemak = request.getParameter("disemak") != null ? "TRUE" : "FALSE";
-
-    if (disemak.equals("unchecked")) {
-        request.getSession().setAttribute("error", "You must check the box to update the application status.");
-            request.getRequestDispatcher("/WEB-INF/view/UZSWlist.jsp").forward(request, response);
+        if (staffId == null) {
+            request.setAttribute("error", "Staff not logged in.");
+            request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
             return;
-    }
-
-    String approveStat = "DALAM PROSES";
-    if (selectedAction.equalsIgnoreCase("GAGAL")) {
-        approveStat = "GAGAL";
-    }
-    else if(selectedAction.equalsIgnoreCase("LULUS") && staffRole.equalsIgnoreCase("UZSW")){
-        approveStat = "LULUS";
-    }
-
-    String query = null;
-    boolean isUpdated = false;
-
-    try (Connection connection = dbconn.getConnection()) {
-        if ("HEA".equals(staffRole)) {
-            query = "INSERT INTO status_approval (hea_review, app_stat_hea, approve_status, staff_id, apply_id) VALUES (?, ?, ?, ?, ?)";
-        } else if ("HEP".equals(staffRole)) {
-            query = "UPDATE status_approval SET hep_review = ?, app_stat_hep = ?, approve_status = ? WHERE apply_id = ?";
-        } else if ("UZSW".equals(staffRole)) {
-            query = "UPDATE status_approval SET uzsw_review = ?, app_stat_uzsw = ?, approve_status = ? WHERE apply_id = ?";
         }
 
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        // Retrieve form data
+        String appID = request.getParameter("appID");
+        String selectedAction = request.getParameter("selectedAction");
+        String disemak = request.getParameter("disemak") != null ? "TRUE" : "FALSE";
+
+        if (disemak.equals("unchecked")) {
+            request.getSession().setAttribute("error", "You must check the box to update the application status.");
+            response.sendRedirect(request.getContextPath() + "/UZSWServlet?tab=pending&pages=1"); // Redirect to the appropriate servlet
+            return;
+        }
+
+        String approveStat = "DALAM PROSES";
+        if (selectedAction.equalsIgnoreCase("GAGAL")) {
+            approveStat = "GAGAL";
+        } else if (selectedAction.equalsIgnoreCase("LULUS") && staffRole.equalsIgnoreCase("UZSW")) {
+            approveStat = "LULUS";
+        }
+
+        String query = null;
+        boolean isUpdated = false;
+
+        try (Connection connection = dbconn.getConnection()) {
             if ("HEA".equals(staffRole)) {
-                statement.setString(1, disemak);
-                statement.setString(2, selectedAction);
-                statement.setString(3, approveStat);
-                statement.setInt(4, staffId);
-                statement.setInt(5, Integer.parseInt(appID));
-            } else {
-                statement.setString(1, disemak);
-                statement.setString(2, selectedAction);
-                statement.setString(3, approveStat);
-                statement.setInt(4, Integer.parseInt(appID));
+                query = "INSERT INTO status_approval (hea_review, app_stat_hea, approve_status, staff_id, apply_id) VALUES (?, ?, ?, ?, ?)";
+            } else if ("HEP".equals(staffRole)) {
+                query = "UPDATE status_approval SET hep_review = ?, app_stat_hep = ?, approve_status = ? WHERE apply_id = ?";
+            } else if ("UZSW".equals(staffRole)) {
+                query = "UPDATE status_approval SET uzsw_review = ?, app_stat_uzsw = ?, approve_status = ? WHERE apply_id = ?";
             }
 
-            int rowsUpdated = statement.executeUpdate();
-            if(rowsUpdated > 0){ 
-                isUpdated = true;
-                
-                // Re-fetch the updated application lists
-        HttpSession session = request.getSession();
-        List<ApplicationDetails> totalList = countAllApplicationsByRole(staffRole);
-        List<ApplicationDetails> pendingList = countPendingApplicationsByRole(staffRole);
-        List<ApplicationDetails> approvedList = countApprovedApplicationsByRole(staffRole);
-        List<ApplicationDetails> rejectedList = countRejectedApplicationsByRole(staffRole);
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                if ("HEA".equals(staffRole)) {
+                    statement.setString(1, disemak);
+                    statement.setString(2, selectedAction);
+                    statement.setString(3, approveStat);
+                    statement.setInt(4, staffId);
+                    statement.setInt(5, Integer.parseInt(appID));
+                } else {
+                    statement.setString(1, disemak);
+                    statement.setString(2, selectedAction);
+                    statement.setString(3, approveStat);
+                    statement.setInt(4, Integer.parseInt(appID));
+                }
 
-        // Update session attributes
-        session.setAttribute("totalList", totalList);
-        session.setAttribute("pendingList", pendingList);
-        session.setAttribute("approvedList", approvedList);
-        session.setAttribute("rejectedList", rejectedList);
+                int rowsUpdated = statement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    isUpdated = true;
 
-        request.getSession().setAttribute("success", "Application status updated successfully.");
-        
-        // Forward to the appropriate JSP with updated data
-        if ("HEA".equals(staffRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
-        } else if ("HEP".equals(staffRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
-        } else if ("UZSW".equals(staffRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
-        }
-        
-          }
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
+                    // Re-fetch the updated application lists
+                    HttpSession session = request.getSession();
+                    List<ApplicationDetails> totalList = countAllApplicationsByRole(staffRole);
+                    List<ApplicationDetails> pendingList = countPendingApplicationsByRole(staffRole);
+                    List<ApplicationDetails> approvedList = countApprovedApplicationsByRole(staffRole);
+                    List<ApplicationDetails> rejectedList = countRejectedApplicationsByRole(staffRole);
+
+                    // Update session attributes
+                    session.setAttribute("totalList", totalList);
+                    session.setAttribute("pendingList", pendingList);
+                    session.setAttribute("approvedList", approvedList);
+                    session.setAttribute("rejectedList", rejectedList);
+
+                    request.getSession().setAttribute("success", "Application status updated successfully.");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             request.getSession().setAttribute("error", "An error occurred while updating the application status.");
-            request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath () + "/UZSWServlet?tab=pending&pages=1"); // Redirect to the appropriate servlet
             return;
-    }
-
-    if (isUpdated) {
-        // Re-fetch the updated application lists
-        HttpSession session = request.getSession();
-        List<ApplicationDetails> totalList = countAllApplicationsByRole(staffRole);
-        List<ApplicationDetails> pendingList = countPendingApplicationsByRole(staffRole);
-        List<ApplicationDetails> approvedList = countApprovedApplicationsByRole(staffRole);
-        List<ApplicationDetails> rejectedList = countRejectedApplicationsByRole(staffRole);
-
-        // Update session attributes
-        session.setAttribute("totalList", totalList);
-        session.setAttribute("pendingList", pendingList);
-        session.setAttribute("approvedList", approvedList);
-        session.setAttribute("rejectedList", rejectedList);
-
-        // Forward to the appropriate JSP with updated data
-        if ("HEA".equals(staffRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
-        } else if ("HEP".equals(staffRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
-        } else if ("UZSW".equals(staffRole)) {
-            request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
         }
-    } else {
-        request.setAttribute("errorMessage", "Failed to update application status.");
-        request.getRequestDispatcher("error.jsp").forward(request, response);
+
+        if (isUpdated) {
+            // Redirect to UZSWServlet with the correct tab and page parameters
+            response.sendRedirect(request.getContextPath() + "/UZSWServlet?tab=pending&pages=1");
+        } else {
+            request.getSession().setAttribute("error", "Failed to update application status.");
+            response.sendRedirect(request.getContextPath() + "/UZSWServlet?tab=pending&pages=1"); // Redirect to the appropriate servlet
+        }
     }
-}
 
 private List<ApplicationDetails> countPendingApplicationsByRole(String staffRole) {
     List<ApplicationDetails> pendingApplications = new ArrayList<>();

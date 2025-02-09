@@ -182,9 +182,9 @@
         </main>
 
         <!-- Footer -->
-        <footer class="text-center py-3 mt-3" style="background-color: #013220">
-            <p class="text-white mb-0">&copy; Copyright <span id="year"></span></p>
-        </footer>
+        <footer class="text-center py-3 mt-3" style="background-color: #013220; position: fixed; bottom: 0; width: 100%;">
+    <p class="text-white mb-0">&copy; Copyright <span id="year"></span></p>
+</footer>
 
         <script>
             // Dynamically set the current year
