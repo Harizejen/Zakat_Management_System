@@ -172,12 +172,31 @@ public class updateApplicationStatus extends HttpServlet {
             return;
         }
 
-        if (isUpdated) {
-            // Redirect to UZSWServlet with the correct tab and page parameters
-            response.sendRedirect(request.getContextPath() + "/UZSWServlet?tab=pending&pages=1");
+         if (isUpdated) {
+            // Re-fetch the updated application lists
+            HttpSession session = request.getSession();
+            List<ApplicationDetails> totalList = countAllApplicationsByRole(staffRole);
+            List<ApplicationDetails> pendingList = countPendingApplicationsByRole(staffRole);
+            List<ApplicationDetails> approvedList = countApprovedApplicationsByRole(staffRole);
+            List<ApplicationDetails> rejectedList = countRejectedApplicationsByRole(staffRole);
+
+            // Update session attributes
+            session.setAttribute("totalList", totalList);
+            session.setAttribute("pendingList", pendingList);
+            session.setAttribute("approvedList", approvedList);
+            session.setAttribute("rejectedList", rejectedList);
+
+            // Forward to the appropriate JSP with updated data
+            if ("HEA".equals(staffRole)) {
+                request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEA.jsp").forward(request, response);
+            } else if ("HEP".equals(staffRole)) {
+                request.getRequestDispatcher("/WEB-INF/view/ApplicationListHEP.jsp").forward(request, response);
+            } else if ("UZSW".equals(staffRole)) {
+                request.getRequestDispatcher("/WEB-INF/view/USZWlist.jsp").forward(request, response);
+            }
         } else {
-            request.getSession().setAttribute("error", "Failed to update application status.");
-            response.sendRedirect(request.getContextPath() + "/UZSWServlet?tab=pending&pages=1"); // Redirect to the appropriate servlet
+            request.setAttribute("errorMessage", "Failed to update application status.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
