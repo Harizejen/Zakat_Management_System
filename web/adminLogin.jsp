@@ -51,6 +51,17 @@
         </div>
     </div>
 </div>
+    <%-- Check if an error attribute exists and display it as an alert --%>
+<%
+    String errorMessage = (String) request.getAttribute("error");
+    if (errorMessage != null) {
+%>
+    <script>
+        alert("<%= errorMessage %>");
+    </script>
+<%
+    }
+%>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

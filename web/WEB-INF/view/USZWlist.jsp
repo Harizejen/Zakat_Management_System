@@ -26,18 +26,24 @@
         <link rel="stylesheet" href="css/staffDashboard.css"> 
     </head>
 
-    <body>   
+    <body>
+        
         <!-- Navigation Bar -->
-        <nav class="navbar text-light mb-3" style="background-color: #112C55">
-            <div class="container-fluid d-flex align-items-center">
-                <a href="goUZSWdashboard" class="btn btn-outline-light me-3">
-                    <i class="bi bi-arrow-left"></i> 
-                </a>
-                <div class="d-flex align-items-center ms-auto">
-                    <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
-                </div>
+    <nav class="navbar text-light mb-3" style="background-color: #112C55">
+        <div class="container-fluid d-flex align-items-center">
+            <a href="goUZSWdashboard" class="btn btn-outline-light me-3">
+            <i class="bi bi-arrow-left"></i> 
+        </a>
+            <!-- Brand Name with Increased Left Margin -->
+            <span class="navbar-brand fw-bold ms-2" style="color: white; font-size: 1.5rem;">Zakat Pendidikan Management System</span>
+            
+            <!-- Right-aligned Section -->
+            <div class="d-flex align-items-center ms-auto">
+                <!-- Log Out -->
+                <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
             </div>
-        </nav>
+        </div>
+    </nav
 
         <!-- Main Container -->
         <div class="container">
@@ -60,7 +66,7 @@
                             id="total-tab" data-bs-toggle="tab" data-bs-target="#total" 
                             type="button" role="tab" aria-controls="total" 
                             aria-selected="<%= (tab.equals("total")) ? "true" : "false"%>">
-                        Jumlah
+                        Keseluruhan
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -68,7 +74,7 @@
                             id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" 
                             type="button" role="tab" aria-controls="approved" 
                             aria-selected="<%= (tab.equals("approved")) ? "true" : "false"%>">
-                        Disahkan
+                        Diluluskan
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -76,7 +82,7 @@
                             id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" 
                             type="button" role="tab" aria-controls="pending" 
                             aria-selected="<%= (tab.equals("pending")) ? "true" : "false"%>">
-                        Menunggu
+                        Dalam Proses
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -84,7 +90,7 @@
                             id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" 
                             type="button" role="tab" aria-controls="rejected" 
                             aria-selected="<%= (tab.equals("rejected")) ? "true" : "false"%>">
-                        Ditolak
+                        Digagalkan
                     </button>
                 </li>
             </ul>
@@ -115,7 +121,7 @@
                         int endIndex = Math.min(startIndex + itemsPerPage, totalCount);
                     %>
                     <div class="jumlah-section mb-4">
-                        <span>Jumlah Permohonan: <span class="jumlah-count"><%= totalCount%></span></span>
+                        <span>Jumlah  Keseluruhan Permohonan Yang Diterima: <span class="jumlah-count"><%= totalCount%></span></span>
                     </div>
                     <div class="form-group">
                         <input type="text" id="searchTotal" class="form-control" placeholder="Search application..." onkeyup="searchTotal()">
@@ -147,8 +153,8 @@
                                 <td><%= totalApp.getStudId()%></td>
                                 <td><%= totalApp.getApplyDate()%></td>
                                 <td>
-                                    <a href="#" class="text-decoration-none">
-                                        <%= totalApp.getStudId()%>_<%=totalApp.getApplySession()%>.pdf
+                                    <a href="<%= request.getContextPath()%>/cetakBorangServlet?stud_id=<%= totalApp.getStudId()%>" class="text-decoration-none">
+                                        <%=totalApp.getStudId()%>_<%=totalApp.getApplySession()%>.pdf
                                         <i class="bi bi-download download-icon"></i>
                                     </a>
                                 </td>
@@ -214,7 +220,7 @@
 
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (currentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage - 1%>&tab=total" tabindex="-1">Previous</a>
+                            <a class="page-link" href="?totalPage=<%= currentPage - 1%>&tab=total" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= totalPages; i++) {%>
                         <li class="page-item <%= (i == currentPage) ? "active" : ""%>">
@@ -222,7 +228,7 @@
                         </li>
                         <% }%>
                         <li class="page-item <%= (currentPage == totalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage + 1%>&tab=total">Next</a>
+                            <a class="page-link" href="?totalPage=<%= currentPage + 1%>&tab=total">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -248,7 +254,7 @@
                         int pendingEndIndex = Math.min(pendingStartIndex + pendingItemsPerPage, pendingCount);
                     %>
                     <div class="jumlah-section mb-4">
-                        <span>Jumlah Permohonan: <span class="jumlah-count"><%= pendingCount%></span></span>
+                        <span>Jumlah Permohonan Yang Masih Dalam Proses Pengesahan: <span class="jumlah-count"><%= pendingCount%></span></span>
                     </div>
                     <div class="form-group">
                         <input type="text" id="searchPending" class="form-control" placeholder="Search application..." onkeyup="searchPending()">
@@ -347,7 +353,7 @@
 
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (pendingCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1%>&tab=pending" tabindex="-1">Previous</a>
+                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1%>&tab=pending" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= pendingTotalPages; i++) {%>
                         <li class="page-item <%= (i == pendingCurrentPage) ? "active" : ""%>">
@@ -355,7 +361,7 @@
                         </li>
                         <% }%>
                         <li class="page-item <%= (pendingCurrentPage == pendingTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1%>&tab=pending">Next</a>
+                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1%>&tab=pending">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -381,7 +387,7 @@
                         int rejectedEndIndex = Math.min(rejectedStartIndex + rejectedItemsPerPage, rejectedCount);
                     %>
                     <div class="jumlah-section mb-4">
-                        <span>Jumlah Permohonan: <span class="jumlah-count"><%= rejectedCount%></span></span>
+                        <span>Jumlah Permohonan Yang Telah Digagalkan: <span class="jumlah-count"><%= rejectedCount%></span></span>
                     </div>
                     <div class="form-group">
                         <input type="text" id="searchRejected" class="form-control" placeholder="Search application..." onkeyup="searchRejected()">
@@ -480,7 +486,7 @@
 
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (rejectedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1%>&tab=rejected" tabindex="-1">Previous</a>
+                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1%>&tab=rejected" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= rejectedTotalPages; i++) {%>
                         <li class="page-item <%= (i == rejectedCurrentPage) ? "active" : ""%>">
@@ -488,7 +494,7 @@
                         </li>
                         <% }%>
                         <li class="page-item <%= (rejectedCurrentPage == rejectedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1%>&tab=rejected">Next</a>
+                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1%>&tab=rejected">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -514,7 +520,7 @@
                         int approvedEndIndex = Math.min(approvedStartIndex + approvedItemsPerPage, approvedCount);
                     %>
                     <div class="jumlah-section mb-4">
-                        <span>Jumlah Permohonan: <span class="jumlah-count"><%= approvedCount%></span></span>
+                        <span>Jumlah Permohonan Yang Telah Diluluskan: <span class="jumlah-count"><%= approvedCount%></span></span>
                     </div>
                     <div class="form-group">
                         <input type="text" id="searchApproved" class="form-control" placeholder="Search application..." onkeyup="searchApproved()">
@@ -613,7 +619,7 @@
 
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (approvedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1%>&tab=approved" tabindex="-1">Previous</a>
+                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1%>&tab=approved" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= approvedTotalPages; i++) {%>
                         <li class="page-item <%= (i == approvedCurrentPage) ? "active" : ""%>">
@@ -621,7 +627,7 @@
                         </li>
                         <% }%>
                         <li class="page-item <%= (approvedCurrentPage == approvedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1%>&tab=approved">Next</a>
+                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1%>&tab=approved">Seterusnya</a>
                         </li>
                     </ul>
                 </div>

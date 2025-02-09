@@ -165,7 +165,7 @@
                                             }
                                         } else {
                                             // If getHepReview() is null, use total salary to determine selection
-                                            if (totalApp.getGuardIncome() + totalApp.getMotherIncome() + totalApp.getFatherIncome() <= 5000) {
+                                            if (totalApp.getGuardIncome() + totalApp.getMotherIncome() + totalApp.getFatherIncome() >= 5000) {
                                         %>
                                         <option value="GAGAL" selected>GAGAL</option>
                                         <option value="LULUS">LULUS</option>
@@ -203,7 +203,7 @@
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (currentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage - 1%>&tab=total" tabindex="-1">Previous</a>
+                            <a class="page-link" href="?totalPage=<%= currentPage - 1%>&tab=total" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= totalPages; i++) {%>
                         <li class="page-item <%= (i == currentPage) ? "active" : ""%>">
@@ -211,7 +211,7 @@
                         </li>
                         <% }%>
                         <li class="page-item <%= (currentPage == totalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage + 1%>&tab=total">Next</a>
+                            <a class="page-link" href="?totalPage=<%= currentPage + 1%>&tab=total">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -267,21 +267,21 @@
                                 <td><%= pendingApp.getStudName()%></td>
                                 <td><%= pendingApp.getStudId()%></td>
                                 <td><%= pendingApp.getApplyDate()%></td>
-                                <td>
+                                
                                 <td>
                                     <a href="<%= request.getContextPath()%>/cetakBorangServlet?stud_id=<%= pendingApp.getStudId()%>" class="text-decoration-none">
                                         <%=pendingApp.getStudId()%>_<%=pendingApp.getApplySession()%>.pdf
                                         <i class="bi bi-download download-icon"></i>
                                     </a>
                                 </td>
-                                </td>
-                        <form action="updateApplicationStatus" method="post" 
-                              <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
-                            <td>
+                                <td>
+                        <form action="updateApplicationStatus" method="post" class="d-flex align-items-center"> 
+                              <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%>
+                           
                                 <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/> 
                                 <div class="select-box">
                                     <select name="selectedAction" 
-                                            <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                                            <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> 
                                         <%
                                             // Check if getHepReview() is TRUE
                                             if (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) {
@@ -299,7 +299,7 @@
                                             }
                                         } else {
                                             // If getHepReview() is null, use salary to determine selection
-                                            if (pendingApp.getGuardIncome() + pendingApp.getMotherIncome() + pendingApp.getFatherIncome() <= 5000) {
+                                            if (pendingApp.getGuardIncome() + pendingApp.getMotherIncome() + pendingApp.getFatherIncome() >= 5000) {
                                         %>
                                         <option value="GAGAL" selected>GAGAL</option>
                                         <option value="LULUS">LULUS</option>
@@ -332,12 +332,12 @@
                         <%
                                 } // End of for loop
                             } // End of if statement
-%>
+                        %>
                         </tbody>
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (pendingCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1%>&tab=pending" tabindex="-1">Previous</a>
+                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1%>&tab=pending" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= pendingTotalPages; i++) {%>
                         <li class="page-item <%= (i == pendingCurrentPage) ? "active" : ""%>">
@@ -345,7 +345,7 @@
                         </li>
                         <% }%>
                         <li class="page-item <%= (pendingCurrentPage == pendingTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1%>&tab=pending">Next</a>
+                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1%>&tab=pending">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -431,7 +431,7 @@
                                             }
                                         } else {
                                             // If getHepReview() is null, use CGPA to determine selection
-                                            if (rejectedApp.getApplyCgpa() <= 3.0) {
+                                            if (rejectedApp.getGuardIncome() + rejectedApp.getMotherIncome() + rejectedApp.getFatherIncome() >= 5000) {
                                         %>
                                         <option value="GAGAL" selected>GAGAL</option>
                                         <option value="LULUS">LULUS</option>
@@ -469,7 +469,7 @@
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (rejectedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1%>&tab=rejected" tabindex="-1">Previous</a>
+                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1%>&tab=rejected" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= rejectedTotalPages; i++) {%>
                         <li class="page-item <%= (i == rejectedCurrentPage) ? "active" : ""%>">
@@ -477,7 +477,7 @@
                         </li>
                         <% }%>
                         <li class="page-item <%= (rejectedCurrentPage == rejectedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1%>&tab=rejected">Next</a>
+                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1%>&tab=rejected">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -563,7 +563,7 @@
                                             }
                                         } else {
                                             // If getHePReview() is null, use CGPA to determine selection
-                                            if (approvedApp.getApplyCgpa() <= 3.0) {
+                                            if (approvedApp.getGuardIncome() + approvedApp.getMotherIncome() + approvedApp.getFatherIncome() >= 5000) {
                                         %>
                                         <option value="GAGAL" selected>GAGAL</option>
                                         <option value="LULUS">LULUS</option>
@@ -601,7 +601,7 @@
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (approvedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1%>&tab=approved" tabindex="-1">Previous</a>
+                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1%>&tab=approved" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= approvedTotalPages; i++) {%>
                         <li class="page-item <%= (i == approvedCurrentPage) ? "active" : ""%>">
@@ -609,7 +609,7 @@
                         </li>
                         <% }%>
                         <li class="page-item <%= (approvedCurrentPage == approvedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1%>&tab=approved">Next</a>
+                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1%>&tab=approved">Seterusnya</a>
                         </li>
                     </ul>
                 </div>

@@ -57,7 +57,7 @@
         <div class="container">
             <h2 class="text-center mb-4 fw-bold">BORANG PERMOHONAN AGIHAN ZAKAT PENDIDIKAN PELAJAR</h2>
 
-            <h3 class="text-center text-danger"><%= error != null ? error : " " %></h3>
+            <h3 class="text-center text-danger"><%= error != null ? error : " "%></h3>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="step1-tab" data-bs-toggle="tab" href="#step1" role="tab" aria-controls="step1" aria-selected="true">LANGKAH 1</a>
@@ -91,24 +91,24 @@
                                     <h5 class="mb-3">A. MAKLUMAT PENGENALAN PEMOHON</h5>
                                     <div class="mb-3">
                                         <label for="stud_ic" class="form-label">No. Kad Pengenalan (Baru)</label>
-                                        <input type="text" class="form-control" id="stud_ic" name="stud_ic" placeholder="Tanpa '-'" value="<%= st != null ? st.getStudIC() : ""%>">
+                                        <input type="text" class="form-control" id="stud_ic" name="stud_ic" placeholder="Tanpa '-'" value="<%= st != null ? st.getStudIC() : ""%>" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="stud_name" class="form-label">Nama Penuh (Seperti Dalam K/P)</label>
-                                        <input type="text" class="form-control" id="stud_name" name="stud_name" value="<%= st != null ? st.getStudName() : ""%>">
+                                        <input type="text" class="form-control" id="stud_name" name="stud_name" value="<%= st != null ? st.getStudName() : ""%>" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="stud_address" class="form-label">Alamat</label>
-                                        <textarea class="form-control" id="stud_address" name="stud_address" rows="2"><%= st != null ? st.getStudAddress() : ""%></textarea>
+                                        <textarea class="form-control" id="stud_address" name="stud_address" rows="2" required><%= st != null ? st.getStudAddress() : ""%></textarea>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="stud_zipcode" class="form-label">Poskod</label>
-                                            <input type="text" class="form-control" id="stud_zipcode" name="stud_zipcode" value="<%= st != null ? st.getStudZipCode() : ""%>">
+                                            <input type="text" class="form-control" id="stud_zipcode" name="stud_zipcode" value="<%= st != null ? st.getStudZipCode() : ""%>" required>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="stud_state" class="form-label">Negeri</label>
-                                            <select class="form-select" id="stud_state" name="stud_state">
+                                            <select class="form-select" id="stud_state" name="stud_state" required>
                                                 <option value="" disabled <%= st == null ? "selected" : ""%>>Pilih Negeri</option>
                                                 <option value="Johor" <%= st != null && "Johor".equals(st.getStudState()) ? "selected" : ""%>>Johor</option>
                                                 <option value="Kedah" <%= st != null && "Kedah".equals(st.getStudState()) ? "selected" : ""%>>Kedah</option>
@@ -131,13 +131,13 @@
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="stud_phoneNum" class="form-label">No. Telefon</label>
-                                            <input type="text" class="form-control" id="stud_phoneNum" name="stud_phoneNum" value="<%= st != null ? st.getStudPhoneNum() : ""%>">
+                                            <input type="text" class="form-control" id="stud_phoneNum" name="stud_phoneNum" value="<%= st != null ? st.getStudPhoneNum() : ""%>" required>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Jantina</label>
-                                            <div>
+                                            <div required>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="stud_gender" id="lelaki" value="L" <%= st != null && st.getStudGender() == 'L' ? "checked" : ""%>>
                                                     <label class="form-check-label" for="lelaki">Lelaki</label>
@@ -182,7 +182,7 @@
                                             <input type="text" class="form-control" id="stud_id" name="stud_id" value="<%= st != null ? st.getStudID() : ""%>">
                                         </div>
                                         <div class="col-md-3 mb-3">
-                                            <label for="stud_course" class="form-label">Kod Program</label>
+                                            <label for="stud_course" class="form-label">Program</label>
                                             <input type="text" class="form-control" id="stud_course" name="stud_course" value="<%= st != null ? st.getStudCourse() : ""%>">
                                         </div>
                                         <div class="col-md-3 mb-3">
@@ -343,43 +343,62 @@
                                 </div>
                             </div>    
                         </div>
-                        <!-- Navigation Buttons -->
-                        <div class="d-flex justify-content-between mt-4">
-                            <button type="button" class="btn btn-secondary" id="prevBtn" disabled>SEBELUM</button>
-                            <button type="submit" class="btn btn-success" id="submitBtn">HANTAR</button>
-                        </div>
                     </div>
-                </div>                    
+                    <div class="d-flex justify-content-between mt-4" style="left: 50px">
+                        <button type="button" class="btn btn-secondary" id="prevBtn">SEBELUM</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn">SETERUSNYA</button>
+                        <button type="submit" class="btn btn-success d-none" id="submitBtn">HANTAR</button>
+                    </div>
+                </div>
+                <!-- Navigation Buttons -->
+
             </form>
             <script>
-                // Set current year dynamically
-                document.getElementById("year").textContent = new Date().getFullYear();
 
-                document.addEventListener('DOMContentLoaded', function () {
+                 document.addEventListener('DOMContentLoaded', function () {
                     const prevBtn = document.getElementById('prevBtn');
                     const nextBtn = document.getElementById('nextBtn');
                     const submitBtn = document.getElementById('submitBtn');
-                    const tabs = document.querySelectorAll('.nav-link');
+                    const tabs = Array.from(document.querySelectorAll('.nav-link'));
+                    const tabContents = Array.from(document.querySelectorAll('.tab-pane'));
 
-                    // Update button visibility based on the active tab
-                    function updateButtonVisibility() {
-                        const activeTab = document.querySelector('.nav-link.active');
-                        const activeIndex = Array.from(tabs).indexOf(activeTab);
+                    // Initialize Bootstrap Tab component
+                    const tabInstances = tabs.map(tab => new bootstrap.Tab(tab));
 
-                        prevBtn.disabled = activeIndex === 0;
-                        nextBtn.classList.toggle('d-none', activeIndex === tabs.length - 1);
-                        submitBtn.classList.toggle('d-none', activeIndex !== tabs.length - 1);
+                    function updateButtons() {
+                        const activeTabIndex = tabs.findIndex(tab => tab.classList.contains('active'));
+
+                        // Update Previous button
+                        prevBtn.disabled = activeTabIndex === 0;
+
+                        // Update Next/Submit buttons
+                        const isLastTab = activeTabIndex === tabs.length - 1;
+                        nextBtn.classList.toggle('d-none', isLastTab);
+                        submitBtn.classList.toggle('d-none', !isLastTab);
                     }
 
-                    // Add event listeners to tabs
-                    tabs.forEach((tab, index) => {
-                        tab.addEventListener('click', () => {
-                            updateButtonVisibility();
-                        });
+                    // Tab navigation handlers
+                    nextBtn.addEventListener('click', () => {
+                        const activeTab = document.querySelector('.nav-link.active');
+                                const nextTab = activeTab.closest('.nav-item').nextElementSibling?.querySelector('.nav-link');
+                        if (nextTab)
+                            nextTab.click();
                     });
 
-                    // Initialize button visibility
-                    updateButtonVisibility();
+                    prevBtn.addEventListener('click', () => {
+                        const activeTab = document.querySelector('.nav-link.active');
+                                const prevTab = activeTab.closest('.nav-item').previousElementSibling?.querySelector('.nav-link');
+                        if (prevTab)
+                            prevTab.click();
+                    });
+
+                    // Update buttons when any tab changes
+                    tabs.forEach(tab => {
+                        tab.addEventListener('shown.bs.tab', updateButtons);
+                    });
+
+                    // Initial setup
+                    updateButtons();
                 });
             </script>
 

@@ -4,6 +4,7 @@
     Author     : Hariz
 --%>
 
+<%@page import="com.guard.model.guardian"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.deadline.model.deadline"%>
@@ -13,6 +14,7 @@
 <%
     // Retrieve the student data from the session
     Student st = (Student) request.getSession().getAttribute("student_data");
+    guardian gd = (guardian) request.getSession().getAttribute("guard_info");
     Application ap = new Application();
     ap = ap.getApplication(st.getStudID());
     deadline d = new deadline();
@@ -94,14 +96,14 @@
                     <!-- Status Permohonan Zakat -->
                     <div class="card">
                         <h2>Status Permohonan Zakat:</h2>
-                        <% if (ap != null) {%>
+                        <% if (gd != null) {%>
                         <div class="info-row">
                             <span class="label">TARIKH MOHON</span> 
                             <span class="value">: <%= ap.getApplyDate() != null ? ap.getApplyDate() : "BELUM MEMOHON"%></span>
                         </div>
                         <div class="info-row">
                             <span class="label">STATUS</span> 
-                            <span class="value">: <%= ap.getApplyStatus() != null ? ap.getApplyStatus() : "BELUM MEMOHON"%></span>
+                            <span class="value">: <%= gd.getGuard_income() != 0.0 ? "TELAH MEMOHON" : "BELUM MEMOHON"%></span>
                         </div>
                         <% } else { %>
                         <div class="info-row">
