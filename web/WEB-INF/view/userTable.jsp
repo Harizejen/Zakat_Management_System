@@ -1,4 +1,4 @@
-<%@page import="com.ApplicationDetails.model.ApplicationDetails"%>
+<%@page import="com.user.model.Student"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -6,9 +6,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Application Management</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <title>Student Management</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/adminTable.css">
     </head>
     <body>
@@ -26,7 +25,6 @@
                 </div>
             </div>
         </nav>
-
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href="adminServlet?action=home" class="btn btn-link">
@@ -35,87 +33,74 @@
             </div>
 
             <%
-                List<ApplicationDetails> applicationList = (List<ApplicationDetails>) request.getAttribute("ApplicationList");
+                List<Student> studentList = (List<Student>) request.getAttribute("userList");
                 int count = (Integer) request.getAttribute("count");
                 int currentPage = (Integer) request.getAttribute("currentPage");
                 int totalPages = (Integer) request.getAttribute("totalPages");
                 int itemsPerPage = (Integer) request.getAttribute("itemsPerPage");
             %>
 
-            <h5>Pemohonan: <span class="text-primary"><%= count%> Pemohonan</span></h5>
+            <h5>Jumlah Pengguna: <span class="text-primary"><%= count%></span></h5>
             <table class="table">
                 <thead>
                     <tr>
                         <th>Bil.</th>
                         <th>Nama Pelajar</th>
-                        <th>ID Pemohonan</th>
-                        <th>Tarikh Mohon</th>
-                        <th>Status</th>
-                        <th>Tarikh Temuduga</th>
+                        <th>ID Pelajar</th>
+                        <th>Emel</th>
+                        <th>Kursus</th>
+                        <th>Fakulti</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <%
-                        if (applicationList != null && !applicationList.isEmpty()) {
-                            for (int i = 0; i < applicationList.size(); i++) {
-                                ApplicationDetails applications = applicationList.get(i);
+                    <% if (studentList != null && !studentList.isEmpty()) {
+                            for (int i = 0; i < studentList.size(); i++) {
+                                Student student = studentList.get(i);
                                 int rowNumber = (currentPage - 1) * itemsPerPage + i + 1;
                     %>
                     <tr>
                         <td class="text-center"><%= rowNumber%></td>
-                        <td><%= applications.getStudName()%></td>
-                        <td><%= applications.getApplyId()%></td>
-                        <td><%= applications.getApplyDate()%></td>
-                        <td class="status-<%= applications.getApproveStatus().toLowerCase()%>">
-                            <%= applications.getApproveStatus()%>
-                        </td>
-                        <td><%= (applications.getInterviewDate() != null) ? applications.getInterviewDate() : "TIADA"%></td>
+                        <td><%= student.getStudName()%></td>
+                        <td><%= student.getStudID()%></td>
+                        <td><%= student.getStudEmail()%></td>
+                        <td><%= student.getStudCourse()%></td>
+                        <td><%= student.getStudFaculty()%></td>
                     </tr>
-                    <%
-                        }
-                    } else {
-                    %>
+                    <% }
+                } else { %>
                     <tr>
-                        <td colspan="6" class="text-center">No data available.</td>
+                        <td colspan="6" class="text-center">Tiada Maklumat.</td>
                     </tr>
-                    <%
-                        }
-                    %>
+                    <% }%>
                 </tbody>
             </table>
 
             <!-- Pagination -->
             <nav>
                 <ul class="pagination justify-content-center">
-                    <!-- Previous Button -->
                     <li class="page-item <%= (currentPage <= 1) ? "disabled" : ""%>">
-                        <a class="page-link" href="?action=viewApplication&page=<%= currentPage - 1%>">Sebelum</a>
+                        <a class="page-link" href="?action=viewUsers&page=<%= currentPage - 1%>">Sebelum</a>
                     </li>
-
-                    <!-- Page Numbers -->
                     <% for (int i = 1; i <= totalPages; i++) {%>
                     <li class="page-item <%= (currentPage == i) ? "active" : ""%>">
-                        <a class="page-link" href="?action=viewApplication&page=<%= i%>"><%= i%></a>
+                        <a class="page-link" href="?action=viewUsers&page=<%= i%>"><%= i%></a>
                     </li>
                     <% }%>
-
-                    <!-- Next Button -->
                     <li class="page-item <%= (currentPage >= totalPages) ? "disabled" : ""%>">
-                        <a class="page-link" href="?action=viewApplication&page=<%= currentPage + 1%>">Seterusnya</a>
+                        <a class="page-link" href="?action=viewUsers&page=<%= currentPage + 1%>">Seterusnya</a>
                     </li>
                 </ul>
             </nav>
-        </div>
-
-        <!-- Logout Confirmation Modal -->
-        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content text-center" style="background-color: #522E5C; color: white;">
-                    <div class="modal-body py-4">
-                        <h5 id="logoutModalLabel" class="mb-4">Adakah anda ingin keluar?</h5>
-                        <div class="d-flex justify-content-center gap-3">
-                            <a href="${pageContext.request.contextPath}/adminLogOutServlet" class="btn btn-outline-light px-4">KELUAR</a>
-                            <button type="button" class="btn btn-danger px-4"  data-bs-dismiss="modal">BATAL</button>
+            <!-- Logout Confirmation Modal -->
+            <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-center" style="background-color: #522E5C; color: white;">
+                        <div class="modal-body py-4">
+                            <h5 id="logoutModalLabel" class="mb-4">Adakah anda ingin keluar?</h5>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="${pageContext.request.contextPath}/adminLogOutServlet" class="btn btn-outline-light px-4">KELUAR</a>
+                                <button type="button" class="btn btn-danger px-4"  data-bs-dismiss="modal">BATAL</button>
+                            </div>
                         </div>
                     </div>
                 </div>

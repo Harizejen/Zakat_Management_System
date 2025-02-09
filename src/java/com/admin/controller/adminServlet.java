@@ -9,6 +9,7 @@ import com.ApplicationDetails.model.ApplicationDetails;
 import com.database.dbconn;
 import com.staff.controller.StaffLoginServlet;
 import com.staff.model.staff;
+import com.user.model.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -77,7 +78,9 @@ public class adminServlet extends HttpServlet {
             List<staff> HEPstaffList = retrieveStaffData("HEP");
             List<staff> UZSWstaffList = retrieveStaffData("UZSW");
             int totalApplications = countApplications(); // Retrieve total applications
+            int totalUsers = countUsers();
 
+            request.setAttribute("totalUsers", totalUsers);
             request.setAttribute("HEAstaffList", HEAstaffList);
             request.setAttribute("HEPstaffList", HEPstaffList);
             request.setAttribute("UZSWstaffList", UZSWstaffList);
@@ -163,7 +166,9 @@ public class adminServlet extends HttpServlet {
             List<staff> HEPstaffList = retrieveStaffData("HEP");
             List<staff> UZSWstaffList = retrieveStaffData("UZSW");
             int totalApplications = countApplications(); // Retrieve total applications
+            int totalUsers = countUsers();
 
+            request.setAttribute("totalUsers", totalUsers);
             request.setAttribute("HEAstaffList", HEAstaffList);
             request.setAttribute("HEPstaffList", HEPstaffList);
             request.setAttribute("UZSWstaffList", UZSWstaffList);
@@ -193,6 +198,27 @@ public class adminServlet extends HttpServlet {
 
             // Forward to the JSP page
             request.getRequestDispatcher("/WEB-INF/view/applicationTable.jsp").forward(request, response);
+        } else if ("viewUsers".equals(action)) {
+            // Parse pagination parameters
+            String pageParam = request.getParameter("page");
+            int currentPage = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
+            int itemsPerPage = 5; // Number of users per page
+            int offset = (currentPage - 1) * itemsPerPage;
+
+            // Retrieve paginated user data
+            List<Student> userList = retrieveUsers(offset, itemsPerPage);
+            int totalUsers = countUsers(); // Retrieve total number of users
+            int totalPages = (int) Math.ceil((double) totalUsers / itemsPerPage);
+
+            // Set attributes for the JSP
+            request.setAttribute("userList", userList);
+            request.setAttribute("count", totalUsers);
+            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("itemsPerPage", itemsPerPage);
+
+            // Forward to the user table JSP
+            request.getRequestDispatcher("/WEB-INF/view/userTable.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
         }
@@ -259,7 +285,9 @@ public class adminServlet extends HttpServlet {
             request.setAttribute("HEPstaffList", HEPstaffList);
             request.setAttribute("UZSWstaffList", UZSWstaffList);
             int totalApplications = countApplications(); // Retrieve total applications
-            request.setAttribute("totalApplications", totalApplications); // Pass to JSP
+            request.setAttribute("totalApplications", totalApplications); // Pass to 
+            int totalUsers = countUsers(); // Retrieve total number of users
+            request.setAttribute("totalUsers", totalUsers);
 
             // Forward to the dashboard
             request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
@@ -450,6 +478,79 @@ public class adminServlet extends HttpServlet {
         }
 
         return applicationList;
+    }
+
+    private List<Student> retrieveUsers(int offset, int limit) {
+        List<Student> users = new ArrayList<>();
+        String sql = "SELECT * FROM student LIMIT ? OFFSET ?";
+
+        try (Connection connection = dbconn.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, limit);
+            stmt.setInt(2, offset);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    
+                    int s_id = rs.getInt("stud_id");
+                    String s_name = rs.getString("stud_name");
+                    String s_ic = rs.getString("stud_ic") != null ? rs.getString("stud_ic") : ""; // Default to empty string if null
+                    String s_email = rs.getString("stud_email") != null ? rs.getString("stud_email") : "TIADA";
+                    String s_password = rs.getString("stud_password");
+                    String s_state = rs.getString("stud_state") != null ? rs.getString("stud_state") : "";
+                    String s_zipcode = rs.getString("stud_zipcode") != null ? rs.getString("stud_zipcode") : "";
+                    String s_course = rs.getString("stud_course") != null ? rs.getString("stud_course") : "TIADA";
+                    String s_faculty = rs.getString("stud_faculty") != null ? rs.getString("stud_faculty") : "TIADA";
+                    String s_campus = rs.getString("stud_campus") != null ? rs.getString("stud_campus") : "";
+                    char s_marriage = rs.getString("stud_marriage") != null ? rs.getString("stud_marriage").charAt(0) : 'U'; // Default to 'U' (Unknown) if null
+                    char s_gender = rs.getString("stud_gender") != null ? rs.getString("stud_gender").charAt(0) : 'U'; // Default to 'U' (Unknown) if null
+                    String s_phoneNum = rs.getString("stud_phoneNum") != null ? rs.getString("stud_phoneNum") : "";
+                    String s_bankNum = rs.getString("stud_bankNum") != null ? rs.getString("stud_bankNum") : "";
+                    String s_bankName = rs.getString("stud_bankName") != null ? rs.getString("stud_bankName") : "";
+                    String s_address = rs.getString("stud_address") != null ? rs.getString("stud_address") : "";
+
+                    // Create a new Student object
+                    Student st = new Student();
+                    
+                    st.setStudID(s_id);
+                    st.setStudName(s_name != null ? s_name : ""); // Default to empty string
+                    st.setStudIC(s_ic);
+                    st.setStudEmail(s_email);
+                    st.setStudPass(s_password);
+                    st.setStudState(s_state);
+                    st.setStudZipCode(s_zipcode);
+                    st.setStudCourse(s_course);
+                    st.setStudFaculty(s_faculty);
+                    st.setStudCampus(s_campus);
+                    st.setStudMarriage(s_marriage);
+                    st.setStudGender(s_gender);
+                    st.setStudPhoneNum(s_phoneNum);
+                    st.setStudBankNum(s_bankNum);
+                    st.setStudBankName(s_bankName);
+                    st.setStudAddress(s_address);
+                    users.add(st);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    private int countUsers() {
+        String query = "SELECT COUNT(*) AS total FROM student";
+        try (Connection connection = dbconn.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
     }
 
     /**
