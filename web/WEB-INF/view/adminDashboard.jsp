@@ -11,7 +11,6 @@
         <title>Admin Dashboard</title>
         <style>
             body {
-                margin-left: 250px; /* Adjust for sidebar width */
                 background-color: #F2EBDD; /* Light beige background */
                 font-family: 'Arial', sans-serif;
                 font-weight: bold;
@@ -77,68 +76,17 @@
                 color: #F2EBDD; /* Light beige text */
                 padding: 1rem 0;
                 position: fixed;
-                left: 250px; /* Align with sidebar */
+                left: 0;
                 bottom: 0;
-                width: calc(100% - 250px); /* Adjust width based on sidebar */
+                width: 100%;
                 text-align: center;
             }
             footer p {
                 margin: 0; /* Remove default margin */
             }
-            @media (max-width: 768px) {
-                body {
-                    margin-left: 0; /* Remove sidebar margin on smaller screens */
-                }
-                .sidebar {
-                    width: 100%; /* Full width sidebar on mobile */
-                    height: auto;
-                    position: relative;
-                }
-                .content {
-                    padding: 10px;
-                }
-                footer {
-                    width: 100%; /* Full width footer on mobile */
-                    position: relative; /* Static footer on mobile */
-                    left: 0; /* Reset left position */
-                }
-            }
         </style>
     </head>
     <body>
-
-        <!-- Sidebar -->
-        <div class="sidebar" style="height: 100vh; position: fixed; width: 250px; padding-top: 20px; background-color: #522E5C;">
-            <h4 class="text-center" style="color: #F2EBDD; margin-bottom: 20px;">Navigation</h4>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="adminServlet?action=dashboard" style="color: #F2EBDD; padding: 10px 20px; transition: background-color 0.3s ease;">
-                        Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="adminServlet?action=viewHEAStaff" style="color: #F2EBDD; padding: 10px 20px; transition: background-color 0.3s ease;">
-                        HEA Staff
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="adminServlet?action=viewHEPStaff" style="color: #F2EBDD; padding: 10px 20px; transition: background-color 0.3s ease;">
-                        HEP Staff
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="adminServlet?action=viewUZSWStaff" style="color: #F2EBDD; padding: 10px 20px; transition: background-color 0.3s ease;">
-                        UZSW Staff
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/adminLogOutServlet" style="color: #F2EBDD; padding: 10px 20px; transition: background-color 0.3s ease;">
-                        Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
-
         <!-- Main Content -->
         <div class="content">
             <!-- Top Navigation Bar -->
@@ -156,6 +104,19 @@
             <!-- Dashboard Cards -->
             <div class="container-fluid mt-3">
                 <div class="row mt-3 justify-content-center">
+                    <!-- Total Applications -->
+                    <div class="col-md-3">
+                        <%
+                            int totalApplications = (Integer) request.getAttribute("totalApplications");
+                        %>
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Jumlah Permohonan</h5>
+                                <p class="card-text display-4" id="totalApplications"><%= totalApplications %></p>
+                                <a href="adminServlet?action=viewApplication" class="btn btn-primary">Lihat Permohonan</a>
+                            </div>
+                        </div>
+                    </div>
                     <!-- HEA Staff -->
                     <div class="col-md-3">
                         <%
@@ -165,7 +126,7 @@
                         <div class="card text-center shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">Jumlah Staf HEA</h5>
-                                <p class="card-text display-4" id="HEACount"><%= HEAstaffCount%></p>
+                                <p class="card-text display-4" id="HEACount"><%= HEAstaffCount %></p>
                                 <a href="adminServlet?action=viewHEAStaff&page=1" class="btn btn-primary">Lihat Staf</a>
                             </div>
                         </div>
@@ -179,7 +140,7 @@
                         <div class="card text-center shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">Jumlah Staf HEP</h5>
-                                <p class="card-text display-4" id="HEPCount"><%= HEPstaffCount%></p>
+                                <p class="card-text display-4" id="HEPCount"><%= HEPstaffCount %></p>
                                 <a href="adminServlet?action=viewHEPStaff" class="btn btn-primary">Lihat Staf</a>
                             </div>
                         </div>
@@ -193,7 +154,7 @@
                         <div class="card text-center shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">Jumlah Staf UZSW</h5>
-                                <p class="card-text display-4" id="UZSWCount"><%= UZSWstaffCount%></p>
+                                <p class="card-text display-4" id="UZSWCount"><%= UZSWstaffCount %></p>
                                 <a href="adminServlet?action=viewUZSWStaff" class="btn btn-primary">Lihat Staf</a>
                             </div>
                         </div>
