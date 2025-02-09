@@ -65,8 +65,8 @@ public class documentsRetrievalServlet extends HttpServlet {
         String studentId = request.getParameter("studentId"); // Optional: if you want to filter by student
 
         // Define the path to the uploaded files
-//        String uploadPath = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads"; // (HARIZ) Adjust this path as necessary
-          String uploadPath = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads";
+        String uploadPath = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads"; // (HARIZ) Adjust this path as necessary
+//          String uploadPath = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads";
           File file = new File(uploadPath, fileName);
 
         // Check if the file exists
