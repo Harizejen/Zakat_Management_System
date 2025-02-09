@@ -33,8 +33,8 @@ public class cetakBorangServlet extends HttpServlet {
             List<String> pdfFilePaths = new ArrayList<>();
             String studentName = stl.getStudName();
             // Example paths for individual PDFs (replace with actual paths)
-            String basePath = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads\\";
-//            String basePath = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads\\";
+//            String basePath = "C:\\Users\\nasru\\OneDrive\\Documents\\NetBeansProjects\\Zakat_Management_System\\uploads\\";
+           String basePath = "D:\\Degree UiTM\\SEM 4\\CSC584\\Group Project\\Zakat System\\Zakat_Management_System\\uploads\\";
             // 1. Required Documents (Always included)
             pdfFilePaths.add(basePath + studentName + "_Salinan_Kad_Pengenalan_Ibu_dan_Bapa_Penjaga.pdf");
             pdfFilePaths.add(basePath + studentName + "_Pengesahan_Pendapatan.pdf");

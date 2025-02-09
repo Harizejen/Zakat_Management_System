@@ -289,7 +289,7 @@
                                         <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/> 
                                         <div class="select-box">
                                             <select name="selectedAction" 
-                                                    <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> 
+                                                    <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
                                                     <%
                                                         // Check if getHepReview() is TRUE
                                                         if (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) {
