@@ -91,6 +91,9 @@ public class updateApplicationStatus extends HttpServlet {
         Integer staffId = st != null ? st.getStaffid() : null;
         String staffRole = st != null ? st.getStaffrole() : null;
 
+        String tab = request.getParameter("tab"); // Retrieve the tab parameter
+        String page = request.getParameter("pages"); // Retrieve the page parameter
+
         if (staffId == null) {
             request.setAttribute("error", "Staff not logged in.");
             request.getRequestDispatcher("/staff_login.jsp").forward(request, response);
@@ -103,7 +106,7 @@ public class updateApplicationStatus extends HttpServlet {
 
         if (disemak.equals("FALSE")) {
             request.getSession().setAttribute("error", "You must check the box to update the application status.");
-            String redirectUrl = determineRedirectUrl(staffRole);
+            String redirectUrl = determineRedirectUrl(staffRole, tab, page);
             response.sendRedirect(redirectUrl);
             return;
         }
@@ -118,17 +121,14 @@ public class updateApplicationStatus extends HttpServlet {
         String query = null;
         boolean isUpdated = false;
 
+
         try (Connection connection = dbconn.getConnection()) {
             if ("HEA".equals(staffRole)) {
                 query = "INSERT INTO status_approval (hea_review, app_stat_hea, approve_status, staff_id, apply_id) VALUES (?, ?, ?, ?, ?)";
             } else if ("HEP".equals(staffRole)) {
-                query = "INSERT INTO status_approval (staff_id, apply_id, hep_review, app_stat_hep, approve_status) "
-                        + "VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE "
-                        + "hep_review = VALUES(hep_review), app_stat_hep = VALUES(app_stat_hep), approve_status = VALUES(approve_status)";
+                query = "UPDATE status_approval SET hep_review = ?, app_stat_hep = ?, approve_status = ? WHERE apply_id = ?";
             } else if ("UZSW".equals(staffRole)) {
-                query = "INSERT INTO status_approval (staff_id, apply_id, uzsw_review, app_stat_uzsw, approve_status) "
-                        + "VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE "
-                        + "uzsw_review = VALUES(uzsw_review), app_stat_uzsw = VALUES(app_stat_uzsw), approve_status = VALUES(approve_status)";
+                query = "UPDATE status_approval SET uzsw_review = ?, app_stat_uzsw = ?, approve_status = ? WHERE apply_id = ?";
             }
 
             try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -136,20 +136,18 @@ public class updateApplicationStatus extends HttpServlet {
                     statement.setString(1, disemak);
                     statement.setString(2, selectedAction);
                     statement.setString(3, approveStat);
-                    statement.setInt(4, staffId);
+                    statement.setInt(4, staffId); // Assuming staff_id is an integer
                     statement.setInt(5, Integer.parseInt(appID));
                 } else if ("HEP".equals(staffRole)) {
-                    statement.setInt(1, staffId);
-                    statement.setInt(2, Integer.parseInt(appID));
-                    statement.setString(3, disemak);
-                    statement.setString(4, selectedAction);
-                    statement.setString(5, approveStat);
+                    statement.setString(1, disemak);
+                    statement.setString(2, selectedAction);
+                    statement.setString(3, approveStat);
+                    statement.setInt(4, Integer.parseInt(appID)); // Set apply_id as an integer
                 } else if ("UZSW".equals(staffRole)) {
-                    statement.setInt(1, staffId);
-                    statement.setInt(2, Integer.parseInt(appID));
-                    statement.setString(3, disemak);
-                    statement.setString(4, selectedAction);
-                    statement.setString(5, approveStat);
+                    statement.setString(1, disemak);
+                    statement.setString(2, selectedAction);
+                    statement.setString(3, approveStat);
+                    statement.setInt(4, Integer.parseInt(appID)); // Set apply_id as an integer
                 }
 
                 int rowsUpdated = statement.executeUpdate();
@@ -164,28 +162,28 @@ public class updateApplicationStatus extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.getSession().setAttribute("error", "An error occurred while updating the application status.");
-            String redirectUrl = determineRedirectUrl(staffRole);
+            String redirectUrl = determineRedirectUrl(staffRole, tab, page);
             response.sendRedirect(redirectUrl);
             return;
         }
 
         if (isUpdated) {
-            String redirectUrl = determineRedirectUrl(staffRole);
-            response.sendRedirect(redirectUrl);
+            String redirectUrl = determineRedirectUrl(staffRole, tab, page);
+            response.sendRedirect(request.getContextPath() + redirectUrl);
         } else {
             request.setAttribute("errorMessage", "Failed to update application status.");
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
-    private String determineRedirectUrl(String staffRole) {
+    private String determineRedirectUrl(String staffRole, String tab, String page) {
         String baseUrl = "/UZSWServlet";
         if ("HEA".equals(staffRole)) {
             baseUrl = "/HEAListPage";
         } else if ("HEP".equals(staffRole)) {
             baseUrl = "/HEPListPage";
         }
-        return baseUrl + "?tab=pending&pages=1";
+        return baseUrl + "?tab=" + tab + "&pages=" + page;
     }
 
     private void updateSessionAttributes(HttpServletRequest request, String staffRole) {
