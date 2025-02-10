@@ -77,7 +77,7 @@ public class adminServlet extends HttpServlet {
             List<staff> HEAstaffList = retrieveStaffData("HEA");
             List<staff> HEPstaffList = retrieveStaffData("HEP");
             List<staff> UZSWstaffList = retrieveStaffData("UZSW");
-            int totalApplications = countApplications(); // Retrieve total applications
+            List<ApplicationDetails> totalApplications = countAllApplications();
             int totalUsers = countUsers();
 
             request.setAttribute("totalUsers", totalUsers);
@@ -165,14 +165,15 @@ public class adminServlet extends HttpServlet {
             List<staff> HEAstaffList = retrieveStaffData("HEA");
             List<staff> HEPstaffList = retrieveStaffData("HEP");
             List<staff> UZSWstaffList = retrieveStaffData("UZSW");
-            int totalApplications = countApplications(); // Retrieve total applications
-            int totalUsers = countUsers();
+            List<ApplicationDetails> totalApplications = countAllApplications();
 
-            request.setAttribute("totalUsers", totalUsers);
+            // Set the staff lists as attributes
             request.setAttribute("HEAstaffList", HEAstaffList);
             request.setAttribute("HEPstaffList", HEPstaffList);
             request.setAttribute("UZSWstaffList", UZSWstaffList);
-            request.setAttribute("totalApplications", totalApplications); // Pass to JSP
+            request.setAttribute("totalApplications", totalApplications); // Pass to 
+            int totalUsers = countUsers(); // Retrieve total number of users
+            request.setAttribute("totalUsers", totalUsers);
 
             request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
         } else if ("viewApplication".equals(action)) {
@@ -183,17 +184,16 @@ public class adminServlet extends HttpServlet {
             int itemsPerPage = 5; // Items per page
             int offset = (currentPage - 1) * itemsPerPage;
 
-            // Retrieve paginated staff data
-            List<ApplicationDetails> ApplicationList = countAllApplications(offset, itemsPerPage);
-            int totalApplications = countApplications(); // Retrieve total applications
+            // Retrieve paginated application data
+            List<ApplicationDetails> applicationList = countAllApplications(offset, itemsPerPage);
+            int totalApplications = countApplications(); // Total application count
             int totalPages = (int) Math.ceil((double) totalApplications / itemsPerPage);
 
             // Set attributes for the JSP
-            request.setAttribute("ApplicationList", ApplicationList);
+            request.setAttribute("ApplicationList", applicationList); // Corrected this line
             request.setAttribute("count", totalApplications);
             request.setAttribute("currentPage", currentPage);
             request.setAttribute("totalPages", totalPages);
-
             request.setAttribute("itemsPerPage", itemsPerPage);
 
             // Forward to the JSP page
@@ -279,12 +279,12 @@ public class adminServlet extends HttpServlet {
             List<staff> HEAstaffList = retrieveStaffData("HEA");
             List<staff> HEPstaffList = retrieveStaffData("HEP");
             List<staff> UZSWstaffList = retrieveStaffData("UZSW");
+            List<ApplicationDetails> totalApplications = countAllApplications();
 
             // Set the staff lists as attributes
             request.setAttribute("HEAstaffList", HEAstaffList);
             request.setAttribute("HEPstaffList", HEPstaffList);
             request.setAttribute("UZSWstaffList", UZSWstaffList);
-            int totalApplications = countApplications(); // Retrieve total applications
             request.setAttribute("totalApplications", totalApplications); // Pass to 
             int totalUsers = countUsers(); // Retrieve total number of users
             request.setAttribute("totalUsers", totalUsers);
@@ -364,7 +364,13 @@ public class adminServlet extends HttpServlet {
 
 // Method to count total applications
     private int countApplications() {
-        String query = "SELECT COUNT(*) AS total FROM application";
+        String query = "SELECT COUNT(DISTINCT application.apply_id) AS total "
+            + "FROM application "
+            + "LEFT JOIN student ON application.stud_id = student.stud_id "
+            + "LEFT JOIN guardian ON application.stud_id = guardian.stud_id "
+            + "LEFT JOIN interview i ON application.apply_id = i.apply_id "
+            + "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id ";
+
         try (Connection connection = dbconn.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -379,12 +385,13 @@ public class adminServlet extends HttpServlet {
 
     private List<ApplicationDetails> countAllApplications(int offset, int limit) {
         List<ApplicationDetails> applicationList = new ArrayList<>();
-        String query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date "
+        String query = "SELECT DISTINCT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date "
                 + "FROM application "
                 + "LEFT JOIN student ON application.stud_id = student.stud_id "
                 + "LEFT JOIN guardian ON application.stud_id = guardian.stud_id "
                 + "LEFT JOIN interview i ON application.apply_id = i.apply_id "
                 + "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id "
+                + "WHERE application.apply_id IS NOT NULL AND status_approval.approve_status IS NOT NULL "
                 + "ORDER BY application.apply_id LIMIT ? OFFSET ?";
 
         try (Connection connection = dbconn.getConnection();
@@ -398,77 +405,167 @@ public class adminServlet extends HttpServlet {
                     ApplicationDetails appDetails = new ApplicationDetails();
 
                     // Set values for Application table
-                    appDetails.setApplyId(resultSet.getInt("apply_id"));
-                    appDetails.setStudId(resultSet.getInt("stud_id"));
-                    appDetails.setDeadlineId(resultSet.getInt("deadline_id"));
-                    appDetails.setApplySession(resultSet.getString("apply_session"));
-                    appDetails.setApplyPart(resultSet.getInt("apply_part"));
-                    appDetails.setApplyCgpa(resultSet.getDouble("apply_cgpa"));
-                    appDetails.setApplyGpa(resultSet.getDouble("apply_gpa"));
-
-                    // Convert string values to boolean for food incentive and other support
+                    appDetails.setApplyId(resultSet.getObject("apply_id") != null ? resultSet.getInt("apply_id") : 0);
+                    appDetails.setStudId(resultSet.getObject("stud_id") != null ? resultSet.getInt("stud_id") : 0);
+                    appDetails.setDeadlineId(resultSet.getObject("deadline_id") != null ? resultSet.getInt("deadline_id") : 0);
+                    appDetails.setApplySession(resultSet.getString("apply_session") != null ? resultSet.getString("apply_session") : "TIADA");
+                    appDetails.setApplyPart(resultSet.getObject("apply_part") != null ? resultSet.getInt("apply_part") : 0);
+                    appDetails.setApplyCgpa(resultSet.getObject("apply_cgpa") != null ? resultSet.getDouble("apply_cgpa") : 0.0);
+                    appDetails.setApplyGpa(resultSet.getObject("apply_gpa") != null ? resultSet.getDouble("apply_gpa") : 0.0);
                     appDetails.setApplyFoodIncentive("YA".equalsIgnoreCase(resultSet.getString("apply_foodincentive")));
                     appDetails.setApplyOtherSupport("YA".equalsIgnoreCase(resultSet.getString("apply_otherSupport")));
-                    appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName"));
-                    appDetails.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
-                    appDetails.setApplyPurpose(resultSet.getString("apply_purpose"));
-                    appDetails.setApplyDate(resultSet.getString("apply_date"));
-                    appDetails.setDonationId(resultSet.getInt("donation_id"));
+                    appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName") != null ? resultSet.getString("apply_otherSupportName") : "TIADA");
+                    appDetails.setApplyOtherSupportAmount(resultSet.getObject("apply_otherSupportAmount") != null ? resultSet.getDouble("apply_otherSupportAmount") : 0.0);
+                    appDetails.setApplyPurpose(resultSet.getString("apply_purpose") != null ? resultSet.getString("apply_purpose") : "TIADA");
+                    appDetails.setApplyDate(resultSet.getString("apply_date") != null ? resultSet.getString("apply_date") : "TIADA");
+                    appDetails.setDonationId(resultSet.getObject("donation_id") != null ? resultSet.getInt("donation_id") : 0);
 
                     // Set values for Student table
-                    appDetails.setStudName(resultSet.getString("stud_name"));
-                    appDetails.setStudIc(resultSet.getString("stud_ic"));
-                    appDetails.setStudEmail(resultSet.getString("stud_email"));
-                    appDetails.setStudPassword(resultSet.getString("stud_password"));
-                    appDetails.setStudState(resultSet.getString("stud_state"));
-                    appDetails.setStudZipcode(resultSet.getString("stud_zipcode"));
-                    appDetails.setStudCourse(resultSet.getString("stud_course"));
-                    appDetails.setStudFaculty(resultSet.getString("stud_faculty"));
-                    appDetails.setStudCampus(resultSet.getString("stud_campus"));
-                    appDetails.setStudGender(resultSet.getString("stud_gender"));
-                    appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum"));
-                    appDetails.setStudBankName(resultSet.getString("stud_bankName"));
-                    appDetails.setStudBankNum(resultSet.getString("stud_bankNum"));
-                    appDetails.setStudAddress(resultSet.getString("stud_address"));
-                    appDetails.setStudMarriage(resultSet.getString("stud_marriage"));
+                    appDetails.setStudName(resultSet.getString("stud_name") != null ? resultSet.getString("stud_name") : "TIADA");
+                    appDetails.setStudIc(resultSet.getString("stud_ic") != null ? resultSet.getString("stud_ic") : "TIADA");
+                    appDetails.setStudEmail(resultSet.getString("stud_email") != null ? resultSet.getString("stud_email") : "TIADA");
+                    appDetails.setStudPassword(resultSet.getString("stud_password") != null ? resultSet.getString("stud_password") : "TIADA");
+                    appDetails.setStudState(resultSet.getString("stud_state") != null ? resultSet.getString("stud_state") : "TIADA");
+                    appDetails.setStudZipcode(resultSet.getString("stud_zipcode") != null ? resultSet.getString("stud_zipcode") : "TIADA");
+                    appDetails.setStudCourse(resultSet.getString("stud_course") != null ? resultSet.getString("stud_course") : "TIADA");
+                    appDetails.setStudFaculty(resultSet.getString("stud_faculty") != null ? resultSet.getString("stud_faculty") : "TIADA");
+                    appDetails.setStudCampus(resultSet.getString("stud_campus") != null ? resultSet.getString("stud_campus") : "TIADA");
+                    appDetails.setStudGender(resultSet.getString("stud_gender") != null ? resultSet.getString("stud_gender") : "TIADA");
+                    appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum") != null ? resultSet.getString("stud_phoneNum") : "TIADA");
+                    appDetails.setStudBankName(resultSet.getString("stud_bankName") != null ? resultSet.getString("stud_bankName") : "TIADA");
+                    appDetails.setStudBankNum(resultSet.getString("stud_bankNum") != null ? resultSet.getString("stud_bankNum") : "TIADA");
+                    appDetails.setStudAddress(resultSet.getString("stud_address") != null ? resultSet.getString("stud_address") : "TIADA");
+                    appDetails.setStudMarriage(resultSet.getString("stud_marriage") != null ? resultSet.getString("stud_marriage") : "TIADA");
 
                     // Set values for Guardian table
-                    appDetails.setGuardId(resultSet.getInt("guard_id"));
-                    appDetails.setFatherName(resultSet.getString("father_name"));
-                    appDetails.setFatherOccupation(resultSet.getString("father_occupation"));
-                    appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum"));
-                    appDetails.setFatherAddress(resultSet.getString("father_address"));
-                    appDetails.setMotherName(resultSet.getString("mother_name"));
-                    appDetails.setMotherOccupation(resultSet.getString("mother_occupation"));
-                    appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum"));
-                    appDetails.setMotherAddress(resultSet.getString("mother_address"));
-                    appDetails.setGuardName(resultSet.getString("guard_name"));
-                    appDetails.setGuardRelation(resultSet.getString("guard_relation"));
-                    appDetails.setGuardOccupation(resultSet.getString("guard_occupation"));
-                    appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum"));
-                    appDetails.setGuardAddress(resultSet.getString("guard_address"));
-                    appDetails.setGuardPostcode(resultSet.getString("guard_postcode"));
-                    appDetails.setGuardResidence(resultSet.getString("guard_residence"));
-                    appDetails.setGuardIncome(resultSet.getDouble("guard_income"));
-                    appDetails.setMotherIncome(resultSet.getDouble("mother_income"));
-                    appDetails.setFatherIncome(resultSet.getDouble("father_income"));
-                    appDetails.setOtherIncome(resultSet.getDouble("other_income"));
+                    appDetails.setGuardId(resultSet.getObject("guard_id") != null ? resultSet.getInt("guard_id") : 0);
+                    appDetails.setFatherName(resultSet.getString("father_name") != null ? resultSet.getString("father_name") : "TIADA");
+                    appDetails.setFatherOccupation(resultSet.getString("father_occupation") != null ? resultSet.getString("father_occupation") : "TIADA");
+                    appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum") != null ? resultSet.getString("father_phoneNum") : "TIADA");
+                    appDetails.setFatherAddress(resultSet.getString("father_address") != null ? resultSet.getString("father_address") : "TIADA");
+                    appDetails.setMotherName(resultSet.getString("mother_name") != null ? resultSet.getString("mother_name") : "TIADA");
+                    appDetails.setMotherOccupation(resultSet.getString("mother_occupation") != null ? resultSet.getString("mother_occupation") : "TIADA");
+                    appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum") != null ? resultSet.getString("mother_phoneNum") : "TIADA");
+                    appDetails.setMotherAddress(resultSet.getString("mother_address") != null ? resultSet.getString("mother_address") : "TIADA");
+                    appDetails.setGuardName(resultSet.getString("guard_name") != null ? resultSet.getString("guard_name") : "TIADA");
+                    appDetails.setGuardRelation(resultSet.getString("guard_relation") != null ? resultSet.getString("guard_relation") : "TIADA");
+                    appDetails.setGuardOccupation(resultSet.getString("guard_occupation") != null ? resultSet.getString("guard_occupation") : "TIADA");
+                    appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum") != null ? resultSet.getString("guard_phoneNum") : "TIADA");
+                    appDetails.setGuardAddress(resultSet.getString("guard_address") != null ? resultSet.getString("guard_address") : "TIADA");
+                    appDetails.setGuardPostcode(resultSet.getString("guard_postcode") != null ? resultSet.getString("guard_postcode") : "TIADA");
+                    appDetails.setGuardResidence(resultSet.getString("guard_residence") != null ? resultSet.getString("guard_residence") : "TIADA");
+                    appDetails.setGuardIncome(resultSet.getObject("guard_income") != null ? resultSet.getDouble("guard_income") : 0.0);
+                    appDetails.setMotherIncome(resultSet.getObject("mother_income") != null ? resultSet.getDouble("mother_income") : 0.0);
+                    appDetails.setFatherIncome(resultSet.getObject("father_income") != null ? resultSet.getDouble("father_income") : 0.0);
+                    appDetails.setOtherIncome(resultSet.getObject("other_income") != null ? resultSet.getDouble("other_income") : 0.0);
 
                     // Set values for Status Approval table
-                    appDetails.setStaffId(resultSet.getInt("staff_id"));
-                    appDetails.setApproveStatus(resultSet.getString("approve_status"));
-                    appDetails.setAppStatHEA(resultSet.getString("app_stat_HEA"));
-                    appDetails.setAppStatHEP(resultSet.getString("app_stat_HEP"));
-                    appDetails.setAppStatUZSW(resultSet.getString("app_stat_UZSW"));
-                    appDetails.setHeaReview(resultSet.getString("hea_review"));
-                    appDetails.setHepReview(resultSet.getString("hep_review"));
-                    appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+                    appDetails.setStaffId(resultSet.getObject("staff_id") != null ? resultSet.getInt("staff_id") : 0);
+                    appDetails.setApproveStatus(resultSet.getString("approve_status") != null ? resultSet.getString("approve_status") : "TIADA");
+                    appDetails.setAppStatHEA(resultSet.getString("app_stat_HEA") != null ? resultSet.getString("app_stat_HEA") : "TIADA");
+                    appDetails.setAppStatHEP(resultSet.getString("app_stat_HEP") != null ? resultSet.getString("app_stat_HEP") : "TIADA");
+                    appDetails.setAppStatUZSW(resultSet.getString("app_stat_UZSW") != null ? resultSet.getString("app_stat_UZSW") : "TIADA");
 
                     // Handle interview date safely
                     Date interviewDate = resultSet.getDate("interview_date");
                     appDetails.setInterviewDate(interviewDate != null ? interviewDate : null);
 
-                    // Add to list
+                    // Add the details object to the list
+                    applicationList.add(appDetails);
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, "Database error: ", ex);
+        }
+
+        return applicationList;
+    }
+
+    private List<ApplicationDetails> countAllApplications() {
+        List<ApplicationDetails> applicationList = new ArrayList<>();
+        String query = "SELECT DISTINCT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date "
+                + "FROM application "
+                + "LEFT JOIN student ON application.stud_id = student.stud_id "
+                + "LEFT JOIN guardian ON application.stud_id = guardian.stud_id "
+                + "LEFT JOIN interview i ON application.apply_id = i.apply_id "
+                + "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id "
+                + "WHERE application.apply_id IS NOT NULL AND status_approval.approve_status IS NOT NULL ";
+
+        try (Connection connection = dbconn.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    ApplicationDetails appDetails = new ApplicationDetails();
+
+                    // Set values for Application table
+                    appDetails.setApplyId(resultSet.getObject("apply_id") != null ? resultSet.getInt("apply_id") : 0);
+                    appDetails.setStudId(resultSet.getObject("stud_id") != null ? resultSet.getInt("stud_id") : 0);
+                    appDetails.setDeadlineId(resultSet.getObject("deadline_id") != null ? resultSet.getInt("deadline_id") : 0);
+                    appDetails.setApplySession(resultSet.getString("apply_session") != null ? resultSet.getString("apply_session") : "TIADA");
+                    appDetails.setApplyPart(resultSet.getObject("apply_part") != null ? resultSet.getInt("apply_part") : 0);
+                    appDetails.setApplyCgpa(resultSet.getObject("apply_cgpa") != null ? resultSet.getDouble("apply_cgpa") : 0.0);
+                    appDetails.setApplyGpa(resultSet.getObject("apply_gpa") != null ? resultSet.getDouble("apply_gpa") : 0.0);
+                    appDetails.setApplyFoodIncentive("YA".equalsIgnoreCase(resultSet.getString("apply_foodincentive")));
+                    appDetails.setApplyOtherSupport("YA".equalsIgnoreCase(resultSet.getString("apply_otherSupport")));
+                    appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName") != null ? resultSet.getString("apply_otherSupportName") : "TIADA");
+                    appDetails.setApplyOtherSupportAmount(resultSet.getObject("apply_otherSupportAmount") != null ? resultSet.getDouble("apply_otherSupportAmount") : 0.0);
+                    appDetails.setApplyPurpose(resultSet.getString("apply_purpose") != null ? resultSet.getString("apply_purpose") : "TIADA");
+                    appDetails.setApplyDate(resultSet.getString("apply_date") != null ? resultSet.getString("apply_date") : "TIADA");
+                    appDetails.setDonationId(resultSet.getObject("donation_id") != null ? resultSet.getInt("donation_id") : 0);
+
+                    // Set values for Student table
+                    appDetails.setStudName(resultSet.getString("stud_name") != null ? resultSet.getString("stud_name") : "TIADA");
+                    appDetails.setStudIc(resultSet.getString("stud_ic") != null ? resultSet.getString("stud_ic") : "TIADA");
+                    appDetails.setStudEmail(resultSet.getString("stud_email") != null ? resultSet.getString("stud_email") : "TIADA");
+                    appDetails.setStudPassword(resultSet.getString("stud_password") != null ? resultSet.getString("stud_password") : "TIADA");
+                    appDetails.setStudState(resultSet.getString("stud_state") != null ? resultSet.getString("stud_state") : "TIADA");
+                    appDetails.setStudZipcode(resultSet.getString("stud_zipcode") != null ? resultSet.getString("stud_zipcode") : "TIADA");
+                    appDetails.setStudCourse(resultSet.getString("stud_course") != null ? resultSet.getString("stud_course") : "TIADA");
+                    appDetails.setStudFaculty(resultSet.getString("stud_faculty") != null ? resultSet.getString("stud_faculty") : "TIADA");
+                    appDetails.setStudCampus(resultSet.getString("stud_campus") != null ? resultSet.getString("stud_campus") : "TIADA");
+                    appDetails.setStudGender(resultSet.getString("stud_gender") != null ? resultSet.getString("stud_gender") : "TIADA");
+                    appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum") != null ? resultSet.getString("stud_phoneNum") : "TIADA");
+                    appDetails.setStudBankName(resultSet.getString("stud_bankName") != null ? resultSet.getString("stud_bankName") : "TIADA");
+                    appDetails.setStudBankNum(resultSet.getString("stud_bankNum") != null ? resultSet.getString("stud_bankNum") : "TIADA");
+                    appDetails.setStudAddress(resultSet.getString("stud_address") != null ? resultSet.getString("stud_address") : "TIADA");
+                    appDetails.setStudMarriage(resultSet.getString("stud_marriage") != null ? resultSet.getString("stud_marriage") : "TIADA");
+
+                    // Set values for Guardian table
+                    appDetails.setGuardId(resultSet.getObject("guard_id") != null ? resultSet.getInt("guard_id") : 0);
+                    appDetails.setFatherName(resultSet.getString("father_name") != null ? resultSet.getString("father_name") : "TIADA");
+                    appDetails.setFatherOccupation(resultSet.getString("father_occupation") != null ? resultSet.getString("father_occupation") : "TIADA");
+                    appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum") != null ? resultSet.getString("father_phoneNum") : "TIADA");
+                    appDetails.setFatherAddress(resultSet.getString("father_address") != null ? resultSet.getString("father_address") : "TIADA");
+                    appDetails.setMotherName(resultSet.getString("mother_name") != null ? resultSet.getString("mother_name") : "TIADA");
+                    appDetails.setMotherOccupation(resultSet.getString("mother_occupation") != null ? resultSet.getString("mother_occupation") : "TIADA");
+                    appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum") != null ? resultSet.getString("mother_phoneNum") : "TIADA");
+                    appDetails.setMotherAddress(resultSet.getString("mother_address") != null ? resultSet.getString("mother_address") : "TIADA");
+                    appDetails.setGuardName(resultSet.getString("guard_name") != null ? resultSet.getString("guard_name") : "TIADA");
+                    appDetails.setGuardRelation(resultSet.getString("guard_relation") != null ? resultSet.getString("guard_relation") : "TIADA");
+                    appDetails.setGuardOccupation(resultSet.getString("guard_occupation") != null ? resultSet.getString("guard_occupation") : "TIADA");
+                    appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum") != null ? resultSet.getString("guard_phoneNum") : "TIADA");
+                    appDetails.setGuardAddress(resultSet.getString("guard_address") != null ? resultSet.getString("guard_address") : "TIADA");
+                    appDetails.setGuardPostcode(resultSet.getString("guard_postcode") != null ? resultSet.getString("guard_postcode") : "TIADA");
+                    appDetails.setGuardResidence(resultSet.getString("guard_residence") != null ? resultSet.getString("guard_residence") : "TIADA");
+                    appDetails.setGuardIncome(resultSet.getObject("guard_income") != null ? resultSet.getDouble("guard_income") : 0.0);
+                    appDetails.setMotherIncome(resultSet.getObject("mother_income") != null ? resultSet.getDouble("mother_income") : 0.0);
+                    appDetails.setFatherIncome(resultSet.getObject("father_income") != null ? resultSet.getDouble("father_income") : 0.0);
+                    appDetails.setOtherIncome(resultSet.getObject("other_income") != null ? resultSet.getDouble("other_income") : 0.0);
+
+                    // Set values for Status Approval table
+                    appDetails.setStaffId(resultSet.getObject("staff_id") != null ? resultSet.getInt("staff_id") : 0);
+                    appDetails.setApproveStatus(resultSet.getString("approve_status") != null ? resultSet.getString("approve_status") : "TIADA");
+                    appDetails.setAppStatHEA(resultSet.getString("app_stat_HEA") != null ? resultSet.getString("app_stat_HEA") : "TIADA");
+                    appDetails.setAppStatHEP(resultSet.getString("app_stat_HEP") != null ? resultSet.getString("app_stat_HEP") : "TIADA");
+                    appDetails.setAppStatUZSW(resultSet.getString("app_stat_UZSW") != null ? resultSet.getString("app_stat_UZSW") : "TIADA");
+
+                    // Handle interview date safely
+                    Date interviewDate = resultSet.getDate("interview_date");
+                    appDetails.setInterviewDate(interviewDate != null ? interviewDate : null);
+
+                    // Add the details object to the list
                     applicationList.add(appDetails);
                 }
             }
@@ -492,7 +589,7 @@ public class adminServlet extends HttpServlet {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    
+
                     int s_id = rs.getInt("stud_id");
                     String s_name = rs.getString("stud_name");
                     String s_ic = rs.getString("stud_ic") != null ? rs.getString("stud_ic") : ""; // Default to empty string if null
@@ -512,7 +609,7 @@ public class adminServlet extends HttpServlet {
 
                     // Create a new Student object
                     Student st = new Student();
-                    
+
                     st.setStudID(s_id);
                     st.setStudName(s_name != null ? s_name : ""); // Default to empty string
                     st.setStudIC(s_ic);

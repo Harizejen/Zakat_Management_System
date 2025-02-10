@@ -36,13 +36,14 @@
 
             <%
                 List<ApplicationDetails> applicationList = (List<ApplicationDetails>) request.getAttribute("ApplicationList");
-                int count = (Integer) request.getAttribute("count");
                 int currentPage = (Integer) request.getAttribute("currentPage");
                 int totalPages = (Integer) request.getAttribute("totalPages");
                 int itemsPerPage = (Integer) request.getAttribute("itemsPerPage");
+
+                int count = (Integer) request.getAttribute("count");
             %>
 
-            <h5>Pemohonan: <span class="text-primary"><%= count%> Pemohonan</span></h5>
+            <h5>Jumlah Pemohonan: <span class="text-primary"><%= count%> Pemohonan</span></h5>
             <table class="table">
                 <thead>
                     <tr>

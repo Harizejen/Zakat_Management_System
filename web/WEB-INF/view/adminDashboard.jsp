@@ -1,3 +1,4 @@
+<%@page import="com.ApplicationDetails.model.ApplicationDetails"%>
 <%@page import="java.util.List"%>
 <%@page import="com.staff.model.staff"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -122,7 +123,8 @@
                     <div class="card text-center shadow-sm item1">
                         <h5 class="card-title">Jumlah Permohonan</h5>
                         <p class="card-text display-4">
-                            <%= (Integer) request.getAttribute("totalApplications")%>
+                            <%= ((List<ApplicationDetails>) request.getAttribute("totalApplications") != null)
+                                    ? ((List<ApplicationDetails>) request.getAttribute("totalApplications")).size() : 0%>
                         </p>
                         <a href="adminServlet?action=viewApplication" class="btn btn-primary">Lihat Permohonan</a>
                     </div>
@@ -132,7 +134,7 @@
                         <h5 class="card-title">Jumlah Staf HEA</h5>
                         <p class="card-text display-4">
                             <%= ((List<staff>) request.getAttribute("HEAstaffList") != null)
-                                                ? ((List<staff>) request.getAttribute("HEAstaffList")).size() : 0%>
+                                    ? ((List<staff>) request.getAttribute("HEAstaffList")).size() : 0%>
                         </p>
                         <a href="adminServlet?action=viewHEAStaff&page=1" class="btn btn-primary">Lihat Staf</a>
                     </div>
@@ -142,7 +144,7 @@
                         <h5 class="card-title">Jumlah Staf HEP</h5>
                         <p class="card-text display-4">
                             <%= ((List<staff>) request.getAttribute("HEPstaffList") != null)
-                                                ? ((List<staff>) request.getAttribute("HEPstaffList")).size() : 0%>
+                                    ? ((List<staff>) request.getAttribute("HEPstaffList")).size() : 0%>
                         </p>
                         <a href="adminServlet?action=viewHEPStaff" class="btn btn-primary">Lihat Staf</a>
                     </div>
@@ -152,7 +154,7 @@
                         <h5 class="card-title">Jumlah Staf UZSW</h5>
                         <p class="card-text display-4">
                             <%= ((List<staff>) request.getAttribute("UZSWstaffList") != null)
-                                                ? ((List<staff>) request.getAttribute("UZSWstaffList")).size() : 0%>
+                                    ? ((List<staff>) request.getAttribute("UZSWstaffList")).size() : 0%>
                         </p>
                         <a href="adminServlet?action=viewUZSWStaff" class="btn btn-primary">Lihat Staf</a>
                     </div>
@@ -160,7 +162,7 @@
                     <!-- List of Users (New Card) -->
                     <div class="card text-center shadow-sm item5">
                         <h5 class="card-title">Senarai Pengguna</h5>
-                            <p class="card-text display-4"><%= (request.getAttribute("totalUsers") != null)? request.getAttribute("totalUsers") : 0%></p>
+                        <p class="card-text display-4"><%= (request.getAttribute("totalUsers") != null) ? request.getAttribute("totalUsers") : 0%></p>
                         <a href="adminServlet?action=viewUsers" class="btn btn-primary">Lihat Pengguna</a>
                     </div>
                 </div>
