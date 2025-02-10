@@ -5,11 +5,15 @@
  */
 package com.admin.controller;
 
+import com.ApplicationDetails.model.ApplicationDetails;
 import com.database.dbconn;
+import com.staff.controller.StaffLoginServlet;
 import com.staff.model.staff;
+import com.user.model.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,10 +77,14 @@ public class adminServlet extends HttpServlet {
             List<staff> HEAstaffList = retrieveStaffData("HEA");
             List<staff> HEPstaffList = retrieveStaffData("HEP");
             List<staff> UZSWstaffList = retrieveStaffData("UZSW");
+            int totalApplications = countApplications(); // Retrieve total applications
+            int totalUsers = countUsers();
 
+            request.setAttribute("totalUsers", totalUsers);
             request.setAttribute("HEAstaffList", HEAstaffList);
             request.setAttribute("HEPstaffList", HEPstaffList);
             request.setAttribute("UZSWstaffList", UZSWstaffList);
+            request.setAttribute("totalApplications", totalApplications); // Pass to JSP
 
             request.getRequestDispatcher("/adminDashboard.jsp").forward(request, response);
         } else if ("viewHEAStaff".equals(action)) {
@@ -157,11 +165,60 @@ public class adminServlet extends HttpServlet {
             List<staff> HEAstaffList = retrieveStaffData("HEA");
             List<staff> HEPstaffList = retrieveStaffData("HEP");
             List<staff> UZSWstaffList = retrieveStaffData("UZSW");
+            int totalApplications = countApplications(); // Retrieve total applications
+            int totalUsers = countUsers();
 
+            request.setAttribute("totalUsers", totalUsers);
             request.setAttribute("HEAstaffList", HEAstaffList);
             request.setAttribute("HEPstaffList", HEPstaffList);
             request.setAttribute("UZSWstaffList", UZSWstaffList);
+            request.setAttribute("totalApplications", totalApplications); // Pass to JSP
+
             request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
+        } else if ("viewApplication".equals(action)) {
+            // Parse the current page from the request
+            String pageParam = request.getParameter("page");
+            int currentPage = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
+
+            int itemsPerPage = 5; // Items per page
+            int offset = (currentPage - 1) * itemsPerPage;
+
+            // Retrieve paginated staff data
+            List<ApplicationDetails> ApplicationList = countAllApplications(offset, itemsPerPage);
+            int totalApplications = countApplications(); // Retrieve total applications
+            int totalPages = (int) Math.ceil((double) totalApplications / itemsPerPage);
+
+            // Set attributes for the JSP
+            request.setAttribute("ApplicationList", ApplicationList);
+            request.setAttribute("count", totalApplications);
+            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("totalPages", totalPages);
+
+            request.setAttribute("itemsPerPage", itemsPerPage);
+
+            // Forward to the JSP page
+            request.getRequestDispatcher("/WEB-INF/view/applicationTable.jsp").forward(request, response);
+        } else if ("viewUsers".equals(action)) {
+            // Parse pagination parameters
+            String pageParam = request.getParameter("page");
+            int currentPage = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
+            int itemsPerPage = 5; // Number of users per page
+            int offset = (currentPage - 1) * itemsPerPage;
+
+            // Retrieve paginated user data
+            List<Student> userList = retrieveUsers(offset, itemsPerPage);
+            int totalUsers = countUsers(); // Retrieve total number of users
+            int totalPages = (int) Math.ceil((double) totalUsers / itemsPerPage);
+
+            // Set attributes for the JSP
+            request.setAttribute("userList", userList);
+            request.setAttribute("count", totalUsers);
+            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("itemsPerPage", itemsPerPage);
+
+            // Forward to the user table JSP
+            request.getRequestDispatcher("/WEB-INF/view/userTable.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/adminLogin.jsp").forward(request, response);
         }
@@ -227,6 +284,10 @@ public class adminServlet extends HttpServlet {
             request.setAttribute("HEAstaffList", HEAstaffList);
             request.setAttribute("HEPstaffList", HEPstaffList);
             request.setAttribute("UZSWstaffList", UZSWstaffList);
+            int totalApplications = countApplications(); // Retrieve total applications
+            request.setAttribute("totalApplications", totalApplications); // Pass to 
+            int totalUsers = countUsers(); // Retrieve total number of users
+            request.setAttribute("totalUsers", totalUsers);
 
             // Forward to the dashboard
             request.getRequestDispatcher("/WEB-INF/view/adminDashboard.jsp").forward(request, response);
@@ -291,6 +352,197 @@ public class adminServlet extends HttpServlet {
         try (Connection connection = dbconn.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, role);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
+    }
+
+// Method to count total applications
+    private int countApplications() {
+        String query = "SELECT COUNT(*) AS total FROM application";
+        try (Connection connection = dbconn.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
+    }
+
+    private List<ApplicationDetails> countAllApplications(int offset, int limit) {
+        List<ApplicationDetails> applicationList = new ArrayList<>();
+        String query = "SELECT application.*, student.*, guardian.*, status_approval.*, i.iv_date AS interview_date "
+                + "FROM application "
+                + "LEFT JOIN student ON application.stud_id = student.stud_id "
+                + "LEFT JOIN guardian ON application.stud_id = guardian.stud_id "
+                + "LEFT JOIN interview i ON application.apply_id = i.apply_id "
+                + "LEFT JOIN status_approval ON application.apply_id = status_approval.apply_id "
+                + "ORDER BY application.apply_id LIMIT ? OFFSET ?";
+
+        try (Connection connection = dbconn.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, limit);
+            preparedStatement.setInt(2, offset);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    ApplicationDetails appDetails = new ApplicationDetails();
+
+                    // Set values for Application table
+                    appDetails.setApplyId(resultSet.getInt("apply_id"));
+                    appDetails.setStudId(resultSet.getInt("stud_id"));
+                    appDetails.setDeadlineId(resultSet.getInt("deadline_id"));
+                    appDetails.setApplySession(resultSet.getString("apply_session"));
+                    appDetails.setApplyPart(resultSet.getInt("apply_part"));
+                    appDetails.setApplyCgpa(resultSet.getDouble("apply_cgpa"));
+                    appDetails.setApplyGpa(resultSet.getDouble("apply_gpa"));
+
+                    // Convert string values to boolean for food incentive and other support
+                    appDetails.setApplyFoodIncentive("YA".equalsIgnoreCase(resultSet.getString("apply_foodincentive")));
+                    appDetails.setApplyOtherSupport("YA".equalsIgnoreCase(resultSet.getString("apply_otherSupport")));
+                    appDetails.setApplyOtherSupportName(resultSet.getString("apply_otherSupportName"));
+                    appDetails.setApplyOtherSupportAmount(resultSet.getDouble("apply_otherSupportAmount"));
+                    appDetails.setApplyPurpose(resultSet.getString("apply_purpose"));
+                    appDetails.setApplyDate(resultSet.getString("apply_date"));
+                    appDetails.setDonationId(resultSet.getInt("donation_id"));
+
+                    // Set values for Student table
+                    appDetails.setStudName(resultSet.getString("stud_name"));
+                    appDetails.setStudIc(resultSet.getString("stud_ic"));
+                    appDetails.setStudEmail(resultSet.getString("stud_email"));
+                    appDetails.setStudPassword(resultSet.getString("stud_password"));
+                    appDetails.setStudState(resultSet.getString("stud_state"));
+                    appDetails.setStudZipcode(resultSet.getString("stud_zipcode"));
+                    appDetails.setStudCourse(resultSet.getString("stud_course"));
+                    appDetails.setStudFaculty(resultSet.getString("stud_faculty"));
+                    appDetails.setStudCampus(resultSet.getString("stud_campus"));
+                    appDetails.setStudGender(resultSet.getString("stud_gender"));
+                    appDetails.setStudPhoneNum(resultSet.getString("stud_phoneNum"));
+                    appDetails.setStudBankName(resultSet.getString("stud_bankName"));
+                    appDetails.setStudBankNum(resultSet.getString("stud_bankNum"));
+                    appDetails.setStudAddress(resultSet.getString("stud_address"));
+                    appDetails.setStudMarriage(resultSet.getString("stud_marriage"));
+
+                    // Set values for Guardian table
+                    appDetails.setGuardId(resultSet.getInt("guard_id"));
+                    appDetails.setFatherName(resultSet.getString("father_name"));
+                    appDetails.setFatherOccupation(resultSet.getString("father_occupation"));
+                    appDetails.setFatherPhoneNum(resultSet.getString("father_phoneNum"));
+                    appDetails.setFatherAddress(resultSet.getString("father_address"));
+                    appDetails.setMotherName(resultSet.getString("mother_name"));
+                    appDetails.setMotherOccupation(resultSet.getString("mother_occupation"));
+                    appDetails.setMotherPhoneNum(resultSet.getString("mother_phoneNum"));
+                    appDetails.setMotherAddress(resultSet.getString("mother_address"));
+                    appDetails.setGuardName(resultSet.getString("guard_name"));
+                    appDetails.setGuardRelation(resultSet.getString("guard_relation"));
+                    appDetails.setGuardOccupation(resultSet.getString("guard_occupation"));
+                    appDetails.setGuardPhoneNum(resultSet.getString("guard_phoneNum"));
+                    appDetails.setGuardAddress(resultSet.getString("guard_address"));
+                    appDetails.setGuardPostcode(resultSet.getString("guard_postcode"));
+                    appDetails.setGuardResidence(resultSet.getString("guard_residence"));
+                    appDetails.setGuardIncome(resultSet.getDouble("guard_income"));
+                    appDetails.setMotherIncome(resultSet.getDouble("mother_income"));
+                    appDetails.setFatherIncome(resultSet.getDouble("father_income"));
+                    appDetails.setOtherIncome(resultSet.getDouble("other_income"));
+
+                    // Set values for Status Approval table
+                    appDetails.setStaffId(resultSet.getInt("staff_id"));
+                    appDetails.setApproveStatus(resultSet.getString("approve_status"));
+                    appDetails.setAppStatHEA(resultSet.getString("app_stat_HEA"));
+                    appDetails.setAppStatHEP(resultSet.getString("app_stat_HEP"));
+                    appDetails.setAppStatUZSW(resultSet.getString("app_stat_UZSW"));
+                    appDetails.setHeaReview(resultSet.getString("hea_review"));
+                    appDetails.setHepReview(resultSet.getString("hep_review"));
+                    appDetails.setUzswReview(resultSet.getString("uzsw_review"));
+
+                    // Handle interview date safely
+                    Date interviewDate = resultSet.getDate("interview_date");
+                    appDetails.setInterviewDate(interviewDate != null ? interviewDate : null);
+
+                    // Add to list
+                    applicationList.add(appDetails);
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(adminServlet.class.getName()).log(Level.SEVERE, "Database error: ", ex);
+        }
+
+        return applicationList;
+    }
+
+    private List<Student> retrieveUsers(int offset, int limit) {
+        List<Student> users = new ArrayList<>();
+        String sql = "SELECT * FROM student LIMIT ? OFFSET ?";
+
+        try (Connection connection = dbconn.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, limit);
+            stmt.setInt(2, offset);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    
+                    int s_id = rs.getInt("stud_id");
+                    String s_name = rs.getString("stud_name");
+                    String s_ic = rs.getString("stud_ic") != null ? rs.getString("stud_ic") : ""; // Default to empty string if null
+                    String s_email = rs.getString("stud_email") != null ? rs.getString("stud_email") : "TIADA";
+                    String s_password = rs.getString("stud_password");
+                    String s_state = rs.getString("stud_state") != null ? rs.getString("stud_state") : "";
+                    String s_zipcode = rs.getString("stud_zipcode") != null ? rs.getString("stud_zipcode") : "";
+                    String s_course = rs.getString("stud_course") != null ? rs.getString("stud_course") : "TIADA";
+                    String s_faculty = rs.getString("stud_faculty") != null ? rs.getString("stud_faculty") : "TIADA";
+                    String s_campus = rs.getString("stud_campus") != null ? rs.getString("stud_campus") : "";
+                    char s_marriage = rs.getString("stud_marriage") != null ? rs.getString("stud_marriage").charAt(0) : 'U'; // Default to 'U' (Unknown) if null
+                    char s_gender = rs.getString("stud_gender") != null ? rs.getString("stud_gender").charAt(0) : 'U'; // Default to 'U' (Unknown) if null
+                    String s_phoneNum = rs.getString("stud_phoneNum") != null ? rs.getString("stud_phoneNum") : "";
+                    String s_bankNum = rs.getString("stud_bankNum") != null ? rs.getString("stud_bankNum") : "";
+                    String s_bankName = rs.getString("stud_bankName") != null ? rs.getString("stud_bankName") : "";
+                    String s_address = rs.getString("stud_address") != null ? rs.getString("stud_address") : "";
+
+                    // Create a new Student object
+                    Student st = new Student();
+                    
+                    st.setStudID(s_id);
+                    st.setStudName(s_name != null ? s_name : ""); // Default to empty string
+                    st.setStudIC(s_ic);
+                    st.setStudEmail(s_email);
+                    st.setStudPass(s_password);
+                    st.setStudState(s_state);
+                    st.setStudZipCode(s_zipcode);
+                    st.setStudCourse(s_course);
+                    st.setStudFaculty(s_faculty);
+                    st.setStudCampus(s_campus);
+                    st.setStudMarriage(s_marriage);
+                    st.setStudGender(s_gender);
+                    st.setStudPhoneNum(s_phoneNum);
+                    st.setStudBankNum(s_bankNum);
+                    st.setStudBankName(s_bankName);
+                    st.setStudAddress(s_address);
+                    users.add(st);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    private int countUsers() {
+        String query = "SELECT COUNT(*) AS total FROM student";
+        try (Connection connection = dbconn.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt("total");

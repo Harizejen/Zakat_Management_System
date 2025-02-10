@@ -4,9 +4,14 @@
 <%@page import="com.ApplicationDetails.model.ApplicationDetails"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    // Correctly retrieve 'tab' and 'pages' from request parameters
     String tab = request.getParameter("tab");
-    if (tab == null) {
+    String pages = request.getParameter("pages");
+    if (tab == null || tab.isEmpty()) {
         tab = "total"; // Default tab
+    }
+    if (pages == null || pages.isEmpty()) {
+        pages = "1"; // Default page
     }
 %>
 <!DOCTYPE html>
@@ -152,7 +157,9 @@
                         <form action="updateApplicationStatus" method="post" 
                               <%= (totalApp.getHepReview() != null && totalApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
                             <td>
-                                <input type="hidden" id="appID" name="appID" value="<%= totalApp.getApplyId()%>"/> 
+                                <input type="hidden" id="appID" name="appID" value="<%= totalApp.getApplyId()%>"/>
+                                <input type="hidden" name="tab" value="total"> <!-- Preserve the current tab -->
+                                <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                 <div class="select-box">
                                     <select name="selectedAction" 
                                             <%= (totalApp.getHepReview() != null && totalApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
@@ -211,15 +218,15 @@
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (currentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage - 1%>&tab=total" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=total&totalPage=<%= currentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= totalPages; i++) {%>
                         <li class="page-item <%= (i == currentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= i%>&tab=total"><%= i%></a>
+                            <a class="page-link" href="?tab=total&totalPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (currentPage == totalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage + 1%>&tab=total">Seterusnya</a>
+                            <a class="page-link" href="?tab=total&totalPage=<%= currentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -287,16 +294,18 @@
                                         <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%>
 
                                         <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/> 
+                                        <input type="hidden" name="tab" value="pending"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="select-box">
                                             <select name="selectedAction" 
                                                     <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
-                                                    <%
-                                                        // Check if getHepReview() is TRUE
-                                                        if (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) {
-                                                            // If TRUE, check getHepStatus()
-                                                            if ("LULUS".equalsIgnoreCase(pendingApp.getAppStatHEP())) {
-                                                    %>
-                                                    <option value="GAGAL">GAGAL</option>
+                                                <%
+                                                    // Check if getHepReview() is TRUE
+                                                    if (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) {
+                                                        // If TRUE, check getHepStatus()
+                                                        if ("LULUS".equalsIgnoreCase(pendingApp.getAppStatHEP())) {
+                                                %>
+                                                <option value="GAGAL">GAGAL</option>
                                                 <option value="LULUS" selected>LULUS</option>
                                                 <%
                                                 } else {
@@ -345,15 +354,15 @@
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (pendingCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1%>&tab=pending" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=pending&pendingPage=<%= pendingCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= pendingTotalPages; i++) {%>
                         <li class="page-item <%= (i == pendingCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= i%>&tab=pending"><%= i%></a>
+                            <a class="page-link" href="?tab=pending&pendingPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (pendingCurrentPage == pendingTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1%>&tab=pending">Seterusnya</a>
+                            <a class="page-link" href="?tab=pending&pendingPage=<%= pendingCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -419,6 +428,8 @@
                               <%= (rejectedApp.getHepReview() != null && rejectedApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
                             <td>
                                 <input type="hidden" id="appID" name="appID" value="<%= rejectedApp.getApplyId()%>"/> 
+                                <input type="hidden" name="tab" value="rejected"> <!-- Preserve the current tab -->
+                                <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                 <div class="select-box">
                                     <select name="selectedAction" 
                                             <%= (rejectedApp.getHepReview() != null && rejectedApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
@@ -477,15 +488,15 @@
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (rejectedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1%>&tab=rejected" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=rejected&rejectedPage=<%= rejectedCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= rejectedTotalPages; i++) {%>
                         <li class="page-item <%= (i == rejectedCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= i%>&tab=rejected"><%= i%></a>
+                            <a class="page-link" href="?tab=rejected&rejectedPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (rejectedCurrentPage == rejectedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1%>&tab=rejected">Seterusnya</a>
+                            <a class="page-link" href="?tab=rejected&rejectedPage=<%= rejectedCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -551,6 +562,8 @@
                               <%= (approvedApp.getHepReview() != null && approvedApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
                             <td>
                                 <input type="hidden" id="appID" name="appID" value="<%= approvedApp.getApplyId()%>"/> 
+                                <input type="hidden" name="tab" value="approved"> <!-- Preserve the current tab -->
+                                <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                 <div class="select-box">
                                     <select name="selectedAction" 
                                             <%= (approvedApp.getHepReview() != null && approvedApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
@@ -609,15 +622,15 @@
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (approvedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1%>&tab=approved" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=approved&approvedPage=<%= approvedCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= approvedTotalPages; i++) {%>
                         <li class="page-item <%= (i == approvedCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= i%>&tab=approved"><%= i%></a>
+                            <a class="page-link" href="?tab=approved&approvedPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (approvedCurrentPage == approvedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1%>&tab=approved">Seterusnya</a>
+                            <a class="page-link" href="?tab=approved&approvedPage=<%= approvedCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -642,6 +655,7 @@
                     %>
                     <form action="searchApp" method="get" class="d-flex align-items-center mb-3">
                         <input type="hidden" name="tab" value="search"> <!-- Ensure the tab parameter is set -->
+                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                         <!-- Search Input with Icon -->
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -690,6 +704,8 @@
                               <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
                             <td>
                                 <input type="hidden" id="appID" name="appID" value="<%= searchApp.getApplyId()%>"/> 
+                                <input type="hidden" name="tab" value="<%= tab%>"> <!-- Preserve the current tab -->
+                                <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                 <div class="select-box">
                                     <select name="selectedAction" 
                                             <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
@@ -748,15 +764,15 @@
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (searchCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?searchPage=<%= searchCurrentPage - 1%>&tab=search" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=search&searchPage=<%= searchCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= searchTotalPages; i++) {%>
                         <li class="page-item <%= (i == searchCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?searchPage=<%= i%>&tab=search"><%= i%></a>
+                            <a class="page-link" href="?tab=search&searchPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (searchCurrentPage == searchTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?searchPage=<%= searchCurrentPage + 1%>&tab=search">Seterusnya</a>
+                            <a class="page-link" href="?tab=search&searchPage=<%= searchCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div> 

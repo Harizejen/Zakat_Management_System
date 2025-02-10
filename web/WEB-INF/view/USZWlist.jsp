@@ -170,7 +170,7 @@
                                 <td>
                                     <form action="updateInterviewServlet" method="post" class="d-flex align-items-center">
                                         <input type="hidden" id="appID" name="appID" value="<%= totalApp.getApplyId()%>"/>
-                                        <input type="hidden" name="tab" value="<%= tab%>"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="tab" value="total"> <!-- Preserve the current tab -->
                                         <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="d-flex justify-content-center">
                                             <input type="date" name="tarikhTemuduga" class="form-control" 
@@ -182,7 +182,7 @@
                                 <td>
                                     <form action="updateApplicationStatus" method="post">
                                         <input type="hidden" id="appID" name="appID" value="<%= totalApp.getApplyId()%>"/> 
-                                        <input type="hidden" name="tab" value="<%= tab%>"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="tab" value="total"> <!-- Preserve the current tab -->
                                         <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="select-box">
                                             <select name="selectedAction">
@@ -227,7 +227,7 @@
                             <%
                                     } // End of for loop
                                 } // End of if statement
-%>
+                            %>
                         </tbody>
                     </table>
 
@@ -307,6 +307,8 @@
                                 <td>
                                     <form action="<%= request.getContextPath()%>/updateInterviewServlet" method="post" class="d-flex align-items-center">
                                         <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/>
+                                        <input type="hidden" name="tab" value="pending"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="d-flex justify-content-center">
                                             <input type="date" name="tarikhTemuduga" class="form-control" 
                                                    value="<%= (pendingApp.getInterviewDate() != null) ? pendingApp.getInterviewDate().toString() : ""%>" required>
@@ -317,7 +319,7 @@
                                 <td>
                                     <form action="updateApplicationStatus" method="post">
                                         <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/>
-                                        <input type="hidden" name="tab" value="<%= tab%>"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="tab" value="pending"> <!-- Preserve the current tab -->
                                         <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="select-box">
                                             <select name="selectedAction">
@@ -362,7 +364,7 @@
                             <%
                                     } // End of for loop
                                 } // End of if statement
-%>
+                            %>
                         </tbody>
                     </table>
 
@@ -442,6 +444,8 @@
                                 <td>
                                     <form action="<%= request.getContextPath()%>/updateInterviewServlet" method="post" class="d-flex align-items-center">
                                         <input type="hidden" id="appID" name="appID" value="<%= rejectedApp.getApplyId()%>"/>
+                                        <input type="hidden" name="tab" value="rejected"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="d-flex justify-content-center">
                                             <input type="date" name="tarikhTemuduga" class="form-control" 
                                                    value="<%= (rejectedApp.getInterviewDate() != null) ? rejectedApp.getInterviewDate().toString() : ""%>" required>
@@ -452,7 +456,7 @@
                                 <td>
                                     <form action="updateApplicationStatus" method="post">
                                         <input type="hidden" id="appID" name="appID" value="<%= rejectedApp.getApplyId()%>"/> 
-                                        <input type="hidden" name="tab" value="<%= tab%>"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="tab" value="rejected"> <!-- Preserve the current tab -->
                                         <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="select-box">
                                             <select name="selectedAction">
@@ -497,7 +501,7 @@
                             <%
                                     } // End of for loop
                                 } // End of if statement
-%>
+                            %>
                         </tbody>
                     </table>
 
@@ -577,7 +581,7 @@
                                 <td>
                                     <form action="<%= request.getContextPath()%>/updateInterviewServlet" method="post" class="d-flex align-items-center">
                                         <input type="hidden" id="appID" name="appID" value="<%= approvedApp.getApplyId()%>"/>
-                                        <input type="hidden" name="tab" value="<%= tab%>"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="tab" value="approved"> <!-- Preserve the current tab -->
                                         <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="d-flex justify-content-center">
                                             <input type="date" name="tarikhTemuduga" class="form-control" 
@@ -589,6 +593,8 @@
                                 <td>
                                     <form action="updateApplicationStatus" method="post">
                                         <input type="hidden" id="appID" name="appID" value="<%= approvedApp.getApplyId()%>"/> 
+                                        <input type="hidden" name="tab" value="approved"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="select-box">
                                             <select name="selectedAction">
                                                 <%
@@ -632,7 +638,7 @@
                             <%
                                     } // End of for loop
                                 } // End of if statement
-%>
+                            %>
                         </tbody>
                     </table>
 
@@ -775,7 +781,7 @@
                         <%
                                 } // End of for loop
                             } // End of if statement
-%>
+                        %>
                         </tbody>
                     </table>
                     <ul class="pagination justify-content-end">

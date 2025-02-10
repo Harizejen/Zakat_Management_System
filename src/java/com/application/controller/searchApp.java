@@ -76,6 +76,7 @@ public class searchApp extends HttpServlet {
         HttpSession session = request.getSession();
         String query = request.getParameter("query");
         String currentTab = request.getParameter("tab"); // Get current tab parameter
+        String page = request.getParameter("pages"); // Retrieve the page parameter
 
         staff st = (staff) session.getAttribute("staff_data");
         Integer staffId = st != null ? st.getStaffid() : null;
@@ -95,21 +96,21 @@ public class searchApp extends HttpServlet {
         session.setAttribute("searchList", searchList);
 
         // Determine the JSP page to forward to
-        String jspPage = determineJspPage(staffRole, currentTab);
-        RequestDispatcher dispatcher = request.getRequestDispatcher(jspPage);
-        dispatcher.forward(request, response);
+        String jspPage = determineJspPage(staffRole, currentTab, page);
+        response.sendRedirect(request.getContextPath() + jspPage);
+        
     }
 
-    private String determineJspPage(String staffRole, String currentTab) {
-        String tabParam = currentTab != null ? "&tab=" + currentTab : "";
+    private String determineJspPage(String staffRole, String currentTab, String page) {
+        String tabParam = "?tab=" + currentTab + "&pages=" + page;
 
         switch (staffRole) {
             case "HEA":
-                return "/WEB-INF/view/ApplicationListHEA.jsp?search=true" + tabParam;
+                return "/HEAListPage" + tabParam;
             case "HEP":
-                return "/WEB-INF/view/ApplicationListHEP.jsp?search=true" + tabParam;
+                return "/HEPListPage" + tabParam;
             case "UZSW":
-                return "/WEB-INF/view/USZWlist.jsp?search=true" + tabParam;
+                return "/UZSWServlet" + tabParam;
             default:
                 return "/staff_login.jsp";
         }
