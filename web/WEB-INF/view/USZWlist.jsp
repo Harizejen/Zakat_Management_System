@@ -5,14 +5,15 @@
 <%@page import="com.interview.model.interview"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    // Correctly retrieve 'tab' and 'pages' from request parameters
     String tab = request.getParameter("tab");
-    if (tab == null) {
+    String pages = request.getParameter("pages");
+    if (tab == null || tab.isEmpty()) {
         tab = "total"; // Default tab
     }
-
-    // Retrieve staffID from the session
-    Integer staffID = (Integer) request.getSession().getAttribute("staffID");
-
+    if (pages == null || pages.isEmpty()) {
+        pages = "1"; // Default page
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,23 +28,23 @@
     </head>
 
     <body>
-        
+
         <!-- Navigation Bar -->
-    <nav class="navbar text-light mb-3" style="background-color: #112C55">
-        <div class="container-fluid d-flex align-items-center">
-            <a href="goUZSWdashboard" class="btn btn-outline-light me-3">
-            <i class="bi bi-arrow-left"></i> 
-        </a>
-            <!-- Brand Name with Increased Left Margin -->
-            <span class="navbar-brand fw-bold ms-2" style="color: white; font-size: 1.5rem;">Zakat Pendidikan Management System</span>
-            
-            <!-- Right-aligned Section -->
-            <div class="d-flex align-items-center ms-auto">
-                <!-- Log Out -->
-                <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
+        <nav class="navbar text-light mb-3" style="background-color: #112C55">
+            <div class="container-fluid d-flex align-items-center">
+                <a href="goUZSWdashboard" class="btn btn-outline-light me-3">
+                    <i class="bi bi-arrow-left"></i> 
+                </a>
+                <!-- Brand Name with Increased Left Margin -->
+                <span class="navbar-brand fw-bold ms-2" style="color: white; font-size: 1.5rem;">Zakat Pendidikan Management System</span>
+
+                <!-- Right-aligned Section -->
+                <div class="d-flex align-items-center ms-auto">
+                    <!-- Log Out -->
+                    <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Keluar</a>
+                </div>
             </div>
-        </div>
-    </nav
+        </nav
 
         <!-- Main Container -->
         <div class="container">
@@ -93,12 +94,20 @@
                         Digagalkan
                     </button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link <%= (tab.equals("search")) ? "active" : ""%>" 
+                            id="search-tab" data-bs-toggle="tab" data-bs-target="#search" 
+                            type="button" role="tab" aria-controls="search" 
+                            aria-selected="<%= (tab.equals("search")) ? "true" : "false"%>">
+                        Carian
+                    </button>
+                </li>
             </ul>
 
             <!-- Tabs Content -->
             <div class="tab-content" id="applicationTabsContent">
                 <!-- Total Tab -->
-                <div class="tab-pane fade show active" id="total" role="tabpanel" aria-labelledby="total-tab">
+                <div class="tab-pane fade <%= (tab.equals("total")) ? "show active" : ""%>" id="total" role="tabpanel" aria-labelledby="total-tab">
                     <%
                         int itemsPerPage = 6;
                         int currentPage = 1; // Default to the first page
@@ -159,8 +168,10 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <form action="<%= request.getContextPath()%>/updateInterviewServlet" method="post" class="d-flex align-items-center">
+                                    <form action="updateInterviewServlet" method="post" class="d-flex align-items-center">
                                         <input type="hidden" id="appID" name="appID" value="<%= totalApp.getApplyId()%>"/>
+                                        <input type="hidden" name="tab" value="total"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="d-flex justify-content-center">
                                             <input type="date" name="tarikhTemuduga" class="form-control" 
                                                    value="<%= (totalApp.getInterviewDate() != null) ? totalApp.getInterviewDate().toString() : ""%>" required>
@@ -171,6 +182,8 @@
                                 <td>
                                     <form action="updateApplicationStatus" method="post">
                                         <input type="hidden" id="appID" name="appID" value="<%= totalApp.getApplyId()%>"/> 
+                                        <input type="hidden" name="tab" value="total"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="select-box">
                                             <select name="selectedAction">
                                                 <%
@@ -220,15 +233,15 @@
 
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (currentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage - 1%>&tab=total" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=total&totalPage=<%= currentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= totalPages; i++) {%>
                         <li class="page-item <%= (i == currentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= i%>&tab=total"><%= i%></a>
+                            <a class="page-link" href="?tab=total&totalPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (currentPage == totalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage + 1%>&tab=total">Seterusnya</a>
+                            <a class="page-link" href="?tab=total&totalPage=<%= currentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -294,6 +307,8 @@
                                 <td>
                                     <form action="<%= request.getContextPath()%>/updateInterviewServlet" method="post" class="d-flex align-items-center">
                                         <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/>
+                                        <input type="hidden" name="tab" value="pending"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="d-flex justify-content-center">
                                             <input type="date" name="tarikhTemuduga" class="form-control" 
                                                    value="<%= (pendingApp.getInterviewDate() != null) ? pendingApp.getInterviewDate().toString() : ""%>" required>
@@ -303,7 +318,9 @@
                                 </td>
                                 <td>
                                     <form action="updateApplicationStatus" method="post">
-                                        <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/> 
+                                        <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/>
+                                        <input type="hidden" name="tab" value="pending"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="select-box">
                                             <select name="selectedAction">
                                                 <%
@@ -353,15 +370,15 @@
 
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (pendingCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1%>&tab=pending" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=pending&pendingPage=<%= pendingCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= pendingTotalPages; i++) {%>
                         <li class="page-item <%= (i == pendingCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= i%>&tab=pending"><%= i%></a>
+                            <a class="page-link" href="?tab=pending&pendingPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (pendingCurrentPage == pendingTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1%>&tab=pending">Seterusnya</a>
+                            <a class="page-link" href="?tab=pending&pendingPage=<%= pendingCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -427,6 +444,8 @@
                                 <td>
                                     <form action="<%= request.getContextPath()%>/updateInterviewServlet" method="post" class="d-flex align-items-center">
                                         <input type="hidden" id="appID" name="appID" value="<%= rejectedApp.getApplyId()%>"/>
+                                        <input type="hidden" name="tab" value="rejected"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="d-flex justify-content-center">
                                             <input type="date" name="tarikhTemuduga" class="form-control" 
                                                    value="<%= (rejectedApp.getInterviewDate() != null) ? rejectedApp.getInterviewDate().toString() : ""%>" required>
@@ -437,6 +456,8 @@
                                 <td>
                                     <form action="updateApplicationStatus" method="post">
                                         <input type="hidden" id="appID" name="appID" value="<%= rejectedApp.getApplyId()%>"/> 
+                                        <input type="hidden" name="tab" value="rejected"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="select-box">
                                             <select name="selectedAction">
                                                 <%
@@ -486,15 +507,15 @@
 
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (rejectedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1%>&tab=rejected" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=rejected&rejectedPage=<%= rejectedCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= rejectedTotalPages; i++) {%>
                         <li class="page-item <%= (i == rejectedCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= i%>&tab=rejected"><%= i%></a>
+                            <a class="page-link" href="?tab=rejected&rejectedPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (rejectedCurrentPage == rejectedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1%>&tab=rejected">Seterusnya</a>
+                            <a class="page-link" href="?tab=rejected&rejectedPage=<%= rejectedCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -560,6 +581,8 @@
                                 <td>
                                     <form action="<%= request.getContextPath()%>/updateInterviewServlet" method="post" class="d-flex align-items-center">
                                         <input type="hidden" id="appID" name="appID" value="<%= approvedApp.getApplyId()%>"/>
+                                        <input type="hidden" name="tab" value="approved"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="d-flex justify-content-center">
                                             <input type="date" name="tarikhTemuduga" class="form-control" 
                                                    value="<%= (approvedApp.getInterviewDate() != null) ? approvedApp.getInterviewDate().toString() : ""%>" required>
@@ -570,6 +593,8 @@
                                 <td>
                                     <form action="updateApplicationStatus" method="post">
                                         <input type="hidden" id="appID" name="appID" value="<%= approvedApp.getApplyId()%>"/> 
+                                        <input type="hidden" name="tab" value="approved"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                         <div class="select-box">
                                             <select name="selectedAction">
                                                 <%
@@ -619,15 +644,157 @@
 
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (approvedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1%>&tab=approved" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=approved&approvedPage=<%= approvedCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= approvedTotalPages; i++) {%>
                         <li class="page-item <%= (i == approvedCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= i%>&tab=approved"><%= i%></a>
+                            <a class="page-link" href="?tab=approved&approvedPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (approvedCurrentPage == approvedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1%>&tab=approved">Seterusnya</a>
+                            <a class="page-link" href="?tab=approved&approvedPage=<%= approvedCurrentPage + 1%>">Seterusnya</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-pane fade <%= (tab.equals("search")) ? "show active" : ""%>" id="search" role="tabpanel" aria-labelledby="search-tab">
+                    <%
+                        int searchItemsPerPage = 6;
+                        int searchCurrentPage = 1; // Default to the first page
+                        String searchPageParam = request.getParameter("searchPage");
+                        if (searchPageParam != null) {
+                            try {
+                                searchCurrentPage = Integer.parseInt(searchPageParam);
+                            } catch (NumberFormatException e) {
+                                searchCurrentPage = 1; // Reset to first page if invalid
+                            }
+                        }
+
+                        List<ApplicationDetails> searchList = (List<ApplicationDetails>) session.getAttribute("searchList");
+                        int searchCount = (searchList != null) ? searchList.size() : 0;
+                        int searchTotalPages = (int) Math.ceil((double) searchCount / searchItemsPerPage);
+                        int searchStartIndex = (searchCurrentPage - 1) * searchItemsPerPage;
+                        int searchEndIndex = Math.min(searchStartIndex + searchItemsPerPage, searchCount);
+                    %>
+                    <form action="searchApp" method="get" class="d-flex align-items-center mb-3">
+                        <input type="hidden" name="tab" value="search"> <!-- Ensure the tab parameter is set -->
+                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
+                        <!-- Search Input with Icon -->
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white border-right-0">
+                                    <i class="bi bi-search"></i> 
+                                </span>
+                            </div>
+                            <input type="text" name="query" id="searchInput" class="form-control border-left-0" placeholder="Nyatakan nama, no. pelajar, atau tarikh mohon">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary ml-2">Search</button>
+                    </form>
+                    <br>
+                    <table class="table table-hover align-middle" id="approvedTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Bil</th>
+                                <th>Nama</th>
+                                <th>No. Pelajar</th>
+                                <th>Tarikh Mohon</th>
+                                <th>Borang</th>
+                                <th>Status</th>
+                                <th>Disemak</th>
+                                <th>Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                if (searchList != null && !searchList.isEmpty()) {
+                                    for (int i = searchStartIndex; i < searchEndIndex; i++) {
+                                        ApplicationDetails searchApp = searchList.get(i);
+                            %>
+                            <tr>
+                                <td><%= i + 1%></td>
+                                <td><%= searchApp.getStudName()%></td>
+                                <td><%= searchApp.getStudId()%></td>
+                                <td><%= searchApp.getApplyDate()%></td>
+                                <td>
+                                    <a href="#" class="text-decoration-none">
+                                        <%= searchApp.getStudId()%>_<%=searchApp.getApplySession()%>.pdf
+                                        <i class="bi bi-download download-icon"></i>
+                                    </a>
+                                </td>
+                        <form action="updateApplicationStatus" method="post" 
+                              <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                            <td>
+                                <input type="hidden" id="appID" name="appID" value="<%= searchApp.getApplyId()%>"/> 
+                                <input type="hidden" name="tab" value="search"> <!-- Preserve the current tab -->
+                                <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
+                                <div class="select-box">
+                                    <select name="selectedAction" 
+                                            <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                                        <%
+                                            // Check if getHeaReview() is TRUE
+                                            if (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) {
+                                                // If TRUE, check getHeaStatus()
+                                                if ("LULUS".equalsIgnoreCase(searchApp.getAppStatHEA())) {
+                                        %>
+                                        <option value="GAGAL">GAGAL</option>
+                                        <option value="LULUS" selected>LULUS</option>
+                                        <%
+                                        } else {
+                                        %>
+                                        <option value="GAGAL" selected>GAGAL</option>
+                                        <option value="LULUS">LULUS</option>
+                                        <%
+                                            }
+                                        } else {
+                                            // If getHeaReview() is null, use CGPA to determine selection
+                                            if (searchApp.getApplyCgpa() <= 3.0) {
+                                        %>
+                                        <option value="GAGAL" selected>GAGAL</option>
+                                        <option value="LULUS">LULUS</option>
+                                        <%
+                                        } else {
+                                        %>
+                                        <option value="GAGAL">GAGAL</option>
+                                        <option value="LULUS" selected>LULUS</option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="disemak" value="TRUE" 
+                                       <%= (searchApp != null && searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "checked" : ""%> 
+                                       <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-danger btn-sm" 
+                                        <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                                    Serah
+                                </button>
+                            </td>
+                        </form>
+                        </td>
+                        </tr>
+                        <%
+                                } // End of for loop
+                            } // End of if statement
+                        %>
+                        </tbody>
+                    </table>
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item <%= (searchCurrentPage == 1) ? "disabled" : ""%>">
+                            <a class="page-link" href="?tab=search&searchPage=<%= searchCurrentPage - 1%>" tabindex="-1">Kembali</a>
+                        </li>
+                        <% for (int i = 1; i <= searchTotalPages; i++) {%>
+                        <li class="page-item <%= (i == searchCurrentPage) ? "active" : ""%>">
+                            <a class="page-link" href="?tab=search&searchPage=<%= i%>"><%= i%></a>
+                        </li>
+                        <% }%>
+                        <li class="page-item <%= (searchCurrentPage == searchTotalPages) ? "disabled" : ""%>">
+                            <a class="page-link" href="?tab=search&searchPage=<%= searchCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -704,6 +871,20 @@
                         rows[i].style.display = rowData.includes(input) ? "" : "none";
                     }
                 }
+            </script>
+            <script>
+                // Function to set the minimum date for all date inputs
+                function setMinDate() {
+                    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+                    const dateInputs = document.querySelectorAll('input[type="date"]');
+
+                    dateInputs.forEach(input => {
+                        input.setAttribute('min', today); // Set the min attribute to today's date
+                    });
+                }
+
+                // Call the function when the page loads
+                window.onload = setMinDate;
             </script>
     </body>
 </html>

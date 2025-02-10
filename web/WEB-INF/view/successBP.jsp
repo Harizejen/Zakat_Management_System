@@ -15,7 +15,7 @@
             <div class="notification-header">
                 <img alt="Logo" height="24" src="${pageContext.request.contextPath}/images/logo_system.png" width="24"/>
                 <h5>Notifikasi</h5>
-                <a style="color: black" href="<%= request.getContextPath()%>/user.do?action=profile"><i class="fas fa-times"></i></a>
+                <a style="color: black" href="<%= request.getContextPath()%>/user.do?action=records"><i class="fas fa-times"></i></a>
             </div>
             <div class="notification-body">
                 <p>PERMOHONAN ANDA BERJAYA!</p>
@@ -26,7 +26,7 @@
                     CETAK PERMOHONAN
                 </button>
                 <button class="btn btn-danger">
-                    <a href="<%= request.getContextPath()%>/user.do?action=profile">LAMAN UTAMA</a>
+                    <a href="<%= request.getContextPath()%>/user.do?action=dashboard">LAMAN UTAMA</a>
                 </button>
             </div>
         </div>

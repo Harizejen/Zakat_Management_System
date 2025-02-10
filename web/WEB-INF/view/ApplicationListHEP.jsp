@@ -4,9 +4,14 @@
 <%@page import="com.ApplicationDetails.model.ApplicationDetails"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    // Correctly retrieve 'tab' and 'pages' from request parameters
     String tab = request.getParameter("tab");
-    if (tab == null) {
+    String pages = request.getParameter("pages");
+    if (tab == null || tab.isEmpty()) {
         tab = "total"; // Default tab
+    }
+    if (pages == null || pages.isEmpty()) {
+        pages = "1"; // Default page
     }
 %>
 <!DOCTYPE html>
@@ -77,6 +82,14 @@
                         Digagalkan
                     </button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link <%= (tab.equals("search")) ? "active" : ""%>" 
+                            id="rejected-tab" data-bs-toggle="tab" data-bs-target="#search" 
+                            type="button" role="tab" aria-controls="search" 
+                            aria-selected="<%= (tab.equals("search")) ? "true" : "false"%>">
+                        Carian
+                    </button>
+                </li>
             </ul>
 
             <!-- Tabs Content -->
@@ -144,7 +157,9 @@
                         <form action="updateApplicationStatus" method="post" 
                               <%= (totalApp.getHepReview() != null && totalApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
                             <td>
-                                <input type="hidden" id="appID" name="appID" value="<%= totalApp.getApplyId()%>"/> 
+                                <input type="hidden" id="appID" name="appID" value="<%= totalApp.getApplyId()%>"/>
+                                <input type="hidden" name="tab" value="total"> <!-- Preserve the current tab -->
+                                <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                 <div class="select-box">
                                     <select name="selectedAction" 
                                             <%= (totalApp.getHepReview() != null && totalApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
@@ -198,20 +213,20 @@
                         <%
                                 } // End of for loop
                             } // End of if statement
-%>
+                        %>
                         </tbody>
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (currentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage - 1%>&tab=total" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=total&totalPage=<%= currentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= totalPages; i++) {%>
                         <li class="page-item <%= (i == currentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= i%>&tab=total"><%= i%></a>
+                            <a class="page-link" href="?tab=total&totalPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (currentPage == totalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?totalPage=<%= currentPage + 1%>&tab=total">Seterusnya</a>
+                            <a class="page-link" href="?tab=total&totalPage=<%= currentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -267,7 +282,7 @@
                                 <td><%= pendingApp.getStudName()%></td>
                                 <td><%= pendingApp.getStudId()%></td>
                                 <td><%= pendingApp.getApplyDate()%></td>
-                                
+
                                 <td>
                                     <a href="<%= request.getContextPath()%>/cetakBorangServlet?stud_id=<%= pendingApp.getStudId()%>" class="text-decoration-none">
                                         <%=pendingApp.getStudId()%>_<%=pendingApp.getApplySession()%>.pdf
@@ -275,77 +290,79 @@
                                     </a>
                                 </td>
                                 <td>
-                        <form action="updateApplicationStatus" method="post" class="d-flex align-items-center"> 
-                              <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%>
-                           
-                                <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/> 
-                                <div class="select-box">
-                                    <select name="selectedAction" 
-                                            <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> 
-                                        <%
-                                            // Check if getHepReview() is TRUE
-                                            if (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) {
-                                                // If TRUE, check getHepStatus()
-                                                if ("LULUS".equalsIgnoreCase(pendingApp.getAppStatHEP())) {
-                                        %>
-                                        <option value="GAGAL">GAGAL</option>
-                                        <option value="LULUS" selected>LULUS</option>
-                                        <%
-                                        } else {
-                                        %>
-                                        <option value="GAGAL" selected>GAGAL</option>
-                                        <option value="LULUS">LULUS</option>
-                                        <%
-                                            }
-                                        } else {
-                                            // If getHepReview() is null, use salary to determine selection
-                                            if (pendingApp.getGuardIncome() + pendingApp.getMotherIncome() + pendingApp.getFatherIncome() >= 5000) {
-                                        %>
-                                        <option value="GAGAL" selected>GAGAL</option>
-                                        <option value="LULUS">LULUS</option>
-                                        <%
-                                        } else {
-                                        %>
-                                        <option value="GAGAL">GAGAL</option>
-                                        <option value="LULUS" selected>LULUS</option>
-                                        <%
-                                                }
-                                            }
-                                        %>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="disemak" value="TRUE" 
-                                       <%= (pendingApp != null && pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "checked" : ""%> 
-                                       <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
-                            </td>
-                            <td>
-                                <button type="submit" class="btn btn-danger btn-sm" 
-                                        <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
-                                    Serah
-                                </button>
-                            </td>
-                        </form>
-                        </td>
-                        </tr>
-                        <%
-                                } // End of for loop
-                            } // End of if statement
-                        %>
+                                    <form action="updateApplicationStatus" method="post" class="d-flex align-items-center"> 
+                                        <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%>
+
+                                        <input type="hidden" id="appID" name="appID" value="<%= pendingApp.getApplyId()%>"/> 
+                                        <input type="hidden" name="tab" value="pending"> <!-- Preserve the current tab -->
+                                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
+                                        <div class="select-box">
+                                            <select name="selectedAction" 
+                                                    <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                                                <%
+                                                    // Check if getHepReview() is TRUE
+                                                    if (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) {
+                                                        // If TRUE, check getHepStatus()
+                                                        if ("LULUS".equalsIgnoreCase(pendingApp.getAppStatHEP())) {
+                                                %>
+                                                <option value="GAGAL">GAGAL</option>
+                                                <option value="LULUS" selected>LULUS</option>
+                                                <%
+                                                } else {
+                                                %>
+                                                <option value="GAGAL" selected>GAGAL</option>
+                                                <option value="LULUS">LULUS</option>
+                                                <%
+                                                    }
+                                                } else {
+                                                    // If getHepReview() is null, use salary to determine selection
+                                                    if (pendingApp.getGuardIncome() + pendingApp.getMotherIncome() + pendingApp.getFatherIncome() >= 5000) {
+                                                %>
+                                                <option value="GAGAL" selected>GAGAL</option>
+                                                <option value="LULUS">LULUS</option>
+                                                <%
+                                                } else {
+                                                %>
+                                                <option value="GAGAL">GAGAL</option>
+                                                <option value="LULUS" selected>LULUS</option>
+                                                <%
+                                                        }
+                                                    }
+                                                %>
+                                            </select>
+                                        </div>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="disemak" value="TRUE" 
+                                           <%= (pendingApp != null && pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "checked" : ""%> 
+                                           <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-danger btn-sm" 
+                                            <%= (pendingApp.getHepReview() != null && pendingApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                                        Serah
+                                    </button>
+                                </td>
+                                </form>
+                                </td>
+                            </tr>
+                            <%
+                                    } // End of for loop
+                                } // End of if statement
+%>
                         </tbody>
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (pendingCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage - 1%>&tab=pending" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=pending&pendingPage=<%= pendingCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= pendingTotalPages; i++) {%>
                         <li class="page-item <%= (i == pendingCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= i%>&tab=pending"><%= i%></a>
+                            <a class="page-link" href="?tab=pending&pendingPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (pendingCurrentPage == pendingTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?pendingPage=<%= pendingCurrentPage + 1%>&tab=pending">Seterusnya</a>
+                            <a class="page-link" href="?tab=pending&pendingPage=<%= pendingCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -411,6 +428,8 @@
                               <%= (rejectedApp.getHepReview() != null && rejectedApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
                             <td>
                                 <input type="hidden" id="appID" name="appID" value="<%= rejectedApp.getApplyId()%>"/> 
+                                <input type="hidden" name="tab" value="rejected"> <!-- Preserve the current tab -->
+                                <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                 <div class="select-box">
                                     <select name="selectedAction" 
                                             <%= (rejectedApp.getHepReview() != null && rejectedApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
@@ -464,20 +483,20 @@
                         <%
                                 } // End of for loop
                             } // End of if statement
-%>
+                        %>
                         </tbody>
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (rejectedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage - 1%>&tab=rejected" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=rejected&rejectedPage=<%= rejectedCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= rejectedTotalPages; i++) {%>
                         <li class="page-item <%= (i == rejectedCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= i%>&tab=rejected"><%= i%></a>
+                            <a class="page-link" href="?tab=rejected&rejectedPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (rejectedCurrentPage == rejectedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?rejectedPage=<%= rejectedCurrentPage + 1%>&tab=rejected">Seterusnya</a>
+                            <a class="page-link" href="?tab=rejected&rejectedPage=<%= rejectedCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
@@ -543,6 +562,8 @@
                               <%= (approvedApp.getHepReview() != null && approvedApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
                             <td>
                                 <input type="hidden" id="appID" name="appID" value="<%= approvedApp.getApplyId()%>"/> 
+                                <input type="hidden" name="tab" value="approved"> <!-- Preserve the current tab -->
+                                <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
                                 <div class="select-box">
                                     <select name="selectedAction" 
                                             <%= (approvedApp.getHepReview() != null && approvedApp.getHepReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
@@ -596,121 +617,264 @@
                         <%
                                 } // End of for loop
                             } // End of if statement
-%>
+                        %>
                         </tbody>
                     </table>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <%= (approvedCurrentPage == 1) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage - 1%>&tab=approved" tabindex="-1">Kembali</a>
+                            <a class="page-link" href="?tab=approved&approvedPage=<%= approvedCurrentPage - 1%>" tabindex="-1">Kembali</a>
                         </li>
                         <% for (int i = 1; i <= approvedTotalPages; i++) {%>
                         <li class="page-item <%= (i == approvedCurrentPage) ? "active" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= i%>&tab=approved"><%= i%></a>
+                            <a class="page-link" href="?tab=approved&approvedPage=<%= i%>"><%= i%></a>
                         </li>
                         <% }%>
                         <li class="page-item <%= (approvedCurrentPage == approvedTotalPages) ? "disabled" : ""%>">
-                            <a class="page-link" href="?approvedPage=<%= approvedCurrentPage + 1%>&tab=approved">Seterusnya</a>
+                            <a class="page-link" href="?tab=approved&approvedPage=<%= approvedCurrentPage + 1%>">Seterusnya</a>
                         </li>
                     </ul>
                 </div>
-            </div> 
-        </div> 
+                <div class="tab-pane fade <%= (tab.equals("search")) ? "show active" : ""%>" id="search" role="tabpanel" aria-labelledby="search-tab">
+                    <%
+                        int searchItemsPerPage = 6;
+                        int searchCurrentPage = 1; // Default to the first page
+                        String searchPageParam = request.getParameter("searchPage");
+                        if (searchPageParam != null) {
+                            try {
+                                searchCurrentPage = Integer.parseInt(searchPageParam);
+                            } catch (NumberFormatException e) {
+                                searchCurrentPage = 1; // Reset to first page if invalid
+                            }
+                        }
 
-        <!-- Logout Confirmation Modal -->
-        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content text-center" style="background-color: #112C55; color: white;">
-                    <!-- Modal Body -->
-                    <div class="modal-body py-4">
-                        <h5 id="logoutModalLabel" class="mb-4">Adakah anda ingin keluar?</h5>
-                        <!-- Buttons -->
-                        <div class="d-flex justify-content-center gap-3">
-                            <a href="staff_logout.do" class="btn btn-outline-light px-4">KELUAR</a>
-                            <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">BATAL</button>
+                        List<ApplicationDetails> searchList = (List<ApplicationDetails>) session.getAttribute("searchList");
+                        int searchCount = (searchList != null) ? searchList.size() : 0;
+                        int searchTotalPages = (int) Math.ceil((double) searchCount / searchItemsPerPage);
+                        int searchStartIndex = (searchCurrentPage - 1) * searchItemsPerPage;
+                        int searchEndIndex = Math.min(searchStartIndex + searchItemsPerPage, searchCount);
+                    %>
+                    <form action="searchApp" method="get" class="d-flex align-items-center mb-3">
+                        <input type="hidden" name="tab" value="search"> <!-- Ensure the tab parameter is set -->
+                        <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
+                        <!-- Search Input with Icon -->
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white border-right-0">
+                                    <i class="bi bi-search"></i> 
+                                </span>
+                            </div>
+                            <input type="text" name="query" id="searchInput" class="form-control border-left-0" placeholder="Nyatakan nama, no. pelajar, atau tarikh mohon">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary ml-2">Search</button>
+                    </form>
+                    <br>
+                    <table class="table table-hover align-middle" id="approvedTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Bil</th>
+                                <th>Nama</th>
+                                <th>No. Pelajar</th>
+                                <th>Tarikh Mohon</th>
+                                <th>Borang</th>
+                                <th>Status</th>
+                                <th>Disemak</th>
+                                <th>Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                if (searchList != null && !searchList.isEmpty()) {
+                                    for (int i = searchStartIndex; i < searchEndIndex; i++) {
+                                        ApplicationDetails searchApp = searchList.get(i);
+                            %>
+                            <tr>
+                                <td><%= i + 1%></td>
+                                <td><%= searchApp.getStudName()%></td>
+                                <td><%= searchApp.getStudId()%></td>
+                                <td><%= searchApp.getApplyDate()%></td>
+                                <td>
+                                    <a href="#" class="text-decoration-none">
+                                        <%= searchApp.getStudId()%>_<%=searchApp.getApplySession()%>.pdf
+                                        <i class="bi bi-download download-icon"></i>
+                                    </a>
+                                </td>
+                        <form action="updateApplicationStatus" method="post" 
+                              <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                            <td>
+                                <input type="hidden" id="appID" name="appID" value="<%= searchApp.getApplyId()%>"/> 
+                                <input type="hidden" name="tab" value="<%= tab%>"> <!-- Preserve the current tab -->
+                                <input type="hidden" name="pages" value="<%= pages%>"> <!-- Preserve the current page -->
+                                <div class="select-box">
+                                    <select name="selectedAction" 
+                                            <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                                        <%
+                                            // Check if getHeaReview() is TRUE
+                                            if (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) {
+                                                // If TRUE, check getHeaStatus()
+                                                if ("LULUS".equalsIgnoreCase(searchApp.getAppStatHEA())) {
+                                        %>
+                                        <option value="GAGAL">GAGAL</option>
+                                        <option value="LULUS" selected>LULUS</option>
+                                        <%
+                                        } else {
+                                        %>
+                                        <option value="GAGAL" selected>GAGAL</option>
+                                        <option value="LULUS">LULUS</option>
+                                        <%
+                                            }
+                                        } else {
+                                            // If getHeaReview() is null, use CGPA to determine selection
+                                            if (searchApp.getApplyCgpa() <= 3.0) {
+                                        %>
+                                        <option value="GAGAL" selected>GAGAL</option>
+                                        <option value="LULUS">LULUS</option>
+                                        <%
+                                        } else {
+                                        %>
+                                        <option value="GAGAL">GAGAL</option>
+                                        <option value="LULUS" selected>LULUS</option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="disemak" value="TRUE" 
+                                       <%= (searchApp != null && searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "checked" : ""%> 
+                                       <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-danger btn-sm" 
+                                        <%= (searchApp.getHeaReview() != null && searchApp.getHeaReview().equalsIgnoreCase("TRUE")) ? "disabled" : ""%> >
+                                    Serah
+                                </button>
+                            </td>
+                        </form>
+                        </td>
+                        </tr>
+                        <%
+                                } // End of for loop
+                            } // End of if statement
+                        %>
+                        </tbody>
+                    </table>
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item <%= (searchCurrentPage == 1) ? "disabled" : ""%>">
+                            <a class="page-link" href="?tab=search&searchPage=<%= searchCurrentPage - 1%>" tabindex="-1">Kembali</a>
+                        </li>
+                        <% for (int i = 1; i <= searchTotalPages; i++) {%>
+                        <li class="page-item <%= (i == searchCurrentPage) ? "active" : ""%>">
+                            <a class="page-link" href="?tab=search&searchPage=<%= i%>"><%= i%></a>
+                        </li>
+                        <% }%>
+                        <li class="page-item <%= (searchCurrentPage == searchTotalPages) ? "disabled" : ""%>">
+                            <a class="page-link" href="?tab=search&searchPage=<%= searchCurrentPage + 1%>">Seterusnya</a>
+                        </li>
+                    </ul>
+                </div> 
+            </div> 
+
+
+
+            <!-- Logout Confirmation Modal -->
+            <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-center" style="background-color: #112C55; color: white;">
+                        <!-- Modal Body -->
+                        <div class="modal-body py-4">
+                            <h5 id="logoutModalLabel" class="mb-4">Adakah anda ingin keluar?</h5>
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="staff_logout.do" class="btn btn-outline-light px-4">KELUAR</a>
+                                <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">BATAL</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3. 5.1.slim.min.js"></script>
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3. 5.1.slim.min.js"></script>
 
-        <script>
+            <script>
                             function updateDropdown(index, action) {
                                 document.getElementById('selectedAction' + index).value = action;
                             }
-        </script>
-        <!-- Search Functionality -->
-        <script>
-            // Search function for Total tab
-            function searchTotal() {
-                const input = document.getElementById("searchTotal").value.toLowerCase();
-                const rows = document.getElementById("totalTable").getElementsByTagName("tr");
+            </script>
+            <!-- Search Functionality -->
+            <script>
+                // Search function for Total tab
+                function searchTotal() {
+                    const input = document.getElementById("searchTotal").value.toLowerCase();
+                    const rows = document.getElementById("totalTable").getElementsByTagName("tr");
 
-                for (let i = 0; i < rows.length; i++) {
-                    const rowData = rows[i].textContent.toLowerCase();
-                    rows[i].style.display = rowData.includes(input) ? "" : "none";
+                    for (let i = 0; i < rows.length; i++) {
+                        const rowData = rows[i].textContent.toLowerCase();
+                        rows[i].style.display = rowData.includes(input) ? "" : "none";
+                    }
                 }
-            }
 
-            // Search function for Pending tab
-            function searchPending() {
-                const input = document.getElementById("searchPending").value.toLowerCase();
-                const rows = document.getElementById("pendingTable").getElementsByTagName("tr");
+                // Search function for Pending tab
+                function searchPending() {
+                    const input = document.getElementById("searchPending").value.toLowerCase();
+                    const rows = document.getElementById("pendingTable").getElementsByTagName("tr");
 
-                for (let i = 0; i < rows.length; i++) {
-                    const rowData = rows[i].textContent.toLowerCase();
-                    rows[i].style.display = rowData.includes(input) ? "" : "none";
+                    for (let i = 0; i < rows.length; i++) {
+                        const rowData = rows[i].textContent.toLowerCase();
+                        rows[i].style.display = rowData.includes(input) ? "" : "none";
+                    }
                 }
-            }
 
-            // Search function for Rejected tab
-            function searchRejected() {
-                const input = document.getElementById("searchRejected").value.toLowerCase();
-                const rows = document.getElementById("rejectedTable").getElementsByTagName("tr");
+                // Search function for Rejected tab
+                function searchRejected() {
+                    const input = document.getElementById("searchRejected").value.toLowerCase();
+                    const rows = document.getElementById("rejectedTable").getElementsByTagName("tr");
 
-                for (let i = 0; i < rows.length; i++) {
-                    const rowData = rows[i].textContent.toLowerCase();
-                    rows[i].style.display = rowData.includes(input) ? "" : "none";
+                    for (let i = 0; i < rows.length; i++) {
+                        const rowData = rows[i].textContent.toLowerCase();
+                        rows[i].style.display = rowData.includes(input) ? "" : "none";
+                    }
                 }
-            }
 
-            // Search function for Approved tab
-            function searchApproved() {
-                const input = document.getElementById("searchApproved").value.toLowerCase();
-                const rows = document.getElementById("approvedTable").getElementsByTagName("tr");
+                // Search function for Approved tab
+                function searchApproved() {
+                    const input = document.getElementById("searchApproved").value.toLowerCase();
+                    const rows = document.getElementById("approvedTable").getElementsByTagName("tr");
 
-                for (let i = 0; i < rows.length; i++) {
-                    const rowData = rows[i].textContent.toLowerCase();
-                    rows[i].style.display = rowData.includes(input) ? "" : "none";
+                    for (let i = 0; i < rows.length; i++) {
+                        const rowData = rows[i].textContent.toLowerCase();
+                        rows[i].style.display = rowData.includes(input) ? "" : "none";
+                    }
                 }
-            }
-            <%
-                String errorMessage = (String) session.getAttribute("error");
-                if (errorMessage != null) {
-                    // Clear the error message from the session after displaying it
-                    session.removeAttribute("error");
-            %>
-            alert('<%= errorMessage%>');
-            <%
-                }
-            %>
+                <%
+                    String errorMessage = (String) session.getAttribute("error");
+                    if (errorMessage != null) {
+                        // Clear the error message from the session after displaying it
+                        session.removeAttribute("error");
+                %>
+                alert('<%= errorMessage%>');
+                <%
+                    }
+                %>
 
-            // Check if there is a success message in the session
-            <%
-                String successMessage = (String) session.getAttribute("success");
-                if (successMessage != null) {
-                    // Clear the success message from the session after displaying it
-                    session.removeAttribute("success");
-            %>
-            alert('<%= successMessage%>');
-            <%
-                }
-            %>
-        </script>
+                // Check if there is a success message in the session
+                <%
+                    String successMessage = (String) session.getAttribute("success");
+                    if (successMessage != null) {
+                        // Clear the success message from the session after displaying it
+                        session.removeAttribute("success");
+                %>
+                alert('<%= successMessage%>');
+                <%
+                    }
+                %>
+            </script>
     </body>
 </html>
